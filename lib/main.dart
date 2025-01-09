@@ -35,9 +35,11 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       translations: CoreTranslations(),
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: CoreColors.primary),
-        useMaterial3: true,
-      ),
+          colorScheme: ColorScheme.fromSeed(seedColor: CoreColors.primary),
+          useMaterial3: true,
+          fontFamily: 'Mulish',
+          progressIndicatorTheme: const ProgressIndicatorThemeData(color: CoreColors.primary),
+          textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: CoreColors.primary))),
       initialBinding: BindingsBuilder(() {
         Get.put<LogController>(LogController(), permanent: true);
         Get.put<AppController>(AppController(), permanent: true);

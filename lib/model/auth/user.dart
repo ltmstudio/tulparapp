@@ -20,6 +20,15 @@ class UserModel {
   DateTime? createdAt;
   DateTime? updatedAt;
 
+  String get letter => name?.isNotEmpty == true ? name![0].toUpperCase() : '•';
+
+  String get formattedTelephone {
+    if (phone == null) return '';
+    final digits = phone!.replaceAll(RegExp(r'\D'), '');
+    if (digits.length != 10) return phone!;
+    return '+7 (${digits.substring(0, 3)}) ${digits.substring(3, 5)} ${digits.substring(5)}';
+  }
+
   UserModel({
     this.id,
     this.name,

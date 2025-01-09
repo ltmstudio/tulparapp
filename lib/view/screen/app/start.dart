@@ -8,7 +8,6 @@ import 'package:tulpar/core/animation.dart';
 import 'package:tulpar/core/colors.dart';
 import 'package:tulpar/routes/tabs.dart';
 import 'package:tulpar/view/component/bottom_navigation.dart';
-import 'package:tulpar/view/screen/app/error.dart';
 import 'package:tulpar/view/screen/app/splash.dart';
 import 'package:tulpar/view/screen/auth/phone.dart';
 import 'package:tulpar/view/screen/auth/sms.dart';
@@ -32,16 +31,8 @@ class _AppStartScreenState extends State<AppStartScreen> {
       child: GetBuilder<AppController>(
         builder: (controller) {
           Widget screen = const AppSplashScreen();
-          switch (controller.appStatus.value) {
-            case AppConnectionStatus.done:
-              screen = const AuthStartScreen();
-              break;
-            case AppConnectionStatus.loading:
-              screen = const AppSplashScreen();
-              break;
-            case AppConnectionStatus.error:
-              screen = const AppErrorScreen();
-              break;
+          if (controller.appStatus.value == AppConnectionStatus.done) {
+            screen = const AuthStartScreen();
           }
           return AnimatedSwitcher(
             duration: CoreAnimations.d200,
@@ -76,9 +67,9 @@ class _TabsStartScreenState extends State<TabsStartScreen> {
     super.initState();
   }
 
-  var pageController = PageController();
+  var pageController = PageController(initialPage: 1);
 
-  var currentIndex = ValueNotifier<int>(0);
+  var currentIndex = ValueNotifier<int>(1);
   void onTap(int index) {
     if (currentIndex.value == index) {
       if (tabData[index].navigatorKey.currentState?.canPop() ?? false) {

@@ -1,4 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:masked_text_field/masked_text_field.dart';
+import 'package:tulpar/controller/user.dart';
+import 'package:tulpar/core/assets.dart';
+import 'package:tulpar/core/colors.dart';
+import 'package:tulpar/core/decoration.dart';
+import 'package:tulpar/core/styles.dart';
+import 'package:tulpar/core/toast.dart';
+import 'package:tulpar/view/widget/elevated_button.dart';
 
 class AuthPhoneScreen extends StatefulWidget {
   const AuthPhoneScreen({super.key});
@@ -8,11 +17,89 @@ class AuthPhoneScreen extends StatefulWidget {
 }
 
 class _AuthPhoneScreenState extends State<AuthPhoneScreen> {
+  var phoneController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text("Auth Phone Screen"),
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryBorderRadius),
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Введите номер телефона'.tr,
+                      style: CoreStyles.h3,
+                    ),
+                    Text(
+                      'Мы отправим СМС с кодом подтверждения'.tr,
+                      style: CoreStyles.h4,
+                    ),
+                    const SizedBox(height: 15),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: MaskedTextField(
+                        textFieldController: phoneController,
+                        onChange: (value) {},
+                        mask: '(###) ###-##-##',
+                        escapeCharacter: '#',
+                        maxLength: 15,
+                        inputDecoration: CoreDecoration.textField.copyWith(
+                          prefixText: '+7 ',
+                        ),
+                        keyboardType: TextInputType.phone,
+                        // textInputAction: TextInputAction.next,
+                      ),
+                    ),
+                    GetBuilder<UserController>(builder: (userController) {
+                      var loading = userController.phoneToSmsLoading.value;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: PrimaryElevatedButton(
+                          text: 'Получить код'.tr,
+                          loading: loading,
+                          onPressed: () {
+                            var phone = phoneController.text.replaceAll(RegExp(r'\D'), '');
+                            if (phone.length < 10) {
+                              CoreToast.showToast("Введите корректный номер телефона".tr);
+                              return;
+                            }
+                            userController.phoneToSms(phone);
+                          },
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Image.asset(
+                        CoreAssets.logoBlueTransparent,
+                        width: 100,
+                      ),
+                    ),
+                    const Text(
+                      'TULPAR',
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: CoreColors.primary),
+                    ),
+                    Text(
+                      'Сервис бронирования\nпопутного транспорта'.tr,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

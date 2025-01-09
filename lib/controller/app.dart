@@ -80,7 +80,8 @@ class AppController extends GetxController {
       locale.value = Locale(cachedLocale);
       Get.updateLocale(locale.value);
       Log.success('Locale loaded from cache: $cachedLocale');
-    }
+      update();
+    } else {}
   }
 
   int get getLangIdByCurrentLocale {

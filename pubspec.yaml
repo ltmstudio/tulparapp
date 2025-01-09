@@ -42,6 +42,8 @@ dependencies:
   dio: ^5.7.0
   shared_preferences: ^2.3.5
   navi: ^0.2.2
+  masked_text_field: ^1.0.2
+  fluttertoast: ^8.2.10
 
 dev_dependencies:
   flutter_test:
@@ -66,8 +68,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -80,6 +82,16 @@ flutter:
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
+  fonts:
+    - family: Mulish
+      fonts:
+        - asset: fonts/Mulish-Regular.ttf
+        - asset: fonts/Mulish-Medium.ttf
+          weight: 500
+        - asset: fonts/Mulish-SemiBold.ttf
+          weight: 700
+        - asset: fonts/Mulish-Bold.ttf
+          weight: 800
   # example:
   # fonts:
   #   - family: Schyler
