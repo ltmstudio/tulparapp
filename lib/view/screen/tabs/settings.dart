@@ -4,7 +4,6 @@ import 'package:tulpar/controller/app.dart';
 import 'package:tulpar/controller/user.dart';
 import 'package:tulpar/core/assets.dart';
 import 'package:tulpar/core/colors.dart';
-import 'package:tulpar/core/decoration.dart';
 import 'package:tulpar/core/styles.dart';
 import 'package:tulpar/view/dialog/lang.dart';
 

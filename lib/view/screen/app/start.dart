@@ -100,6 +100,7 @@ class _TabsStartScreenState extends State<TabsStartScreen> {
         }
       },
       child: Scaffold(
+        extendBody: false,
         body: Column(
           children: [
             Expanded(
@@ -115,12 +116,10 @@ class _TabsStartScreenState extends State<TabsStartScreen> {
           child: ValueListenableBuilder(
               valueListenable: currentIndex,
               builder: (_, c, __) {
-                return Container(
-                    decoration: const BoxDecoration(),
-                    child: BottomNavigationBarWidget(
-                      currentIndex: c,
-                      onTap: onTap,
-                    ));
+                return BottomNavigationBarWidget(
+                  currentIndex: c,
+                  onTap: onTap,
+                );
               }),
         ),
       ),

@@ -26,16 +26,17 @@ class BottomNavigationBarWidget extends StatelessWidget {
           highlightColor: Colors.transparent,
         ),
         child: BottomNavigationBar(
-            showUnselectedLabels: false,
-            showSelectedLabels: false,
-            enableFeedback: false,
+            showUnselectedLabels: true,
+            showSelectedLabels: true,
+            enableFeedback: true,
             backgroundColor: Colors.white,
             type: BottomNavigationBarType.fixed,
             elevation: 1,
             selectedItemColor: CoreColors.primary,
             unselectedItemColor: CoreColors.black,
             selectedFontSize: 12,
-            unselectedLabelStyle: const TextStyle(height: 2),
+            unselectedLabelStyle: const TextStyle(fontFamily: 'Mulish', fontWeight: FontWeight.w700),
+            selectedLabelStyle: const TextStyle(fontFamily: 'Mulish', fontWeight: FontWeight.w700),
             selectedIconTheme: const IconThemeData(
               color: CoreColors.primary,
             ),
@@ -53,10 +54,10 @@ class BottomNavigationBarWidget extends StatelessWidget {
                         size: 24,
                         color: currentIndex == i ? CoreColors.primary : CoreColors.grey,
                       ),
-                      Text(
-                        tabData[i].label.tr,
-                        // style: Coresth(color: currentIndex == i ? CoreColors.primary : CoreColors.grey),
-                      )
+                      // Text(
+                      //   tabData[i].label.tr,
+                      //   // style: Coresth(color: currentIndex == i ? CoreColors.primary : CoreColors.grey),
+                      // )
                     ],
                   ),
                   label: tabData[i].label.tr,

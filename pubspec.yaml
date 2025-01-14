@@ -44,6 +44,16 @@ dependencies:
   navi: ^0.2.2
   masked_text_field: ^1.0.2
   fluttertoast: ^8.2.10
+  cached_network_image: ^3.4.1
+  bounce: ^1.0.2
+  flutter_map: ^7.0.2
+  flutter_map_cache: ^1.5.1
+  geolocator: ^13.0.2
+  latlong2: ^0.9.1
+  dio_cache_interceptor_hive_store: ^4.0.0
+  path_provider: ^2.1.5
+  numberpicker: ^2.1.2
+  lottie: ^3.2.0
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +80,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/lottie/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

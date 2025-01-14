@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:tulpar/controller/app.dart';
 import 'package:tulpar/controller/dio.dart';
+import 'package:tulpar/controller/user_order.dart';
 import 'package:tulpar/core/keys.dart';
 import 'package:tulpar/core/log.dart';
 import 'package:tulpar/core/toast.dart';
@@ -30,6 +31,16 @@ class UserController extends GetxController {
       } else {
         user.value = null;
         update();
+      }
+    });
+    ever(user, (u) {
+      var orderController = Get.find<UserOrderController>();
+      if (u != null) {
+        orderController.fetchOrders(refresh: true);
+      } else {
+        orderController
+          ..orders.value = []
+          ..update();
       }
     });
     super.onInit();

@@ -4,9 +4,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:navi/navi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tulpar/controller/address.dart';
 import 'package:tulpar/controller/app.dart';
 import 'package:tulpar/controller/other/log.dart';
 import 'package:tulpar/controller/user.dart';
+import 'package:tulpar/controller/user_order.dart';
 import 'package:tulpar/core/colors.dart';
 import 'package:tulpar/translation/translation.dart';
 import 'package:tulpar/view/screen/app/start.dart';
@@ -44,6 +46,8 @@ class MyApp extends StatelessWidget {
         Get.put<LogController>(LogController(), permanent: true);
         Get.put<AppController>(AppController(), permanent: true);
         Get.put<UserController>(UserController(), permanent: true);
+        Get.put<UserOrderController>(UserOrderController(), permanent: true);
+        Get.put<AddressController>(AddressController(), permanent: true);
       }),
       routeInformationParser: _informationParser,
       routerDelegate: _routerDelegate,

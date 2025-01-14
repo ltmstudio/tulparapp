@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tulpar/controller/dio.dart';
+import 'package:tulpar/controller/user_order.dart';
 import 'package:tulpar/core/log.dart';
 import 'package:tulpar/model/app/locale.dart';
 import 'package:tulpar/model/app/status.dart';
@@ -49,7 +50,18 @@ class AppController extends GetxController {
       var appStatusResponse = appStatusModelFromJson(json.encode(resp.data));
       if (appStatusResponse.success == true) {
         Log.success('Успешно подключено');
+        await Get.find<UserOrderController>().initCachePath();
         appStatus.value = AppConnectionStatus.done;
+        if (appStatusResponse.orderTypes != null) {
+          Get.find<UserOrderController>()
+            ..orderTypes.value = appStatusResponse.orderTypes!
+            ..update();
+        }
+        if (appStatusResponse.carClasses != null) {
+          Get.find<UserOrderController>()
+            ..carClasses.value = appStatusResponse.carClasses!
+            ..update();
+        }
       } else {
         Log.error("Ошибка подключения");
         appStatus.value = AppConnectionStatus.error;
