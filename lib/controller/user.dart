@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:tulpar/controller/app.dart';
 import 'package:tulpar/controller/dio.dart';
+import 'package:tulpar/controller/driver_moderation.dart';
 import 'package:tulpar/controller/user_order.dart';
 import 'package:tulpar/core/keys.dart';
 import 'package:tulpar/core/log.dart';
@@ -26,7 +27,6 @@ class UserController extends GetxController {
     ever(token, (t) {
       if (t != null) {
         prefs?.setString(CoreCacheKeys.token, t);
-        Log.success("Вроде работает");
         fetchUser();
       } else {
         user.value = null;
@@ -37,6 +37,9 @@ class UserController extends GetxController {
       var orderController = Get.find<UserOrderController>();
       if (u != null) {
         orderController.fetchOrders(refresh: true);
+        if (Get.find<AppController>().appMode.value == AppMode.driver) {
+          Get.find<DriverModerationController>().fetchModeration();
+        }
       } else {
         orderController
           ..orders.value = []
@@ -60,7 +63,7 @@ class UserController extends GetxController {
       update();
       fetchUser();
     } else {
-      Log.warning("Токен с кеше не найден!");
+      Log.warning("Токен с кеша не найден!");
     }
   }
 

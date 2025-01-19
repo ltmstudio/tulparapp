@@ -10,6 +10,7 @@ import 'package:tulpar/controller/dio.dart';
 import 'package:tulpar/core/event.dart';
 import 'package:tulpar/core/log.dart';
 import 'package:tulpar/core/toast.dart';
+import 'package:tulpar/model/app/city.dart';
 import 'package:tulpar/model/geo/route.dart';
 import 'package:tulpar/model/order/car_class.dart';
 import 'package:tulpar/model/order/order.dart';
@@ -44,6 +45,7 @@ class UserOrderController extends GetxController {
 
   var orderTypes = Rx<List<OrderTypeModel>>([]);
   var carClasses = Rx<List<CarClassModel>>([]);
+  var cities = Rx<List<CityModel>>([]);
 
   // Заказы с пагинацией
   var orders = Rx<List<OrderModel>>([]);
@@ -188,6 +190,8 @@ class UserOrderController extends GetxController {
   var selectedCarClassId = Rx<int?>(null);
   var poinA = Rx<AddressModel?>(null);
   var pointB = Rx<AddressModel?>(null);
+  var cityA = Rx<CityModel?>(null);
+  var cityB = Rx<CityModel?>(null);
   var geoRoute = Rx<GeoRouteModel?>(null);
 
   void selectCarClass(int? id) {

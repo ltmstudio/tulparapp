@@ -8,14 +8,18 @@ class PrimaryElevatedButton extends StatelessWidget {
       {super.key,
       required this.onPressed,
       required this.text,
+      this.textColor,
       this.disabled = false,
       this.loading = false,
+      this.light = false,
       this.loadingText});
   final void Function()? onPressed;
   final String text;
+  final Color? textColor;
   final bool loading;
   final bool disabled;
   final String? loadingText;
+  final bool light;
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +29,13 @@ class PrimaryElevatedButton extends StatelessWidget {
           style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius)),
               padding: const EdgeInsets.symmetric(vertical: 15),
-              backgroundColor: CoreColors.primary,
+              backgroundColor: light ? CoreColors.white : CoreColors.primary,
               elevation: 0),
           onPressed: disabled ? () {} : onPressed,
           child: Center(
             child: Text(
               loading ? loadingText ?? '•••' : text,
-              style: CoreStyles.buttonTextOnPrimary,
+              style: CoreStyles.buttonTextOnPrimary.copyWith(color: light ? textColor ?? CoreColors.primary : null),
             ),
           )),
     );

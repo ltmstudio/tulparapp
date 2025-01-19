@@ -3,9 +3,12 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:get/get.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tulpar/controller/dio.dart';
+import 'package:tulpar/controller/driver_moderation.dart';
 import 'package:tulpar/controller/user_order.dart';
+import 'package:tulpar/core/keys.dart';
 import 'package:tulpar/core/log.dart';
 import 'package:tulpar/model/app/locale.dart';
 import 'package:tulpar/model/app/status.dart';
@@ -14,8 +17,11 @@ SharedPreferences? prefs;
 
 enum AppConnectionStatus { loading, done, error }
 
+enum AppMode { user, driver }
+
 class AppController extends GetxController {
   var appStatus = Rx<AppConnectionStatus>(AppConnectionStatus.loading);
+  var appMode = Rx<AppMode>(AppMode.user);
 
   @override
   void onInit() {
@@ -29,18 +35,20 @@ class AppController extends GetxController {
     super.onReady();
   }
 
-  void init() async {
-    prefs = await SharedPreferences.getInstance();
-    await Future.delayed(const Duration(seconds: 2));
-    appStatus.value = AppConnectionStatus.done;
-  }
-
   // App
 
   Future<void> initAppstatus({bool onlySettings = false}) async {
     if (appStatus.value != AppConnectionStatus.loading && !onlySettings) {
       appStatus.value = AppConnectionStatus.loading;
       update();
+    }
+
+    if (prefs != null) {
+      var savedMode = prefs!.getString(CoreCacheKeys.appMode);
+      if (savedMode != null) {
+        appMode.value = AppMode.values.firstWhereOrNull((mode) => mode.name == savedMode) ?? AppMode.user;
+        update();
+      }
     }
 
     var inDio = InDio();
@@ -62,6 +70,11 @@ class AppController extends GetxController {
             ..carClasses.value = appStatusResponse.carClasses!
             ..update();
         }
+        if (appStatusResponse.cities != null) {
+          Get.find<UserOrderController>()
+            ..cities.value = appStatusResponse.cities!
+            ..update();
+        }
       } else {
         Log.error("Ошибка подключения");
         appStatus.value = AppConnectionStatus.error;
@@ -76,6 +89,15 @@ class AppController extends GetxController {
   static Future<void> loadAppData() async {
     // TODO load app data
     return;
+  }
+
+  void switchAppMode(AppMode mode) {
+    appMode.value = mode;
+    update();
+    prefs?.setString(CoreCacheKeys.appMode, mode.name);
+    if (mode == AppMode.driver) {
+      Get.find<DriverModerationController>().fetchModeration();
+    }
   }
 
   // Locale
@@ -111,4 +133,11 @@ class AppController extends GetxController {
     Get.updateLocale(newLocale);
     Log.success('Locale switched to ${newLocale.languageCode}');
   }
+
+  static Map<String, String Function(Object)> validationMessages = {
+    ValidationMessage.required: (error) => 'Заполните поле',
+    ValidationMessage.email: (error) => 'Неправильный формат email',
+    ValidationMessage.mustMatch: (error) => 'Поля не совпадают',
+    ValidationMessage.minLength: (error) => 'Минимум ${(error as Map)['requiredLength']} символов'
+  };
 }

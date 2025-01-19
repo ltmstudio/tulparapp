@@ -45,6 +45,8 @@ class CoreTranslations extends Translations {
           // "Выберите время": "",
           // "Комментарий": "",
           // "Статус": "",
+          //
+          // "Аккаунт водителя": ""
           // status
           "new": "Новый",
           "closed": "Закрыт",

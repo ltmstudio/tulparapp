@@ -54,6 +54,11 @@ dependencies:
   path_provider: ^2.1.5
   numberpicker: ^2.1.2
   lottie: ^3.2.0
+  flutter_stepindicator: ^0.1.7
+  reactive_forms: ^17.0.1
+  image_picker: ^1.1.2
+  image_cropper: ^8.1.0
+  focused_menu: ^1.0.5
 
 dev_dependencies:
   flutter_test:
@@ -103,6 +108,9 @@ flutter:
           weight: 700
         - asset: fonts/Mulish-Bold.ttf
           weight: 800
+    - family:  TulparIcons
+      fonts:
+        - asset: fonts/TulparIcons.ttf
   # example:
   # fonts:
   #   - family: Schyler

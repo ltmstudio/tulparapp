@@ -25,11 +25,13 @@ import 'package:tulpar/core/log.dart';
 import 'package:tulpar/core/styles.dart';
 import 'package:tulpar/core/toast.dart';
 import 'package:tulpar/extension/string.dart';
+import 'package:tulpar/model/app/city.dart';
 import 'package:tulpar/model/order/order.dart';
 import 'package:tulpar/model/user/address.dart';
 import 'package:tulpar/view/component/order/order_type_card.dart';
 import 'package:tulpar/view/dialog/address_select.dart';
 import 'package:tulpar/view/dialog/time_picker.dart';
+import 'package:tulpar/view/screen/tabs/user/home_intercity.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -70,6 +72,9 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
       if (event.type == WidgetEvent.flushStartForm && mounted) {
         pointAController.clear();
         pointBController.clear();
+        peopleValue.value = 1;
+        priceController.clear();
+        timeController.clear();
         commentsController.clear();
       }
     });
@@ -151,6 +156,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                         child: SizedBox.expand(
                           child: Stack(
                             children: [
+                              // map
                               SizedBox.expand(
                                 child: ValueListenableBuilder(
                                     valueListenable: locationProvider.currentPosition,
@@ -350,6 +356,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                     }),
                               ),
                               if (isLocSelector) const SizedBox.expand(child: Center(child: SelectorMarkerWidget())),
+                              // loc selector
                               Align(
                                 alignment: Alignment.bottomCenter,
                                 child: AnimatedSwitcher(
@@ -429,6 +436,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                       : const SizedBox(),
                                 ),
                               ),
+                              // distance - time
                               Align(
                                 alignment: Alignment.bottomCenter,
                                 child: AnimatedSwitcher(
@@ -788,6 +796,8 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                       Padding(
                                           padding: const EdgeInsets.only(bottom: 10, top: 15),
                                           child: Text('Кол-во пассажиров'.tr,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
                                               style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))),
                                       ValueListenableBuilder(
                                           valueListenable: peopleValue,
@@ -919,7 +929,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                       ),
                     );
                   }),
-                  Center(child: Text("Межгород")),
+                  const HomeIntercityTab(),
                   Center(child: Text("Грузоперевозки межгород")),
                 ],
               ))

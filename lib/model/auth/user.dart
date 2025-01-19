@@ -8,6 +8,9 @@ UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
 
 String userModelToJson(UserModel data) => json.encode(data.toJson());
 
+// ignore: constant_identifier_names
+enum UserRole { USR, DRV }
+
 class UserModel {
   int? id;
   String? name;
@@ -19,6 +22,8 @@ class UserModel {
   dynamic emailVerifiedAt;
   DateTime? createdAt;
   DateTime? updatedAt;
+
+  bool get isDriver => role == UserRole.DRV.toString() && driverId != null;
 
   String get letter => name?.isNotEmpty == true ? name![0].toUpperCase() : '•';
 

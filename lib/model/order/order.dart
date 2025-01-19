@@ -6,6 +6,8 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:tulpar/controller/user_order.dart';
+import 'package:tulpar/model/app/city.dart';
+import 'package:tulpar/model/order/car_class.dart';
 
 List<OrderModel> orderModelFromJson(String str) =>
     List<OrderModel>.from(json.decode(str).map((x) => OrderModel.fromJson(x)));
@@ -30,6 +32,9 @@ class OrderModel {
   String? geoB;
   int? cityAId;
   int? cityBId;
+  CityModel? cityA;
+  CityModel? cityB;
+  CarClassModel? carClass;
   DateTime? createdAt;
   DateTime? updatedAt;
   String? status;
@@ -57,6 +62,9 @@ class OrderModel {
     this.geoB,
     this.cityAId,
     this.cityBId,
+    this.cityA,
+    this.cityB,
+    this.carClass,
     this.createdAt,
     this.updatedAt,
     this.status,
@@ -80,6 +88,9 @@ class OrderModel {
     String? geoB,
     int? cityAId,
     int? cityBId,
+    CityModel? cityA,
+    CityModel? cityB,
+    CarClassModel? carClass,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? status,
@@ -102,6 +113,9 @@ class OrderModel {
         geoB: geoB ?? this.geoB,
         cityAId: cityAId ?? this.cityAId,
         cityBId: cityBId ?? this.cityBId,
+        cityA: cityA ?? this.cityA,
+        cityB: cityB ?? this.cityB,
+        carClass: carClass ?? this.carClass,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         status: status ?? this.status,
@@ -125,6 +139,9 @@ class OrderModel {
         geoB: json["geo_b"],
         cityAId: json["city_a_id"],
         cityBId: json["city_b_id"],
+        cityA: json["city_a"] == null ? null : CityModel.fromJson(json["city_a"]),
+        cityB: json["city_b"] == null ? null : CityModel.fromJson(json["city_b"]),
+        carClass: json["class"] == null ? null : CarClassModel.fromJson(json["class"]),
         createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
         updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
         status: json["status"],
@@ -148,6 +165,9 @@ class OrderModel {
         "geo_b": geoB,
         "city_a_id": cityAId,
         "city_b_id": cityBId,
+        "city_a": cityA?.toJson(),
+        "city_b": cityB?.toJson(),
+        "class": carClass?.toJson(),
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "status": status,

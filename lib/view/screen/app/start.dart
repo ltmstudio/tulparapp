@@ -70,7 +70,13 @@ class _TabsStartScreenState extends State<TabsStartScreen> {
   var pageController = PageController(initialPage: 1);
 
   var currentIndex = ValueNotifier<int>(1);
+
   void onTap(int index) {
+    var appController = Get.find<AppController>();
+    var tabData = tabUserData;
+    if (appController.appMode.value == AppMode.driver) {
+      tabData = tabDriverData;
+    }
     if (currentIndex.value == index) {
       if (tabData[index].navigatorKey.currentState?.canPop() ?? false) {
         tabData[index].navigatorKey.currentState?.popUntil((route) => route.isFirst);
@@ -90,6 +96,11 @@ class _TabsStartScreenState extends State<TabsStartScreen> {
       canPop: false,
       onPopInvoked: (_) async {
         var pop = false;
+        var appController = Get.find<AppController>();
+        var tabData = tabUserData;
+        if (appController.appMode.value == AppMode.driver) {
+          tabData = tabDriverData;
+        }
         var currentState = tabData[currentIndex.value].navigatorKey.currentState;
         if (currentState?.canPop() ?? false) {
           currentState?.pop();
@@ -99,30 +110,36 @@ class _TabsStartScreenState extends State<TabsStartScreen> {
           Navigator.of(context).pop();
         }
       },
-      child: Scaffold(
-        extendBody: false,
-        body: Column(
-          children: [
-            Expanded(
-              child: PageView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: pageController,
-                children: tabData.mapIndexed((i, e) => TabBridge(active: i == currentIndex.value, tab: e)).toList(),
+      child: GetBuilder<AppController>(builder: (appController) {
+        var tabData = tabUserData;
+        if (appController.appMode.value == AppMode.driver) {
+          tabData = tabDriverData;
+        }
+        return Scaffold(
+          extendBody: false,
+          body: Column(
+            children: [
+              Expanded(
+                child: PageView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  controller: pageController,
+                  children: tabData.mapIndexed((i, e) => TabBridge(active: i == currentIndex.value, tab: e)).toList(),
+                ),
               ),
-            ),
-          ],
-        ),
-        bottomNavigationBar: ClipRRect(
-          child: ValueListenableBuilder(
-              valueListenable: currentIndex,
-              builder: (_, c, __) {
-                return BottomNavigationBarWidget(
-                  currentIndex: c,
-                  onTap: onTap,
-                );
-              }),
-        ),
-      ),
+            ],
+          ),
+          bottomNavigationBar: ClipRRect(
+            child: ValueListenableBuilder(
+                valueListenable: currentIndex,
+                builder: (_, c, __) {
+                  return BottomNavigationBarWidget(
+                    currentIndex: c,
+                    onTap: onTap,
+                  );
+                }),
+          ),
+        );
+      }),
     );
   }
 }

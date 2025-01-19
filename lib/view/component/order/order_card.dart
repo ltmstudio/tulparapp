@@ -50,70 +50,77 @@ class OrderCard extends StatelessWidget {
                 ),
             ],
           ),
-          Divider(),
           // const SizedBox(height: 15),
-          Row(
-            children: [
-              Icon(Icons.place_outlined, size: 26, color: CoreColors.primary),
-              const SizedBox(width: 5),
-              Flexible(
-                child: Text(
-                  order.pointA ?? '--',
-                  style: TextStyle(fontSize: 14, color: CoreColors.black),
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 13.0),
-            child: CustomPaint(size: const Size(1, 15), painter: DashedLineVerticalPainter()),
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(Icons.place_outlined, size: 26, color: CoreColors.primary),
-              const SizedBox(width: 5),
-              Flexible(
-                  child: Text(
-                order.pointB ?? '--',
-                softWrap: true,
-                style: TextStyle(fontSize: 14, color: CoreColors.black),
-              )),
-            ],
-          ),
-          Divider(),
-          Row(
-            children: [
-              if (order.status != null)
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Статус'.tr,
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+          if (order.typeId == 1 && order.pointA != null && order.pointB != null)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Divider(),
+                Row(
+                  children: [
+                    Icon(Icons.place_outlined, size: 26, color: CoreColors.primary),
+                    const SizedBox(width: 5),
+                    Flexible(
+                      child: Text(
+                        order.pointA ?? '--',
+                        style: TextStyle(fontSize: 14, color: CoreColors.black),
                       ),
-                      Text(
-                        order.status?.tr ?? '--',
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: CoreColors.primary),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 13.0),
+                  child: CustomPaint(size: const Size(1, 15), painter: DashedLineVerticalPainter()),
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(Icons.place_outlined, size: 26, color: CoreColors.primary),
+                    const SizedBox(width: 5),
+                    Flexible(
+                        child: Text(
+                      order.pointB ?? '--',
+                      softWrap: true,
+                      style: TextStyle(fontSize: 14, color: CoreColors.black),
+                    )),
+                  ],
+                ),
+              ],
+            ),
+          if (order.typeId == 2 && order.cityA != null && order.cityB != null)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Divider(),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      const WidgetSpan(
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 10),
+                          child: Icon(Icons.route, size: 16, color: CoreColors.primary),
+                        ),
+                      ),
+                      TextSpan(
+                        text: order.cityA?.name ?? '--',
+                        style: const TextStyle(fontSize: 14, color: CoreColors.black),
+                      ),
+                      const WidgetSpan(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5),
+                          child: Icon(Icons.keyboard_double_arrow_right_sharp, size: 16, color: CoreColors.primary),
+                        ),
+                      ),
+                      TextSpan(
+                        text: order.cityB?.name ?? '--',
+                        style: const TextStyle(fontSize: 14, color: CoreColors.black),
                       ),
                     ],
                   ),
                 ),
-              // Expanded(
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.end,
-              //     children: [
-              //       Text('status'.tr, style: TextStyle(fontSize: 12, color: CoreColors.grey)),
-              //       Text('${order.status?.tr}',
-              //           style: CoreStyles.mediumFrtn
-              //               .copyWith(color: isDarkMode ? CoreColors.white : CoreColors.primary)),
-              //     ],
-              //   ),
-              // )
-            ],
-          ),
-          const SizedBox(height: 15),
+              ],
+            ),
+          Divider(),
           Row(
             children: [
               if (order.typeId != null)
@@ -132,19 +139,24 @@ class OrderCard extends StatelessWidget {
                     ],
                   ),
                 ),
-              // Expanded(
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.end,
-              //     children: [
-              //       Text('status'.tr, style: TextStyle(fontSize: 12, color: CoreColors.grey)),
-              //       Text('${order.status?.tr}',
-              //           style: CoreStyles.mediumFrtn
-              //               .copyWith(color: isDarkMode ? CoreColors.white : CoreColors.primary)),
-              //     ],
-              //   ),
-              // )
+              if (order.status != null)
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Статус'.tr,
+                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                      ),
+                      Text(
+                        order.status?.tr ?? '--',
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: CoreColors.primary),
+                      ),
+                    ],
+                  ),
+                ),
             ],
-          )
+          ),
         ],
       ),
     );
