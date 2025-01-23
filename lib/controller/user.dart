@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:tulpar/controller/app.dart';
 import 'package:tulpar/controller/dio.dart';
+import 'package:tulpar/controller/driver.dart';
 import 'package:tulpar/controller/driver_moderation.dart';
 import 'package:tulpar/controller/user_order.dart';
 import 'package:tulpar/core/keys.dart';
@@ -37,7 +38,8 @@ class UserController extends GetxController {
       var orderController = Get.find<UserOrderController>();
       if (u != null) {
         orderController.fetchOrders(refresh: true);
-        if (Get.find<AppController>().appMode.value == AppMode.driver) {
+        if (Get.find<AppController>().appMode.value == AppMode.driver && u.driverId != null) {
+          Get.find<DriverController>().fetchProfile();
           Get.find<DriverModerationController>().fetchModeration();
         }
       } else {

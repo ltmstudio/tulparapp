@@ -7,8 +7,10 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tulpar/controller/address.dart';
 import 'package:tulpar/controller/app.dart';
+import 'package:tulpar/controller/driver.dart';
 import 'package:tulpar/controller/driver_moderation.dart';
 import 'package:tulpar/controller/driver_order.dart';
+import 'package:tulpar/controller/driver_shift.dart';
 import 'package:tulpar/controller/other/log.dart';
 import 'package:tulpar/controller/user.dart';
 import 'package:tulpar/controller/user_order.dart';
@@ -79,8 +81,10 @@ class MyApp extends StatelessWidget {
           Get.put<UserController>(UserController(), permanent: true);
           Get.put<UserOrderController>(UserOrderController(), permanent: true);
           Get.put<AddressController>(AddressController(), permanent: true);
+          Get.put<DriverController>(DriverController(), permanent: true);
           Get.put<DriverModerationController>(DriverModerationController(), permanent: true);
           Get.put<DriverOrderController>(DriverOrderController(), permanent: true);
+          Get.put<DriverShiftController>(DriverShiftController(), permanent: true);
         }),
         routeInformationParser: _informationParser,
         routerDelegate: _routerDelegate,

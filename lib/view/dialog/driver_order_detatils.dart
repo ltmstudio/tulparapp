@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tulpar/controller/driver_order.dart';
 import 'package:tulpar/core/colors.dart';
 import 'package:tulpar/core/decoration.dart';
+import 'package:tulpar/core/log.dart';
 import 'package:tulpar/model/order/order.dart';
 import 'package:tulpar/view/component/order/order_card.dart';
 
-class DriverOrderDetailsDialog extends StatelessWidget {
+class DriverOrderDetailsDialog extends StatefulWidget {
   const DriverOrderDetailsDialog({
     super.key,
     required this.order,
@@ -14,19 +16,35 @@ class DriverOrderDetailsDialog extends StatelessWidget {
   final OrderModel order;
 
   @override
+  State<DriverOrderDetailsDialog> createState() => _DriverOrderDetailsDialogState();
+}
+
+class _DriverOrderDetailsDialogState extends State<DriverOrderDetailsDialog> {
+  @override
+  void dispose() {
+    Log.error('Dispose DriverOrderDetailsDialog');
+    Get.find<DriverOrderController>().removeSelectedOrder();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    double w = MediaQuery.of(context).size.width;
+    double h = MediaQuery.of(context).size.height;
+
     return Container(
+      height: h * 0.5,
       padding: const EdgeInsets.all(CoreDecoration.primaryPadding),
       child: Column(
         children: [
           Text(
-            'Заказ №${order.id}',
+            'Заказ №${widget.order.id}',
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: CoreColors.black),
           ),
           const Divider(height: 25),
           Row(
             children: [
-              if (order.typeId != null)
+              if (widget.order.typeId != null)
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -36,13 +54,13 @@ class DriverOrderDetailsDialog extends StatelessWidget {
                         style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
                       ),
                       Text(
-                        order.type ?? order.typeId.toString(),
+                        widget.order.type ?? widget.order.typeId.toString(),
                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: CoreColors.primary),
                       ),
                     ],
                   ),
                 ),
-              if (order.carClass != null)
+              if (widget.order.carClass != null)
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,13 +70,13 @@ class DriverOrderDetailsDialog extends StatelessWidget {
                         style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
                       ),
                       Text(
-                        order.carClass?.name ?? order.classId.toString(),
+                        widget.order.carClass?.name ?? widget.order.classId.toString(),
                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: CoreColors.primary),
                       ),
                     ],
                   ),
                 ),
-              if (order.people != null)
+              if (widget.order.people != null)
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -68,7 +86,7 @@ class DriverOrderDetailsDialog extends StatelessWidget {
                         style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
                       ),
                       Text(
-                        "${order.people}",
+                        "${widget.order.people}",
                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: CoreColors.primary),
                       ),
                     ],
@@ -76,7 +94,7 @@ class DriverOrderDetailsDialog extends StatelessWidget {
                 ),
             ],
           ),
-          if (order.typeId == 1 && order.pointA != null && order.pointB != null)
+          if (widget.order.typeId == 1 && widget.order.pointA != null && widget.order.pointB != null)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -87,7 +105,7 @@ class DriverOrderDetailsDialog extends StatelessWidget {
                     const SizedBox(width: 5),
                     Flexible(
                       child: Text(
-                        order.pointA ?? '--',
+                        widget.order.pointA ?? '--',
                         style: const TextStyle(fontSize: 14, color: CoreColors.black, fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -104,7 +122,7 @@ class DriverOrderDetailsDialog extends StatelessWidget {
                     const SizedBox(width: 5),
                     Flexible(
                         child: Text(
-                      order.pointB ?? '--',
+                      widget.order.pointB ?? '--',
                       softWrap: true,
                       style: const TextStyle(fontSize: 14, color: CoreColors.black, fontWeight: FontWeight.bold),
                     )),
@@ -112,7 +130,7 @@ class DriverOrderDetailsDialog extends StatelessWidget {
                 ),
               ],
             ),
-          if (order.typeId == 2 && order.cityA != null && order.cityB != null)
+          if (widget.order.typeId == 2 && widget.order.cityA != null && widget.order.cityB != null)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -127,7 +145,7 @@ class DriverOrderDetailsDialog extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                        text: order.cityA?.name ?? '--',
+                        text: widget.order.cityA?.name ?? '--',
                         style: const TextStyle(fontSize: 14, color: CoreColors.black, fontWeight: FontWeight.bold),
                       ),
                       const WidgetSpan(
@@ -137,7 +155,7 @@ class DriverOrderDetailsDialog extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                        text: order.cityB?.name ?? '--',
+                        text: widget.order.cityB?.name ?? '--',
                         style: const TextStyle(fontSize: 14, color: CoreColors.black, fontWeight: FontWeight.bold),
                       ),
                     ],
@@ -149,7 +167,7 @@ class DriverOrderDetailsDialog extends StatelessWidget {
           const SizedBox(height: 10),
           Row(
             children: [
-              if (order.userCost != null)
+              if (widget.order.userCost != null)
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,13 +177,13 @@ class DriverOrderDetailsDialog extends StatelessWidget {
                         style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
                       ),
                       Text(
-                        "${order.userCost} ₸",
+                        "${widget.order.userCost} ₸",
                         style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w600, color: CoreColors.primary),
                       ),
                     ],
                   ),
                 ),
-              if (order.userTime != null)
+              if (widget.order.userTime != null)
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,7 +193,7 @@ class DriverOrderDetailsDialog extends StatelessWidget {
                         style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
                       ),
                       Text(
-                        order.userTime ?? '--',
+                        widget.order.userTime ?? '--',
                         style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w600, color: CoreColors.primary),
                       ),
                     ],
@@ -183,7 +201,7 @@ class DriverOrderDetailsDialog extends StatelessWidget {
                 )
             ],
           ),
-          if (order.userComment != null)
+          if (widget.order.userComment != null)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -193,7 +211,7 @@ class DriverOrderDetailsDialog extends StatelessWidget {
                   style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  order.userComment ?? '--',
+                  widget.order.userComment ?? '--',
                   style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
               ],

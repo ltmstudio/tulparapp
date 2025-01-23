@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:tulpar/controller/driver_order.dart';
 import 'package:tulpar/core/colors.dart';
 import 'package:tulpar/core/decoration.dart';
+import 'package:tulpar/extension/string.dart';
 import 'package:tulpar/model/order/order.dart';
 import 'package:tulpar/view/dialog/driver_order_detatils.dart';
 
@@ -15,7 +18,12 @@ class DriverOrderCard extends StatelessWidget {
     double w = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
-        showModalBottomSheet(context: context, builder: (context) => DriverOrderDetailsDialog(order: order));
+        if (order.geoA?.toLatLng != null && order.geoB?.toLatLng != null) {
+          Get.find<DriverOrderController>().setSelectedOrder(order);
+          showBottomSheet(context: context, builder: (context) => DriverOrderDetailsDialog(order: order));
+        } else {
+          showModalBottomSheet(context: context, builder: (context) => DriverOrderDetailsDialog(order: order));
+        }
       },
       child: Container(
         width: w,
@@ -36,13 +44,30 @@ class DriverOrderCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Row(
+              children: [
+                Text(
+                  "${order.type ?? ""} ${order.id != null ? "#${order.id}" : ""}",
+                  style: const TextStyle(fontSize: 16, color: CoreColors.primary, fontWeight: FontWeight.bold),
+                ),
+                const Spacer(),
+                if (order.createdAt != null)
+                  GetBuilder<DriverOrderController>(builder: (_) {
+                    return Text(
+                      " ${order.timeAgo ?? ""}",
+                      style: TextStyle(fontSize: 12, color: CoreColors.black.withOpacity(0.6)),
+                    );
+                  }),
+              ],
+            ),
+            Divider(),
             if (order.typeId == 1 && order.pointA != null && order.pointB != null)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.place_outlined, size: 26, color: CoreColors.primary),
+                      const Icon(Icons.place_outlined, size: 26, color: CoreColors.primary),
                       const SizedBox(width: 5),
                       Flexible(
                         child: Text(

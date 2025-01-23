@@ -44,6 +44,17 @@ class OrderModel {
     return ordertypes.firstWhereOrNull((o) => o.id == typeId)?.name;
   }
 
+  // сколько минут назад
+  String? get timeAgo {
+    if (createdAt == null) return null;
+    var diff = DateTime.now().difference(createdAt!);
+    if (diff.inMinutes < 1) return 'только что';
+    if (diff.inMinutes < 60) return '${diff.inMinutes} мин. назад';
+    if (diff.inHours < 24) return '${diff.inHours} ч. назад';
+    if (diff.inDays < 30) return '${diff.inDays} д. назад';
+    return 'больше месяца назад';
+  }
+
   OrderModel({
     this.id,
     this.phone,
