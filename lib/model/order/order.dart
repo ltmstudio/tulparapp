@@ -34,12 +34,14 @@ class OrderModel {
   int? cityBId;
   CityModel? cityA;
   CityModel? cityB;
+  bool? isDelivery;
   CarClassModel? carClass;
   DateTime? createdAt;
   DateTime? updatedAt;
   String? status;
 
   String? get type {
+    if (isDelivery == true) return 'Доставка';
     var ordertypes = Get.find<UserOrderController>().orderTypes.value;
     return ordertypes.firstWhereOrNull((o) => o.id == typeId)?.name;
   }
@@ -75,6 +77,7 @@ class OrderModel {
     this.cityBId,
     this.cityA,
     this.cityB,
+    this.isDelivery,
     this.carClass,
     this.createdAt,
     this.updatedAt,
@@ -101,6 +104,7 @@ class OrderModel {
     int? cityBId,
     CityModel? cityA,
     CityModel? cityB,
+    bool? isDelivery,
     CarClassModel? carClass,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -126,6 +130,7 @@ class OrderModel {
         cityBId: cityBId ?? this.cityBId,
         cityA: cityA ?? this.cityA,
         cityB: cityB ?? this.cityB,
+        isDelivery: isDelivery ?? this.isDelivery,
         carClass: carClass ?? this.carClass,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
@@ -152,6 +157,7 @@ class OrderModel {
         cityBId: json["city_b_id"],
         cityA: json["city_a"] == null ? null : CityModel.fromJson(json["city_a"]),
         cityB: json["city_b"] == null ? null : CityModel.fromJson(json["city_b"]),
+        isDelivery: json["is_delivery"]?.toString() == '1' || json["is_delivery"]?.toString() == 'true' ? true : false,
         carClass: json["class"] == null ? null : CarClassModel.fromJson(json["class"]),
         createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
         updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
@@ -178,6 +184,7 @@ class OrderModel {
         "city_b_id": cityBId,
         "city_a": cityA?.toJson(),
         "city_b": cityB?.toJson(),
+        "is_delivery": isDelivery,
         "class": carClass?.toJson(),
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
@@ -197,7 +204,8 @@ class OrderModel {
       "geo_a": geoA,
       "geo_b": geoB,
       "city_a_id": cityAId,
-      "city_b_id": cityBId
+      "city_b_id": cityBId,
+      "is_delivery": isDelivery,
     };
     form.removeWhere((key, value) => value == null);
     return form;

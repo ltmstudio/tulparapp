@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tulpar/controller/dio.dart';
+import 'package:tulpar/controller/stream.dart';
 import 'package:tulpar/core/event.dart';
 import 'package:tulpar/core/log.dart';
 import 'package:tulpar/core/toast.dart';
@@ -214,6 +215,7 @@ class UserOrderController extends GetxController {
         newOrderExpanded.value = false;
         clearAllSelectedForm();
         update();
+        Get.find<WidgetStreamController>().switchTab(0);
       } else {
         Log.error("Ошибка создания заказа: ${resp.statusMessage}");
       }

@@ -5,6 +5,7 @@ import 'package:tulpar/controller/driver_shift.dart';
 import 'package:tulpar/core/colors.dart';
 import 'package:tulpar/core/decoration.dart';
 import 'package:tulpar/core/icons.dart';
+import 'package:tulpar/view/dialog/pay.dart';
 import 'package:tulpar/view/widget/elevated_button.dart';
 
 class DriverShiftScreen extends StatefulWidget {
@@ -203,7 +204,12 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                                                       Text("${driver?.level?.name}"),
                                                     ],
                                                   ),
-                                            trailing: TextButton(onPressed: () {}, child: Text("Пополнить")),
+                                            trailing: TextButton(
+                                                onPressed: () {
+                                                  showModalBottomSheet(
+                                                      context: context, builder: (context) => PayDialog());
+                                                },
+                                                child: Text("Пополнить")),
                                           );
                                         }),
                                         Divider(),
@@ -236,6 +242,7 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                                           children: [
                                             TextButton(
                                                 onPressed: () {
+                                                  Get.find<DriverController>().fetchProfile();
                                                   shiftController.fetchAvailableShifts();
                                                 },
                                                 child: Text("Обновить")),

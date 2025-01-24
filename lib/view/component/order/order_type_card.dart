@@ -7,9 +7,11 @@ import 'package:tulpar/model/order/car_class.dart';
 class RideTypeCard extends StatelessWidget {
   final CarClassModel carClass;
   final bool isActive;
+  final String? asset;
   const RideTypeCard({
     super.key,
     required this.carClass,
+    this.asset,
     this.isActive = false,
   });
 
@@ -42,7 +44,14 @@ class RideTypeCard extends StatelessWidget {
           const SizedBox(
             height: 15,
           ),
-          if (carClass.image != null)
+          if (asset != null)
+            Expanded(
+              child: Image.asset(
+                asset!,
+                fit: BoxFit.contain,
+              ),
+            )
+          else if (carClass.image != null)
             Expanded(
               child: CachedNetworkImage(
                 imageUrl: "${CoreEnvironment.appUrl}/${carClass.image!.replaceFirst('public', 'storage')}",

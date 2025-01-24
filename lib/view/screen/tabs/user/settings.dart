@@ -7,6 +7,7 @@ import 'package:tulpar/core/colors.dart';
 import 'package:tulpar/core/icons.dart';
 import 'package:tulpar/core/styles.dart';
 import 'package:tulpar/view/dialog/lang.dart';
+import 'package:tulpar/view/screen/driver/info/info.dart';
 
 class SettingsTab extends StatefulWidget {
   const SettingsTab({super.key});
@@ -64,6 +65,16 @@ class _SettingsTabState extends State<SettingsTab> {
                 },
               );
             }),
+            ListTile(
+              leading: const Icon(Icons.info_outline_rounded),
+              title: const Text("Справочник и FAQ"),
+              trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const InfoAndFaqScreen()),
+                );
+              },
+            ),
             GetBuilder<AppController>(builder: (appController) {
               var appMode = appController.appMode.value;
               return ListTile(

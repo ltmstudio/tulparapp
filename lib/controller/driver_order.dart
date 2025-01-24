@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tulpar/controller/app.dart';
 import 'package:tulpar/controller/dio.dart';
+import 'package:tulpar/controller/stream.dart';
 import 'package:tulpar/controller/user_order.dart';
 import 'package:tulpar/core/log.dart';
+import 'package:tulpar/core/toast.dart';
 import 'package:tulpar/extension/string.dart';
 import 'package:tulpar/model/geo/route.dart';
 import 'package:tulpar/model/order/order.dart';
@@ -18,6 +20,15 @@ import 'package:tulpar/view/component/order/order_card_driver.dart';
 class DriverOrderController extends GetxController {
   var orders = Rx<List<OrderModel>>([]);
   var ordersLoading = Rx<bool>(false);
+
+  var expandedOrders = Rx<List<OrderModel>>([]);
+  var expandedOrderLoading = Rx<bool>(false);
+
+  var myOrders = Rx<List<OrderModel>>([]);
+  var myOrdersLoading = Rx<bool>(false);
+
+  var historyOrders = Rx<List<OrderModel>>([]);
+  var historyOrdersLoading = Rx<bool>(false);
 
   var selectedOrderOnMap = Rx<OrderModel?>(null);
   var isRouteLoading = Rx<bool>(false);
@@ -67,6 +78,189 @@ class DriverOrderController extends GetxController {
       Log.error("Ошибка при получении списка заказов: $e");
     }
     ordersLoading.value = false;
+    update();
+  }
+
+  Future<String?> fetchOrderDetails(int orderId) async {
+    var inDio = InDio();
+    var dio = inDio.instance;
+    expandedOrderLoading.value = true;
+    update();
+    try {
+      var resp = await dio.get("/driver/orders/$orderId");
+      var expandedOrder = OrderModel.fromJson(json.decode(json.encode(resp.data)));
+      expandedOrders.value.add(expandedOrder);
+      expandedOrderLoading.value = false;
+      update();
+      Log.success("Получены детали заказа");
+      return null;
+    } on DioException catch (e) {
+      if (e.response?.data != null && e.response?.data['message'] != null) {
+        return e.response?.data['message'];
+      } else {
+        CoreToast.showToast("Ошибка запроса");
+      }
+      Log.error("Ошибка при получении деталей заказа: $e");
+    } catch (e) {
+      CoreToast.showToast("Ошибка запроса");
+      Log.error("Ошибка при получении деталей заказа: $e");
+    } finally {
+      expandedOrderLoading.value = false;
+      update();
+    }
+    return null;
+  }
+
+  Future<String?> takeOrderRequest(int orderId) async {
+    var inDio = InDio();
+    var dio = inDio.instance;
+    expandedOrderLoading.value = true;
+    update();
+    try {
+      var resp = await dio.post("/driver/orders/$orderId");
+      if (resp.statusCode == 200 && resp.data != null && resp.data['success'] == true) {
+        Log.success("Заказ успешно взят");
+        expandedOrderLoading.value = false;
+        update();
+        Get.find<WidgetStreamController>().switchTab(0);
+        fetchMyOrders();
+        return null;
+      }
+      if (resp.data != null && resp.data['message'] != null) {
+        expandedOrderLoading.value = false;
+        update();
+        return resp.data['message'];
+      } else {
+        CoreToast.showToast("Ошибка запроса");
+        return null;
+      }
+    } on DioException catch (e) {
+      if (e.response?.data != null && e.response?.data['message'] != null) {
+        return e.response?.data['message'];
+      } else {
+        CoreToast.showToast("Ошибка запроса");
+      }
+      Log.error("Ошибка оформления заказа : $e");
+    } catch (e) {
+      CoreToast.showToast("Ошибка запроса");
+      Log.error("Ошибка при получении деталей заказа: $e");
+    } finally {
+      expandedOrderLoading.value = false;
+      update();
+    }
+    return null;
+  }
+
+  Future<String?> closeOrderRequest(int orderId) async {
+    var inDio = InDio();
+    var dio = inDio.instance;
+    expandedOrderLoading.value = true;
+    update();
+    try {
+      var resp = await dio.post("/driver/order/$orderId/close");
+      if (resp.statusCode == 200 && resp.data != null && resp.data['success'] == true) {
+        Log.success("Заказ успешно закрыт");
+        expandedOrderLoading.value = false;
+        update();
+        fetchMyOrders();
+        fetchHistoryOrders();
+        return null;
+      }
+      if (resp.data != null && resp.data['message'] != null) {
+        expandedOrderLoading.value = false;
+        update();
+        return resp.data['message'];
+      } else {
+        CoreToast.showToast("Ошибка запроса");
+        return null;
+      }
+    } on DioException catch (e) {
+      if (e.response?.data != null && e.response?.data['message'] != null) {
+        return e.response?.data['message'];
+      } else {
+        CoreToast.showToast("Ошибка запроса");
+      }
+      Log.error("Ошибка оформления заказа : $e");
+    } catch (e) {
+      CoreToast.showToast("Ошибка запроса");
+      Log.error("Ошибка при получении деталей заказа: $e");
+    } finally {
+      expandedOrderLoading.value = false;
+      update();
+    }
+    return null;
+  }
+
+  Future<String?> cancelOrderRequest(int orderId) async {
+    var inDio = InDio();
+    var dio = inDio.instance;
+    expandedOrderLoading.value = true;
+    update();
+    try {
+      var resp = await dio.post("/driver/order/$orderId/cancel");
+      if (resp.statusCode == 200 && resp.data != null && resp.data['success'] == true) {
+        Log.success("Заказ успешно отменен");
+        expandedOrderLoading.value = false;
+        update();
+        fetchMyOrders();
+        return null;
+      }
+      if (resp.data != null && resp.data['message'] != null) {
+        expandedOrderLoading.value = false;
+        update();
+        return resp.data['message'];
+      } else {
+        CoreToast.showToast("Ошибка запроса");
+        return null;
+      }
+    } on DioException catch (e) {
+      if (e.response?.data != null && e.response?.data['message'] != null) {
+        return e.response?.data['message'];
+      } else {
+        CoreToast.showToast("Ошибка запроса");
+      }
+      Log.error("Ошибка оформления заказа : $e");
+    } catch (e) {
+      CoreToast.showToast("Ошибка запроса");
+      Log.error("Ошибка при получении деталей заказа: $e");
+    } finally {
+      expandedOrderLoading.value = false;
+      update();
+    }
+    return null;
+  }
+
+  Future<void> fetchMyOrders() async {
+    var inDio = InDio();
+    var dio = inDio.instance;
+    myOrdersLoading.value = true;
+    update();
+    try {
+      var resp = await dio.get("/driver/my_orders");
+      var newOrders = orderModelFromJson(json.encode(resp.data));
+      myOrders.value = newOrders;
+      Log.success("Получен список из ${myOrders.value.length} заказов");
+    } catch (e) {
+      Log.error("Ошибка при получении списка заказов: $e");
+    }
+    myOrdersLoading.value = false;
+    update();
+  }
+
+  Future<void> fetchHistoryOrders() async {
+    var inDio = InDio();
+    var dio = inDio.instance;
+    historyOrdersLoading.value = true;
+    update();
+    try {
+      var resp = await dio.get("/driver/history_orders");
+      var newOrders = orderModelFromJson(json.encode(resp.data));
+      historyOrders.value = newOrders;
+      Log.success("Получен список из ${myOrders.value.length} заказов");
+    } catch (e) {
+      Log.error("Ошибка при получении списка заказов: $e");
+    }
+    historyOrdersLoading.value = false;
     update();
   }
 

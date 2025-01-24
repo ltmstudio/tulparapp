@@ -74,10 +74,17 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
     double h = MediaQuery.of(context).size.height;
     return GetBuilder<DriverOrderController>(builder: (orderController) {
       var orders = orderController.orders.value;
+      var expandedOrders = orderController.expandedOrders.value;
       var ordersLoading = orderController.ordersLoading.value;
 
       var geoRoute = orderController.geoRoute.value;
       var selectedOrder = orderController.selectedOrderOnMap.value;
+      if (selectedOrder != null) {
+        var expanded = expandedOrders.firstWhereOrNull((element) => element.id == selectedOrder!.id);
+        if (expanded != null) {
+          selectedOrder = expanded;
+        }
+      }
 
       var selectedSortingValue = orderController.selectedSortingValue.value;
       var selectedOrderType = orderController.selectedOrderType.value;
@@ -142,7 +149,11 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
           children: [
             AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
-                height: selectedOrder != null ? h * 0.4 : 0,
+                height: selectedOrder != null &&
+                        selectedOrder.geoA?.toLatLng != null &&
+                        selectedOrder.geoB?.toLatLng != null
+                    ? h * 0.4
+                    : 0,
                 color: Colors.red.withOpacity(0.5),
                 child: SizedBox.expand(
                   child: Stack(

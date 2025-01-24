@@ -12,6 +12,8 @@ import 'package:tulpar/controller/driver_moderation.dart';
 import 'package:tulpar/controller/driver_order.dart';
 import 'package:tulpar/controller/driver_shift.dart';
 import 'package:tulpar/controller/other/log.dart';
+import 'package:tulpar/controller/pay.dart';
+import 'package:tulpar/controller/stream.dart';
 import 'package:tulpar/controller/user.dart';
 import 'package:tulpar/controller/user_order.dart';
 import 'package:tulpar/core/colors.dart';
@@ -77,6 +79,7 @@ class MyApp extends StatelessWidget {
         ),
         initialBinding: BindingsBuilder(() {
           Get.put<LogController>(LogController(), permanent: true);
+          Get.put<WidgetStreamController>(WidgetStreamController(), permanent: true);
           Get.put<AppController>(AppController(), permanent: true);
           Get.put<UserController>(UserController(), permanent: true);
           Get.put<UserOrderController>(UserOrderController(), permanent: true);
@@ -85,6 +88,7 @@ class MyApp extends StatelessWidget {
           Get.put<DriverModerationController>(DriverModerationController(), permanent: true);
           Get.put<DriverOrderController>(DriverOrderController(), permanent: true);
           Get.put<DriverShiftController>(DriverShiftController(), permanent: true);
+          Get.put<PayController>(PayController(), permanent: true);
         }),
         routeInformationParser: _informationParser,
         routerDelegate: _routerDelegate,

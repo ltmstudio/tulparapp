@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:navi/navi.dart';
 import 'package:collection/collection.dart';
 import 'package:tulpar/controller/app.dart';
+import 'package:tulpar/controller/stream.dart';
 import 'package:tulpar/controller/user.dart';
 import 'package:tulpar/core/animation.dart';
 import 'package:tulpar/core/colors.dart';
@@ -61,8 +64,22 @@ class TabsStartScreen extends StatefulWidget {
 }
 
 class _TabsStartScreenState extends State<TabsStartScreen> {
+  StreamSubscription<String>? screenSubscrition;
+
   @override
   void initState() {
+    var widgetStreamController = Get.find<WidgetStreamController>();
+
+    screenSubscrition = widgetStreamController.widgetStream.listen((event) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (event.toString().contains('switch-tab')) {
+          var index = int.tryParse(event.toString().split(':').last);
+          if (index != null) {
+            onTap(index);
+          }
+        }
+      });
+    });
     AppController.loadAppData();
     super.initState();
   }

@@ -16,6 +16,8 @@ import 'package:tulpar/view/component/moderation/approved.dart';
 import 'package:tulpar/view/component/moderation/moderation.dart';
 import 'package:tulpar/view/component/moderation/preparation.dart';
 import 'package:tulpar/view/component/moderation/rejected.dart';
+import 'package:tulpar/view/dialog/pay.dart';
+import 'package:tulpar/view/screen/driver/info/info.dart';
 import 'package:tulpar/view/screen/driver/shift.dart';
 
 class DriverAccountTab extends StatefulWidget {
@@ -176,13 +178,45 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                     case DriverModerationStatus.rejected:
                       return const ModerationRejectedCard();
                     case DriverModerationStatus.approved:
-                      return const ModerationApprovedCard();
+                      return ModerationApprovedCard(
+                        child: ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          title: Text(
+                            "Текущий баланс: ${profile?.balance} ₸",
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: profile?.level == null
+                              ? null
+                              : Row(
+                                  children: [
+                                    Icon(Icons.star_rounded,
+                                        color: profile?.level?.colorValue ?? CoreColors.grey, size: 20),
+                                    Text("${profile?.level?.name}"),
+                                  ],
+                                ),
+                          trailing: TextButton(
+                              onPressed: () {
+                                showModalBottomSheet(context: context, builder: (context) => PayDialog());
+                              },
+                              child: Text("Пополнить")),
+                        ),
+                      );
                     default:
                       return const ModerationPreparationCard();
                   }
                 }),
                 SizedBox(height: 15),
                 Divider(),
+                ListTile(
+                  leading: const Icon(Icons.info_outline_rounded),
+                  title: const Text("Справочник и FAQ"),
+                  trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const InfoAndFaqScreen()),
+                    );
+                  },
+                ),
                 ListTile(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => const DriverShiftScreen()));

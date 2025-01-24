@@ -75,27 +75,25 @@ class _AuthPhoneScreenState extends State<AuthPhoneScreen> {
                   ],
                 ),
               ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: Image.asset(
-                        CoreAssets.logoBlueTransparent,
-                        width: 100,
-                      ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Image.asset(
+                      CoreAssets.logoBlueTransparent,
+                      width: 100,
                     ),
-                    const Text(
-                      'TULPAR',
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: CoreColors.primary),
-                    ),
-                    Text(
-                      'Сервис бронирования\nпопутного транспорта'.tr,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
-                    ),
-                  ],
-                ),
+                  ),
+                  const Text(
+                    'TULPAR',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: CoreColors.primary),
+                  ),
+                  Text(
+                    'Сервис бронирования\nпопутного транспорта'.tr,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+                  ),
+                ],
               ),
             ],
           ),

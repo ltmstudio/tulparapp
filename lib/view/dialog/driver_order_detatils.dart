@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:tulpar/controller/driver.dart';
 import 'package:tulpar/controller/driver_order.dart';
 import 'package:tulpar/core/colors.dart';
 import 'package:tulpar/core/decoration.dart';
-import 'package:tulpar/core/log.dart';
-import 'package:tulpar/model/order/order.dart';
+import 'package:tulpar/core/toast.dart';
 import 'package:tulpar/view/component/order/order_card.dart';
+import 'package:tulpar/view/widget/elevated_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DriverOrderDetailsDialog extends StatefulWidget {
   const DriverOrderDetailsDialog({
     super.key,
-    required this.order,
   });
-
-  final OrderModel order;
 
   @override
   State<DriverOrderDetailsDialog> createState() => _DriverOrderDetailsDialogState();
@@ -22,7 +23,6 @@ class DriverOrderDetailsDialog extends StatefulWidget {
 class _DriverOrderDetailsDialogState extends State<DriverOrderDetailsDialog> {
   @override
   void dispose() {
-    Log.error('Dispose DriverOrderDetailsDialog');
     Get.find<DriverOrderController>().removeSelectedOrder();
     super.dispose();
   }
@@ -32,192 +32,341 @@ class _DriverOrderDetailsDialogState extends State<DriverOrderDetailsDialog> {
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
 
-    return Container(
-      height: h * 0.5,
-      padding: const EdgeInsets.all(CoreDecoration.primaryPadding),
-      child: Column(
-        children: [
-          Text(
-            'Заказ №${widget.order.id}',
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: CoreColors.black),
-          ),
-          const Divider(height: 25),
-          Row(
-            children: [
-              if (widget.order.typeId != null)
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Тип'.tr,
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+    return GetBuilder<DriverOrderController>(builder: (orderController) {
+      var order = orderController.selectedOrderOnMap.value;
+      var expandedOrders = orderController.expandedOrders.value;
+      var expandedOrderLoading = orderController.expandedOrderLoading.value;
+      var isOrderExpanded = false;
+      if (order != null) {
+        var expanded = expandedOrders.firstWhereOrNull((element) => element.id == order!.id);
+        if (expanded != null) {
+          if (expanded.phone != null) {
+            isOrderExpanded = true;
+          }
+          order = expanded;
+        }
+      }
+      return Container(
+        height: h * 0.5,
+        padding: const EdgeInsets.all(CoreDecoration.primaryPadding),
+        child: Column(
+          children: [
+            Text(
+              'Заказ №${order?.id}',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: CoreColors.black),
+            ),
+            const Divider(height: 25),
+            Expanded(
+                child: ListView(children: [
+              Row(
+                children: [
+                  if (order?.typeId != null)
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Тип'.tr,
+                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                          ),
+                          Text(
+                            order?.type ?? order?.typeId.toString() ?? '--',
+                            style:
+                                const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: CoreColors.primary),
+                          ),
+                        ],
                       ),
-                      Text(
-                        widget.order.type ?? widget.order.typeId.toString(),
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: CoreColors.primary),
+                    ),
+                  if (order?.carClass != null)
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Класс поездки'.tr,
+                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                          ),
+                          Text(
+                            order?.carClass?.name ?? order?.classId.toString() ?? '--',
+                            style:
+                                const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: CoreColors.primary),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-              if (widget.order.carClass != null)
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Класс поездки'.tr,
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                    ),
+                  if (order?.people != null)
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Кол-во пассажиров'.tr,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                          ),
+                          Text(
+                            "${order?.people}",
+                            style:
+                                const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: CoreColors.primary),
+                          ),
+                        ],
                       ),
-                      Text(
-                        widget.order.carClass?.name ?? widget.order.classId.toString(),
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: CoreColors.primary),
-                      ),
-                    ],
-                  ),
-                ),
-              if (widget.order.people != null)
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Кол-во пассажиров'.tr,
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
-                      ),
-                      Text(
-                        "${widget.order.people}",
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: CoreColors.primary),
-                      ),
-                    ],
-                  ),
-                ),
-            ],
-          ),
-          if (widget.order.typeId == 1 && widget.order.pointA != null && widget.order.pointB != null)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Divider(),
-                Row(
+                    ),
+                ],
+              ),
+              if (order?.typeId == 1 && order?.pointA != null && order?.pointB != null)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.place_outlined, size: 26, color: CoreColors.primary),
-                    const SizedBox(width: 5),
-                    Flexible(
-                      child: Text(
-                        widget.order.pointA ?? '--',
-                        style: const TextStyle(fontSize: 14, color: CoreColors.black, fontWeight: FontWeight.bold),
+                    const Divider(),
+                    Row(
+                      children: [
+                        const Icon(Icons.place_outlined, size: 26, color: CoreColors.primary),
+                        const SizedBox(width: 5),
+                        Flexible(
+                          child: Text(
+                            order?.pointA ?? '--',
+                            style: const TextStyle(fontSize: 14, color: CoreColors.black, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 13.0),
+                      child: CustomPaint(size: const Size(1, 15), painter: DashedLineVerticalPainter()),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Icon(Icons.place_outlined, size: 26, color: CoreColors.primary),
+                        const SizedBox(width: 5),
+                        Flexible(
+                            child: Text(
+                          order?.pointB ?? '--',
+                          softWrap: true,
+                          style: const TextStyle(fontSize: 14, color: CoreColors.black, fontWeight: FontWeight.bold),
+                        )),
+                      ],
+                    ),
+                  ],
+                ),
+              if (order?.typeId == 2 && order?.cityA != null && order?.cityB != null)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Divider(),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          const WidgetSpan(
+                            child: Padding(
+                              padding: EdgeInsets.only(right: 10),
+                              child: Icon(Icons.route, size: 16, color: CoreColors.primary),
+                            ),
+                          ),
+                          TextSpan(
+                            text: order?.cityA?.name ?? '--',
+                            style: const TextStyle(fontSize: 14, color: CoreColors.black, fontWeight: FontWeight.bold),
+                          ),
+                          const WidgetSpan(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              child: Icon(Icons.keyboard_double_arrow_right_sharp, size: 16, color: CoreColors.primary),
+                            ),
+                          ),
+                          TextSpan(
+                            text: order?.cityB?.name ?? '--',
+                            style: const TextStyle(fontSize: 14, color: CoreColors.black, fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 13.0),
-                  child: CustomPaint(size: const Size(1, 15), painter: DashedLineVerticalPainter()),
-                ),
-                Row(
+              const Divider(height: 25),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  if (order?.userCost != null)
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Стоимость'.tr,
+                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                          ),
+                          Text(
+                            "${order?.userCost} ₸",
+                            style:
+                                const TextStyle(fontSize: 25, fontWeight: FontWeight.w600, color: CoreColors.primary),
+                          ),
+                        ],
+                      ),
+                    ),
+                  if (order?.userTime != null)
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Запланированное время'.tr,
+                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                          ),
+                          Text(
+                            order?.userTime ?? '--',
+                            style:
+                                const TextStyle(fontSize: 25, fontWeight: FontWeight.w600, color: CoreColors.primary),
+                          ),
+                        ],
+                      ),
+                    )
+                ],
+              ),
+              if (order?.userComment != null)
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.place_outlined, size: 26, color: CoreColors.primary),
-                    const SizedBox(width: 5),
-                    Flexible(
-                        child: Text(
-                      widget.order.pointB ?? '--',
-                      softWrap: true,
-                      style: const TextStyle(fontSize: 14, color: CoreColors.black, fontWeight: FontWeight.bold),
-                    )),
+                    const Divider(),
+                    Text(
+                      'Комментарий'.tr,
+                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                    ),
+                    Text(
+                      order?.userComment ?? '--',
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    ),
                   ],
                 ),
-              ],
-            ),
-          if (widget.order.typeId == 2 && widget.order.cityA != null && widget.order.cityB != null)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              if (order?.phone != null)
+                ListTile(
+                    contentPadding: EdgeInsets.all(0),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                            onPressed: () async {
+                              await Clipboard.setData(ClipboardData(text: "+7${order?.phone}"));
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(content: Text('Номер скопирован')));
+                            },
+                            icon: const Icon(Icons.copy, color: CoreColors.primary)),
+                        IconButton(
+                            onPressed: () async {
+                              final Uri url = Uri(
+                                scheme: 'tel',
+                                path: "+7${order!.phone!}",
+                              );
+                              if (await canLaunchUrl(url)) {
+                                await launchUrl(url);
+                              } else {
+                                CoreToast.showToast("Ошибка при попытке позвонить");
+                              }
+                            },
+                            icon: const Icon(Icons.phone, color: CoreColors.primary)),
+                      ],
+                    ),
+                    title: Text(
+                      "+7 ${order?.phone}",
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: const Text('Телефон клиента')),
+            ])),
+            Row(
               children: [
-                const Divider(),
-                Text.rich(
-                  TextSpan(
-                    children: [
-                      const WidgetSpan(
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 10),
-                          child: Icon(Icons.route, size: 16, color: CoreColors.primary),
-                        ),
-                      ),
-                      TextSpan(
-                        text: widget.order.cityA?.name ?? '--',
-                        style: const TextStyle(fontSize: 14, color: CoreColors.black, fontWeight: FontWeight.bold),
-                      ),
-                      const WidgetSpan(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5),
-                          child: Icon(Icons.keyboard_double_arrow_right_sharp, size: 16, color: CoreColors.primary),
-                        ),
-                      ),
-                      TextSpan(
-                        text: widget.order.cityB?.name ?? '--',
-                        style: const TextStyle(fontSize: 14, color: CoreColors.black, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
+                Expanded(
+                    flex: 4,
+                    child: PrimaryElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        light: true,
+                        text: "Закрыть".tr)),
+                if (order?.status == 'new') const SizedBox(width: 10),
+                if (order?.status == 'new')
+                  GetBuilder<DriverController>(builder: (driverController) {
+                    var driver = driverController.profile.value;
+                    // return Text("driver: ${driver?.id}, order: ${order?.driverId}");
+                    if (order?.phone != null && order?.driverId != null && order?.driverId == driver?.id) {
+                      return Expanded(
+                          flex: 6,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 4,
+                                child: PrimaryElevatedButton(
+                                    loading: expandedOrderLoading,
+                                    onPressed: () async {
+                                      if (order?.id != null) {
+                                        String? alertMessage = await orderController.closeOrderRequest(order!.id!);
+                                        if (alertMessage != null && mounted) {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(content: Text(alertMessage)));
+                                        } else if (mounted) {
+                                          Navigator.of(context).pop();
+                                        }
+                                      }
+                                    },
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.horizontal(
+                                            left: Radius.circular(CoreDecoration.primaryBorderRadius))),
+                                    text: 'Выполнено'.tr),
+                              ),
+                              const SizedBox(width: 2),
+                              Expanded(
+                                child: PrimaryElevatedButton(
+                                    loading: expandedOrderLoading,
+                                    onPressed: () async {},
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.horizontal(
+                                            right: Radius.circular(CoreDecoration.primaryBorderRadius))),
+                                    icon: Icons.keyboard_arrow_down_rounded,
+                                    text: 'Выполнено'.tr),
+                              ),
+                            ],
+                          ));
+                    } else {
+                      if (!isOrderExpanded) {
+                        return Expanded(
+                            flex: 6,
+                            child: PrimaryElevatedButton(
+                                loading: expandedOrderLoading,
+                                onPressed: () async {
+                                  if (order?.id != null) {
+                                    String? alertMessage = await orderController.fetchOrderDetails(order!.id!);
+                                    if (alertMessage != null && mounted) {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(content: Text(alertMessage)));
+                                    }
+                                  }
+                                },
+                                text: 'Получить контакты'.tr));
+                      } else {
+                        return Expanded(
+                            flex: 6,
+                            child: PrimaryElevatedButton(
+                                loading: expandedOrderLoading,
+                                onPressed: () async {
+                                  if (order?.id != null) {
+                                    String? alertMessage = await orderController.takeOrderRequest(order!.id!);
+                                    if (alertMessage != null && mounted) {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(content: Text(alertMessage)));
+                                    }
+                                  }
+                                },
+                                text: 'Взять заказ'.tr));
+                      }
+                    }
+                  }),
               ],
             ),
-          const Divider(height: 25),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              if (widget.order.userCost != null)
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Стоимость'.tr,
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
-                      ),
-                      Text(
-                        "${widget.order.userCost} ₸",
-                        style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w600, color: CoreColors.primary),
-                      ),
-                    ],
-                  ),
-                ),
-              if (widget.order.userTime != null)
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Запланированное время'.tr,
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
-                      ),
-                      Text(
-                        widget.order.userTime ?? '--',
-                        style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w600, color: CoreColors.primary),
-                      ),
-                    ],
-                  ),
-                )
-            ],
-          ),
-          if (widget.order.userComment != null)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Divider(),
-                Text(
-                  'Комментарий'.tr,
-                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
-                ),
-                Text(
-                  widget.order.userComment ?? '--',
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                ),
-              ],
-            ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    });
   }
 }

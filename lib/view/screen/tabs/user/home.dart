@@ -26,11 +26,13 @@ import 'package:tulpar/core/styles.dart';
 import 'package:tulpar/core/toast.dart';
 import 'package:tulpar/extension/string.dart';
 import 'package:tulpar/model/app/city.dart';
+import 'package:tulpar/model/order/car_class.dart';
 import 'package:tulpar/model/order/order.dart';
 import 'package:tulpar/model/user/address.dart';
 import 'package:tulpar/view/component/order/order_type_card.dart';
 import 'package:tulpar/view/dialog/address_select.dart';
 import 'package:tulpar/view/dialog/time_picker.dart';
+import 'package:tulpar/view/screen/tabs/user/home_cargo.dart';
 import 'package:tulpar/view/screen/tabs/user/home_intercity.dart';
 
 class HomeTab extends StatefulWidget {
@@ -58,6 +60,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
   var commentsController = TextEditingController();
   var commentFieldExpanded = ValueNotifier<bool>(false);
   var priceController = TextEditingController();
+  var isDelivery = ValueNotifier<bool>(false);
 
   Worker? routeBuilderWorker;
   late var routeLoadingController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
@@ -521,27 +524,46 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                   style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))),
                           SizedBox(
                             height: 130,
-                            child: ListView.builder(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              padding: const EdgeInsets.symmetric(horizontal: 15),
-                              itemCount: carClasses.length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                final carClass = carClasses[index];
-                                return Padding(
-                                  padding: const EdgeInsets.fromLTRB(5, 5, 15, 16),
-                                  child: Bounce(
-                                    onTap: () {
-                                      orderController.selectCarClass(carClass.id);
-                                    },
-                                    child: RideTypeCard(
-                                      carClass: carClass,
-                                      isActive: selectedCarClassId == carClass.id,
+                            child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                padding: const EdgeInsets.symmetric(horizontal: 15),
+                                children: [
+                                  for (final carClass in carClasses)
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(5, 5, 15, 16),
+                                      child: Bounce(
+                                        onTap: () {
+                                          orderController.selectCarClass(carClass.id);
+                                          isDelivery.value = false;
+                                        },
+                                        child: RideTypeCard(
+                                          carClass: carClass,
+                                          isActive: selectedCarClassId == carClass.id,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                            ),
+                                  VerticalDivider(width: 2),
+                                  ValueListenableBuilder(
+                                      valueListenable: isDelivery,
+                                      builder: (_, isD, __) {
+                                        return Padding(
+                                          padding: const EdgeInsets.fromLTRB(15, 5, 15, 16),
+                                          child: Bounce(
+                                            onTap: () {
+                                              if (!isD) {
+                                                orderController.selectCarClass(null);
+                                              }
+                                              isDelivery.value = !isD;
+                                            },
+                                            child: RideTypeCard(
+                                              carClass: CarClassModel(name: "Курьер", cost: 100),
+                                              isActive: isD,
+                                              asset: CoreAssets.deliveryClass,
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                ]),
                           ),
                           Padding(
                               padding: const EdgeInsets.only(left: 15, bottom: 10),
@@ -891,7 +913,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                   if (orderCreateLoading) return;
                                   if ((pointAController.text.isEmpty && (pointA?.address?.isEmpty ?? true)) ||
                                       (pointBController.text.isEmpty && (pointB?.address?.isEmpty ?? true)) ||
-                                      selectedCarClassId == null ||
+                                      (selectedCarClassId == null && isDelivery.value == false) ||
                                       priceController.text.isEmpty) {
                                     CoreToast.showToast('Заполните все поля');
                                     return;
@@ -907,6 +929,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                     userTime: timeController.text.isEmpty ? null : timeController.text,
                                     people: peopleValue.value,
                                     typeId: 1,
+                                    isDelivery: isDelivery.value,
                                     classId: selectedCarClassId,
                                   );
 
@@ -930,7 +953,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                     );
                   }),
                   const HomeIntercityTab(),
-                  Center(child: Text("Грузоперевозки межгород")),
+                  const HomeCargoTab()
                 ],
               ))
 

@@ -9,8 +9,9 @@ import 'package:tulpar/view/dialog/driver_order_detatils.dart';
 
 class DriverOrderCard extends StatelessWidget {
   final bool onHistoryPage;
+  final bool blockOpen;
   final OrderModel order;
-  const DriverOrderCard({super.key, required this.order, this.onHistoryPage = false});
+  const DriverOrderCard({super.key, required this.order, this.onHistoryPage = false, this.blockOpen = false});
 
   // final AppController themeSwitcher = Get.put(AppController(), permanent: true);
   @override
@@ -18,11 +19,12 @@ class DriverOrderCard extends StatelessWidget {
     double w = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
-        if (order.geoA?.toLatLng != null && order.geoB?.toLatLng != null) {
-          Get.find<DriverOrderController>().setSelectedOrder(order);
-          showBottomSheet(context: context, builder: (context) => DriverOrderDetailsDialog(order: order));
+        if (blockOpen) return;
+        Get.find<DriverOrderController>().setSelectedOrder(order);
+        if (order.geoA?.toLatLng != null && order.geoB?.toLatLng != null && !onHistoryPage) {
+          showBottomSheet(context: context, builder: (context) => const DriverOrderDetailsDialog());
         } else {
-          showModalBottomSheet(context: context, builder: (context) => DriverOrderDetailsDialog(order: order));
+          showModalBottomSheet(context: context, builder: (context) => const DriverOrderDetailsDialog());
         }
       },
       child: Container(
