@@ -61,6 +61,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
   var commentFieldExpanded = ValueNotifier<bool>(false);
   var priceController = TextEditingController();
   var isDelivery = ValueNotifier<bool>(false);
+  var isCargo = ValueNotifier<bool>(false);
 
   Worker? routeBuilderWorker;
   late var routeLoadingController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
@@ -79,6 +80,8 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
         priceController.clear();
         timeController.clear();
         commentsController.clear();
+        isDelivery.value = false;
+        isCargo.value = false;
       }
     });
     routeBuilderWorker = ever(Get.find<UserOrderController>().isRouteLoading, (l) {
@@ -118,7 +121,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
     var tabBar = TabBar(
         controller: _tabController,
         onTap: (value) => selectedIndex.value = value,
-        tabs: [Tab(text: "Такси"), Tab(text: "Межгород"), Tab(text: "Грузоперевозки межгород")]);
+        tabs: [Tab(text: "Город"), Tab(text: "Межгород"), Tab(text: "Грузоперевозки межгород")]);
     return GetBuilder<UserOrderController>(builder: (orderController) {
       // map
       var followLocation = orderController.followLocation.value;
@@ -265,7 +268,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                                     //             style:
                                                     //                 CoreStyles.normalSxtn))),
                                                     Marker(
-                                                        // rotate: true,
+                                                        rotate: true,
                                                         point: LatLng(myPos.latitude, myPos.longitude),
                                                         height: 40,
                                                         width: 40 * 0.7,
@@ -290,6 +293,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                                         )),
                                                   if (pointA?.latLng != null)
                                                     Marker(
+                                                      rotate: true,
                                                       point: pointA!.latLng!,
                                                       height: 30,
                                                       width: 30,
@@ -314,6 +318,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                                     ),
                                                   if (pointB?.latLng != null)
                                                     Marker(
+                                                      rotate: true,
                                                       point: pointB!.latLng!,
                                                       height: 30,
                                                       width: 30,
@@ -535,6 +540,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                         onTap: () {
                                           orderController.selectCarClass(carClass.id);
                                           isDelivery.value = false;
+                                          isCargo.value = false;
                                         },
                                         child: RideTypeCard(
                                           carClass: carClass,
@@ -552,6 +558,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                             onTap: () {
                                               if (!isD) {
                                                 orderController.selectCarClass(null);
+                                                isCargo.value = false;
                                               }
                                               isDelivery.value = !isD;
                                             },
@@ -559,6 +566,27 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                               carClass: CarClassModel(name: "Курьер", cost: 100),
                                               isActive: isD,
                                               asset: CoreAssets.deliveryClass,
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                  ValueListenableBuilder(
+                                      valueListenable: isCargo,
+                                      builder: (_, isD, __) {
+                                        return Padding(
+                                          padding: const EdgeInsets.fromLTRB(5, 5, 15, 16),
+                                          child: Bounce(
+                                            onTap: () {
+                                              if (!isD) {
+                                                orderController.selectCarClass(null);
+                                                isDelivery.value = false;
+                                              }
+                                              isCargo.value = !isD;
+                                            },
+                                            child: RideTypeCard(
+                                              carClass: CarClassModel(name: "Груз", cost: 100),
+                                              isActive: isD,
+                                              asset: CoreAssets.cargoClass,
                                             ),
                                           ),
                                         );
@@ -620,6 +648,9 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                                 return AddressSelectDialog(
                                                     title: 'Откуда'.tr,
                                                     onSelected: (address) {
+                                                      if (pointB?.id != null && pointB?.id == address.id) {
+                                                        return;
+                                                      }
                                                       pointAController.clear();
                                                       orderController.setPointA(address);
                                                     });
@@ -677,8 +708,8 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                           addressController.addAddress(
                                               address: '${pointB.address}',
                                               geo: pointB.geo,
-                                              onDone: (a) {
-                                                orderController.setPointB(a);
+                                              onDone: (b) {
+                                                orderController.setPointB(b);
                                               });
                                         },
                                         icon: const Icon(Icons.save))
@@ -694,6 +725,9 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                                 return AddressSelectDialog(
                                                     title: 'Куда'.tr,
                                                     onSelected: (address) {
+                                                      if (pointA?.id != null && pointA?.id == address.id) {
+                                                        return;
+                                                      }
                                                       pointBController.clear();
                                                       orderController.setPointB(address);
                                                     });
@@ -913,7 +947,9 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                   if (orderCreateLoading) return;
                                   if ((pointAController.text.isEmpty && (pointA?.address?.isEmpty ?? true)) ||
                                       (pointBController.text.isEmpty && (pointB?.address?.isEmpty ?? true)) ||
-                                      (selectedCarClassId == null && isDelivery.value == false) ||
+                                      (selectedCarClassId == null &&
+                                          isDelivery.value == false &&
+                                          isCargo.value == false) ||
                                       priceController.text.isEmpty) {
                                     CoreToast.showToast('Заполните все поля');
                                     return;
@@ -930,6 +966,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                     people: peopleValue.value,
                                     typeId: 1,
                                     isDelivery: isDelivery.value,
+                                    isCargo: isCargo.value,
                                     classId: selectedCarClassId,
                                   );
 

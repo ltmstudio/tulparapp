@@ -1,8 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:tulpar/controller/user_order.dart';
 import 'package:tulpar/core/colors.dart';
+import 'package:tulpar/core/toast.dart';
 import 'package:tulpar/model/order/order.dart';
+import 'package:tulpar/view/dialog/user_order_delete.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OrderCard extends StatelessWidget {
   final bool onHistoryPage;
@@ -87,7 +93,7 @@ class OrderCard extends StatelessWidget {
                 ),
               ],
             ),
-          if (order.typeId == 2 && order.cityA != null && order.cityB != null)
+          if (order.typeId != 1 && order.cityA != null && order.cityB != null)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -157,6 +163,115 @@ class OrderCard extends StatelessWidget {
                 ),
             ],
           ),
+          Divider(),
+          if (order.driverId != null && order.driver != null)
+            Builder(builder: (_) {
+              var profile = order.driver!;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Данные водителя'.tr,
+                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                  ),
+                  const SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: CoreColors.lightGrey,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: CoreColors.primary, width: 3),
+                        ),
+                        child:
+                            //  profile.avatar != null
+                            //     ? ClipRRect(
+                            //         borderRadius: BorderRadius.circular(40),
+                            //         child: CachedNetworkImage(
+                            //           imageUrl: profile.avatarUrl,
+                            //           width: 40,
+                            //           height: 40,
+                            //           fit: BoxFit.cover,
+                            //         ),
+                            //       )
+                            //     :
+                            const Icon(Icons.person, size: 20, color: CoreColors.white),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                          child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            profile.fullname,
+                            style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                          ),
+                          Row(children: [
+                            if (profile.carName != null)
+                              Text(
+                                "${profile.carName}",
+                                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                              ),
+                            if (profile.carNumber != null)
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                                margin: const EdgeInsets.only(left: 5),
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: CoreColors.black, width: 1),
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Text(
+                                  "${profile.carNumber}",
+                                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                          ]),
+                        ],
+                      )),
+                      if (profile.phone != null)
+                        IconButton(
+                            onPressed: () async {
+                              final Uri url = Uri(
+                                scheme: 'tel',
+                                path: "+7${profile.phone!}",
+                              );
+                              if (await canLaunchUrl(url)) {
+                                await launchUrl(url);
+                              } else {
+                                // copy to clipboard
+                                Clipboard.setData(ClipboardData(text: "+7${profile.phone!}"));
+                                CoreToast.showToast('Номер скопирован в буфер обмена'.tr);
+                              }
+                            },
+                            icon: const Icon(Icons.call, size: 15),
+                            color: CoreColors.primary)
+                    ],
+                  ),
+                ],
+              );
+            })
+          else
+            Row(
+              children: [
+                TextButton.icon(
+                    style: TextButton.styleFrom(foregroundColor: CoreColors.error),
+                    onPressed: () async {
+                      bool? delete = await showDialog(
+                        context: context,
+                        builder: (context) {
+                          return UserOrderDeleteConfirmDialog();
+                        },
+                      );
+                      if (order.id != null && delete == true) {
+                        Get.find<UserOrderController>().deleteOrder(order.id!);
+                      }
+                    },
+                    icon: const Icon(Icons.close, size: 14),
+                    label: Text('Отменить заказ'.tr))
+              ],
+            )
         ],
       ),
     );

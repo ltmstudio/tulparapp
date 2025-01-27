@@ -33,6 +33,12 @@ class DriverShiftController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    ever(Get.find<AppController>().appMode, (mode) {
+      if (mode == AppMode.driver) {
+        fetchShiftStatus();
+        fetchShiftOrders();
+      }
+    });
     _startShiftStatusTimer();
     _startShiftStatusCountdownTimer();
   }

@@ -4,7 +4,11 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tulpar/controller/app.dart';
 import 'package:tulpar/controller/dio.dart';
+import 'package:tulpar/controller/driver_moderation.dart';
+import 'package:tulpar/controller/driver_order.dart';
+import 'package:tulpar/controller/driver_shift.dart';
 import 'package:tulpar/core/colors.dart';
 import 'package:tulpar/core/log.dart';
 import 'package:tulpar/model/driver/profile.dart';
@@ -12,6 +16,26 @@ import 'package:tulpar/model/driver/profile.dart';
 class DriverController extends GetxController {
   var profile = Rx<DriverProfileModel?>(null);
   var profileLoading = Rx<bool>(false);
+
+  @override
+  void onInit() {
+    ever(Get.find<AppController>().appMode, (mode) {
+      if (mode == AppMode.driver) {
+        fetchProfile();
+      }
+    });
+    ever(profile, (p) {
+      if (p != null) {
+        Get.find<DriverShiftController>()
+          ..fetchShiftStatus()
+          ..fetchShiftOrders();
+        Get.find<DriverOrderController>()
+          ..fetchMyOrders()
+          ..fetchHistoryOrders();
+      }
+    });
+    super.onInit();
+  }
 
   Future<void> fetchProfile() async {
     var inDio = InDio();

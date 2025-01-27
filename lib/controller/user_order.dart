@@ -263,6 +263,28 @@ class UserOrderController extends GetxController {
     update();
   }
 
+  // Удаление заказа
+  Future<void> deleteOrder(int id) async {
+    var inDio = InDio();
+    var dio = inDio.instance;
+    try {
+      var resp = await dio.delete('/orders/$id');
+      if (resp.statusCode == 200) {
+        Log.success("Заказ успешно удален");
+        CoreToast.showToast('Заказ успешно удален'.tr);
+        orders.value.removeWhere((element) => element.id == id);
+        fetchOrders(refresh: true);
+        update();
+      } else {
+        Log.error("Ошибка удаления заказа: ${resp.statusMessage}");
+      }
+    } on DioException catch (e) {
+      Log.error("Ошибка удаления заказа $e");
+    } catch (e) {
+      Log.error("Ошибка удаления заказа $e");
+    }
+  }
+
   // кеш
   late Directory cachePath;
 

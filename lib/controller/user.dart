@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:tulpar/controller/address.dart';
 import 'package:tulpar/controller/app.dart';
 import 'package:tulpar/controller/dio.dart';
 import 'package:tulpar/controller/driver.dart';
@@ -41,6 +42,7 @@ class UserController extends GetxController {
         if (Get.find<AppController>().appMode.value == AppMode.driver && u.driverId != null) {
           Get.find<DriverController>().fetchProfile();
           Get.find<DriverModerationController>().fetchModeration();
+          Get.find<AddressController>().fetchAddresses();
         }
       } else {
         orderController

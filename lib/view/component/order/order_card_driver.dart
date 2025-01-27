@@ -98,7 +98,7 @@ class DriverOrderCard extends StatelessWidget {
                   ),
                 ],
               ),
-            if (order.typeId == 2 && order.cityA != null && order.cityB != null)
+            if (order.typeId != 1 && order.cityA != null && order.cityB != null)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

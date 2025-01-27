@@ -51,11 +51,35 @@ class AddressSelectDialog extends StatelessWidget {
                 itemBuilder: (context, index) {
                   var address = addresses[index];
                   return ListTile(
+                    contentPadding: EdgeInsets.all(0),
+                    leading: PopupMenuButton(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        itemBuilder: (context) {
+                          return [
+                            PopupMenuItem(
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.delete_outline_outlined, size: 14, color: CoreColors.error),
+                                    SizedBox(width: 5),
+                                    Text('Удалить'.tr, style: TextStyle(color: CoreColors.error)),
+                                  ],
+                                ),
+                                value: 'edit'),
+                          ];
+                        },
+                        onSelected: (value) {
+                          if (address.id != null) {
+                            addressController.deleteAddress(address.id!);
+                          }
+                        }),
                     onTap: () {
                       onSelected?.call(address);
                       Navigator.of(context).pop();
                     },
-                    trailing: const Icon(Icons.chevron_right),
+                    trailing: Padding(
+                      padding: const EdgeInsets.only(right: 5),
+                      child: const Icon(Icons.chevron_right),
+                    ),
                     title: Text('${address.address}'),
                   );
                 },
@@ -64,20 +88,20 @@ class AddressSelectDialog extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                TextButton.icon(
-                    onPressed: () {
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(builder: (context) => const AddressesScreen()),
-                      // );
-                    },
-                    icon: const Icon(Icons.edit),
-                    label: Text('Редактировать'.tr)),
+                // TextButton.icon(
+                //     onPressed: () {
+                //       // Navigator.of(context).push(
+                //       //   MaterialPageRoute(builder: (context) => const AddressesScreen()),
+                //       // );
+                //     },
+                //     icon: const Icon(Icons.edit),
+                //     label: Text('Редактировать'.tr)),
                 TextButton.icon(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    icon: const Icon(Icons.close_rounded),
-                    label: Text('Выйти'.tr)),
+                    icon: const Icon(Icons.arrow_drop_down_rounded),
+                    label: Text('Скрыть'.tr)),
               ],
             )
           ],

@@ -8,6 +8,7 @@ import 'package:tulpar/core/colors.dart';
 import 'package:tulpar/core/decoration.dart';
 import 'package:tulpar/core/toast.dart';
 import 'package:tulpar/view/component/order/order_card.dart';
+import 'package:tulpar/view/dialog/driver_order_reject.dart';
 import 'package:tulpar/view/widget/elevated_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -313,17 +314,57 @@ class _DriverOrderDetailsDialogState extends State<DriverOrderDetailsDialog> {
                                             left: Radius.circular(CoreDecoration.primaryBorderRadius))),
                                     text: 'Выполнено'.tr),
                               ),
-                              const SizedBox(width: 2),
-                              Expanded(
-                                child: PrimaryElevatedButton(
-                                    loading: expandedOrderLoading,
-                                    onPressed: () async {},
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.horizontal(
-                                            right: Radius.circular(CoreDecoration.primaryBorderRadius))),
-                                    icon: Icons.keyboard_arrow_down_rounded,
-                                    text: 'Выполнено'.tr),
-                              ),
+                              // const SizedBox(width: 2),
+                              // Expanded(
+                              //   child: PrimaryElevatedButton(
+                              //       loading: expandedOrderLoading,
+                              //       onPressed: () async {},
+                              //       shape: const RoundedRectangleBorder(
+                              //           borderRadius: BorderRadius.horizontal(
+                              //               right: Radius.circular(CoreDecoration.primaryBorderRadius))),
+                              //       icon: Icons.keyboard_arrow_down_rounded,
+                              //       text: ''.tr),
+                              // ),
+                              PopupMenuButton(
+                                  style: ElevatedButton.styleFrom(
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.horizontal(
+                                              right: Radius.circular(CoreDecoration.primaryBorderRadius))),
+                                      padding: const EdgeInsets.symmetric(vertical: 11),
+                                      backgroundColor: CoreColors.primary,
+                                      elevation: 0),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  iconColor: CoreColors.white,
+                                  position: PopupMenuPosition.under,
+                                  itemBuilder: (context) {
+                                    return [
+                                      PopupMenuItem(
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.close, size: 14, color: CoreColors.error),
+                                              SizedBox(width: 5),
+                                              Text('Отказаться'.tr, style: TextStyle(color: CoreColors.error)),
+                                            ],
+                                          ),
+                                          value: 'edit'),
+                                    ];
+                                  },
+                                  onSelected: (value) async {
+                                    bool? confirmed = await showDialog(
+                                        context: context, builder: (context) => DriverOrderRejectConfirmDialog());
+                                    if (confirmed == true) {
+                                      if (order?.id != null) {
+                                        String? alertMessage = await orderController.cancelOrderRequest(order!.id!);
+                                        if (alertMessage != null && mounted) {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(content: Text(alertMessage)));
+                                        } else if (mounted) {
+                                          Navigator.of(context).pop();
+                                        }
+                                      }
+                                    }
+                                  }),
                             ],
                           ));
                     } else {

@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:tulpar/controller/user_order.dart';
 import 'package:tulpar/model/app/city.dart';
+import 'package:tulpar/model/driver/profile.dart';
 import 'package:tulpar/model/order/car_class.dart';
 
 List<OrderModel> orderModelFromJson(String str) =>
@@ -35,10 +36,12 @@ class OrderModel {
   CityModel? cityA;
   CityModel? cityB;
   bool? isDelivery;
+  bool? isCargo;
   CarClassModel? carClass;
   DateTime? createdAt;
   DateTime? updatedAt;
   String? status;
+  DriverProfileModel? driver;
 
   String? get type {
     if (isDelivery == true) return 'Доставка';
@@ -78,10 +81,12 @@ class OrderModel {
     this.cityA,
     this.cityB,
     this.isDelivery,
+    this.isCargo,
     this.carClass,
     this.createdAt,
     this.updatedAt,
     this.status,
+    this.driver,
   });
 
   OrderModel copyWith({
@@ -105,10 +110,12 @@ class OrderModel {
     CityModel? cityA,
     CityModel? cityB,
     bool? isDelivery,
+    bool? isCargo,
     CarClassModel? carClass,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? status,
+    DriverProfileModel? driver,
   }) =>
       OrderModel(
         id: id ?? this.id,
@@ -131,10 +138,12 @@ class OrderModel {
         cityA: cityA ?? this.cityA,
         cityB: cityB ?? this.cityB,
         isDelivery: isDelivery ?? this.isDelivery,
+        isCargo: isCargo ?? this.isCargo,
         carClass: carClass ?? this.carClass,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         status: status ?? this.status,
+        driver: driver ?? this.driver,
       );
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
@@ -158,10 +167,12 @@ class OrderModel {
         cityA: json["city_a"] == null ? null : CityModel.fromJson(json["city_a"]),
         cityB: json["city_b"] == null ? null : CityModel.fromJson(json["city_b"]),
         isDelivery: json["is_delivery"]?.toString() == '1' || json["is_delivery"]?.toString() == 'true' ? true : false,
+        isCargo: json["is_cargo"]?.toString() == '1' || json["is_cargo"]?.toString() == 'true' ? true : false,
         carClass: json["class"] == null ? null : CarClassModel.fromJson(json["class"]),
         createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
         updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
         status: json["status"],
+        driver: json["driver"] == null ? null : DriverProfileModel.fromJson(json["driver"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -185,10 +196,12 @@ class OrderModel {
         "city_a": cityA?.toJson(),
         "city_b": cityB?.toJson(),
         "is_delivery": isDelivery,
+        "is_cargo": isCargo,
         "class": carClass?.toJson(),
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "status": status,
+        "driver": driver?.toJson(),
       };
 
   Map<String, dynamic> toCreateForm() {
@@ -206,6 +219,7 @@ class OrderModel {
       "city_a_id": cityAId,
       "city_b_id": cityBId,
       "is_delivery": isDelivery,
+      "is_cargo": isCargo,
     };
     form.removeWhere((key, value) => value == null);
     return form;
