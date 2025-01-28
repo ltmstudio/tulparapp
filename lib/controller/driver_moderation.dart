@@ -34,7 +34,9 @@ enum DriverModerationImageFields {
 class DriverModerationController extends GetxController {
   var moderation = Rx<DriverModerationModel?>(null);
   var catalogCars = Rx<List<CatalogCarModel>>([]);
+  var searchResultCars = Rx<List<CatalogCarModel>>([]);
   var catalogCarsLoading = Rx<bool>(false);
+  var searchCarsLoading = Rx<bool>(false);
 
   final carImagesFields = [
     DriverModerationImageFields.car_image_1,
@@ -138,6 +140,37 @@ class DriverModerationController extends GetxController {
       Log.error("Ошибка загрузки моделей авто $e");
     }
     catalogCarsLoading.value = false;
+    update();
+  }
+
+  // search cars
+  Future<void> searchCatalogCars(String search) async {
+    var inDio = InDio();
+    var dio = inDio.instance;
+    searchCarsLoading.value = true;
+    update();
+    try {
+      var resp = await dio.get('/catalog/search', queryParameters: {'search': search});
+      if (resp.statusCode == 200 && resp.data != null) {
+        searchResultCars.value = catalogCarModelFromJson(json.encode(resp.data));
+        update();
+      } else {
+        Log.error("Ошибка поиска авто ${resp.statusCode} ${resp.data}");
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        CoreToast.showToast("Автомобиль не найден");
+        searchResultCars.value = [];
+        update();
+      } else {
+        CoreToast.showToast("Ошибка запроса");
+        Log.error("Ошибка поиска авто $e");
+      }
+    } catch (e) {
+      CoreToast.showToast("Ошибка запроса");
+      Log.error("Ошибка поиска авто $e");
+    }
+    searchCarsLoading.value = false;
     update();
   }
 
@@ -424,5 +457,19 @@ class DriverModerationController extends GetxController {
     tempFileLoading.value.remove(key);
     update();
     return false;
+  }
+
+  void resetController() {
+    moderation.value = null;
+    catalogCars.value = [];
+    catalogCarsLoading.value = false;
+    stageLoading.value = false;
+    agreed.value = false;
+    selectedCar.value = null;
+    selectedCarModel.value = null;
+    currentPage.value = 0;
+    tempFile.value = {};
+    tempFileLoading.value = {};
+    moderationForm.reset();
   }
 }

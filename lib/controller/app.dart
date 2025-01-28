@@ -140,4 +140,8 @@ class AppController extends GetxController {
     ValidationMessage.mustMatch: (error) => 'Поля не совпадают',
     ValidationMessage.minLength: (error) => 'Минимум ${(error as Map)['requiredLength']} символов'
   };
+
+  void resetController() {
+    appMode.value = AppMode.user;
+  }
 }

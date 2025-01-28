@@ -285,11 +285,67 @@ class UserOrderController extends GetxController {
     }
   }
 
+  // Получение списка городов
+  Future<void> fetchCities() async {
+    var inDio = InDio();
+    var dio = inDio.instance;
+    try {
+      var resp = await dio.get('/app/cities');
+      var newCities = cityModelFromJson(json.encode(resp.data));
+      cities.value = newCities;
+      Log.success("Получен список из ${newCities.length} городов");
+      update();
+    } catch (e) {
+      Log.error("Ошибка получения списка городов $e");
+    }
+  }
+
+  // получение списка типов заказов
+  Future<void> fetchOrderTypes() async {
+    var inDio = InDio();
+    var dio = inDio.instance;
+    try {
+      var resp = await dio.get('/app/order-types');
+      var newTypes = orderTypeModelFromJson(json.encode(resp.data));
+      orderTypes.value = newTypes;
+      Log.success("Получен список из ${newTypes.length} типов заказов");
+      update();
+    } catch (e) {
+      Log.error("Ошибка получения списка типов заказов $e");
+    }
+  }
+
   // кеш
   late Directory cachePath;
 
   Future<void> initCachePath() async {
     cachePath = await getTemporaryDirectory();
     Log.success('Путь кеширования инициализирован - ${cachePath.path}');
+  }
+
+  void resetController() {
+    orderTypes.value = [];
+    carClasses.value = [];
+    cities.value = [];
+    orders.value = [];
+    ordersLoading.value = false;
+    isOrdersEnd.value = false;
+    orderCreateLoading.value = false;
+    currentGeocode.value = null;
+    currentGeocodePosition.value = null;
+    isGeocodeLoading.value = false;
+    onGeocodeDone.value = null;
+    followLocation.value = true;
+    locSelector.value = false;
+    locSelectorTitle.value = null;
+    isRouteLoading.value = false;
+    newOrderExpanded.value = true;
+    selectedCarClassId.value = null;
+    poinA.value = null;
+    pointB.value = null;
+    cityA.value = null;
+    cityB.value = null;
+    geoRoute.value = null;
+    update();
   }
 }

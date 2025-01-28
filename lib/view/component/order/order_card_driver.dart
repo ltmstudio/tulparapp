@@ -133,17 +133,27 @@ class DriverOrderCard extends StatelessWidget {
             Divider(),
             Row(
               children: [
-                if (order.people != null)
-                  Row(
-                    children: [
+                Row(
+                  children: [
+                    if (order.className != null) ...[
+                      const Icon(Icons.circle_outlined, size: 16, color: CoreColors.primary),
+                      const SizedBox(width: 5),
+                      Text(
+                        order.className!,
+                        style: TextStyle(fontSize: 14, color: CoreColors.black),
+                      ),
+                      const SizedBox(width: 14),
+                    ],
+                    if (order.people != null) ...[
                       const Icon(Icons.people, size: 16, color: CoreColors.primary),
                       const SizedBox(width: 5),
                       Text(
                         "${order.people}",
                         style: TextStyle(fontSize: 14, color: CoreColors.black),
                       ),
-                    ],
-                  ),
+                    ]
+                  ],
+                ),
                 const Spacer(),
                 Text(
                   "+${order.userCost} ₸",

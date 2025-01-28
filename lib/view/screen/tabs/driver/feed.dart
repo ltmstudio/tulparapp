@@ -19,6 +19,7 @@ import 'package:tulpar/core/icons.dart';
 import 'package:tulpar/extension/string.dart';
 import 'package:tulpar/model/order/order.dart';
 import 'package:tulpar/view/component/order/order_card_driver.dart';
+import 'package:tulpar/view/screen/driver/orders/cities.dart';
 import 'package:tulpar/view/screen/driver/orders/filters.dart';
 import 'package:tulpar/view/screen/driver/orders/sorting.dart';
 import 'package:tulpar/view/screen/driver/shift.dart';
@@ -88,6 +89,8 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
 
       var selectedSortingValue = orderController.selectedSortingValue.value;
       var selectedOrderType = orderController.selectedOrderType.value;
+      var selectedCityA = orderController.selectedCityA.value;
+      var selectedCityB = orderController.selectedCityB.value;
 
       return Scaffold(
         appBar: AppBar(
@@ -466,6 +469,70 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                           ),
                         ],
                       )),
+                  AnimatedSwitcher(
+                    duration: Durations.short2,
+                    transitionBuilder: (child, animation) => SizeTransition(
+                      sizeFactor: animation,
+                      axis: Axis.vertical,
+                      child: child,
+                    ),
+                    child: selectedOrderType == null || selectedOrderType.id == 1
+                        ? const SizedBox()
+                        : Container(
+                            padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "Город А:  ",
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                      Text(
+                                        selectedCityA?.name ?? "Все",
+                                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 5),
+                                  child: Icon(Icons.keyboard_double_arrow_right_sharp,
+                                      size: 16, color: CoreColors.primary),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "Город Б:  ",
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                      Text(
+                                        selectedCityB?.name ?? "Все",
+                                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                    height: 35,
+                                    child: TextButton(
+                                        onPressed: () async {
+                                          bool? changed = await showModalBottomSheet(
+                                              context: context, builder: (context) => OrdersCitiesFiltersDialog());
+                                          if (changed ?? false) {
+                                            orderController.fetchOrdersFeed(resetAll: true);
+                                          }
+                                        },
+                                        style: TextButton.styleFrom(padding: EdgeInsets.all(5)),
+                                        child: Text("Выбрать")))
+                              ],
+                            ),
+                          ),
+                  ),
+                  Divider(),
                   Expanded(
                     child: RefreshIndicator(
                       onRefresh: () async {

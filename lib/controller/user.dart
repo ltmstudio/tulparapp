@@ -6,6 +6,9 @@ import 'package:tulpar/controller/app.dart';
 import 'package:tulpar/controller/dio.dart';
 import 'package:tulpar/controller/driver.dart';
 import 'package:tulpar/controller/driver_moderation.dart';
+import 'package:tulpar/controller/driver_order.dart';
+import 'package:tulpar/controller/driver_shift.dart';
+import 'package:tulpar/controller/pay.dart';
 import 'package:tulpar/controller/user_order.dart';
 import 'package:tulpar/core/keys.dart';
 import 'package:tulpar/core/log.dart';
@@ -39,6 +42,9 @@ class UserController extends GetxController {
       var orderController = Get.find<UserOrderController>();
       if (u != null) {
         orderController.fetchOrders(refresh: true);
+        orderController.fetchCarClasses();
+        orderController.fetchOrderTypes();
+        orderController.fetchCities();
         if (Get.find<AppController>().appMode.value == AppMode.driver && u.driverId != null) {
           Get.find<DriverController>().fetchProfile();
           Get.find<DriverModerationController>().fetchModeration();
@@ -178,5 +184,22 @@ class UserController extends GetxController {
   void clearForm() {
     phone.value = null;
     salt.value = null;
+  }
+
+  void logout() async {
+    await prefs?.remove(CoreCacheKeys.token);
+    token.value = null;
+    user.value = null;
+    userStage.value = UserLoginStage.phone;
+    update();
+    // reset all controllers
+    Get.find<AppController>().resetController();
+    Get.find<AddressController>().resetController();
+    Get.find<DriverController>().resetController();
+    Get.find<DriverOrderController>().resetController();
+    Get.find<DriverShiftController>().resetController();
+    Get.find<DriverModerationController>().resetController();
+    Get.find<PayController>().resetController();
+    Get.find<UserOrderController>().resetController();
   }
 }

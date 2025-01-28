@@ -11,6 +11,7 @@ import 'package:tulpar/controller/user_order.dart';
 import 'package:tulpar/core/log.dart';
 import 'package:tulpar/core/toast.dart';
 import 'package:tulpar/extension/string.dart';
+import 'package:tulpar/model/app/city.dart';
 import 'package:tulpar/model/geo/route.dart';
 import 'package:tulpar/model/order/order.dart';
 import 'package:tulpar/model/order/sorting_value.dart';
@@ -39,6 +40,22 @@ class DriverOrderController extends GetxController {
 
   List<OrderTypeModel> get orderTypes => Get.find<UserOrderController>().orderTypes.value;
   var selectedOrderType = Rx<OrderTypeModel?>(null);
+
+  List<CityModel> get cities => Get.find<UserOrderController>().cities.value;
+  var selectedCityA = Rx<CityModel?>(null);
+  var selectedCityB = Rx<CityModel?>(null);
+
+  void setSelectedCities(CityModel? cityA, CityModel? cityB) {
+    selectedCityA.value = cityA;
+    selectedCityB.value = cityB;
+    update();
+  }
+
+  void unsetSelectedCities() {
+    selectedCityA.value = null;
+    selectedCityB.value = null;
+    update();
+  }
 
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
   Timer? _updateTimer;
@@ -69,7 +86,13 @@ class DriverOrderController extends GetxController {
         },
         if (selectedOrderType.value?.id != null) ...{
           "type_id": selectedOrderType.value?.id,
-        }
+        },
+        if (selectedCityA.value?.id != null) ...{
+          "city_a_id": selectedCityA.value?.id,
+        },
+        if (selectedCityB.value?.id != null) ...{
+          "city_b_id": selectedCityB.value?.id,
+        },
       });
       var newOrders = orderModelFromJson(json.encode(resp.data));
       _updateOrders(newOrders, resetAll: resetAll);
@@ -383,5 +406,28 @@ class DriverOrderController extends GetxController {
     selectedOrderOnMap.value = null;
     geoRoute.value = null;
     update();
+  }
+
+  void resetController() {
+    orders.value = [];
+    ordersLoading.value = false;
+
+    expandedOrders.value = [];
+    expandedOrderLoading.value = false;
+
+    myOrders.value = [];
+    myOrdersLoading.value = false;
+
+    historyOrders.value = [];
+    historyOrdersLoading.value = false;
+
+    selectedOrderOnMap.value = null;
+    isRouteLoading.value = false;
+    geoRoute.value = null;
+
+    sortingValues = OrdersSortingValueModel.initialValues;
+    selectedSortingValue.value = null;
+
+    selectedOrderType.value = null;
   }
 }

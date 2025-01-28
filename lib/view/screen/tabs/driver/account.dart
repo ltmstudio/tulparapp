@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tulpar/controller/app.dart';
 import 'package:tulpar/controller/driver.dart';
 import 'package:tulpar/controller/driver_moderation.dart';
+import 'package:tulpar/controller/user.dart';
 import 'package:tulpar/core/colors.dart';
 import 'package:tulpar/core/decoration.dart';
 import 'package:tulpar/model/driver/moderation.dart';
@@ -16,6 +17,7 @@ import 'package:tulpar/view/component/moderation/approved.dart';
 import 'package:tulpar/view/component/moderation/moderation.dart';
 import 'package:tulpar/view/component/moderation/preparation.dart';
 import 'package:tulpar/view/component/moderation/rejected.dart';
+import 'package:tulpar/view/dialog/logout.dart';
 import 'package:tulpar/view/dialog/pay.dart';
 import 'package:tulpar/view/screen/driver/info/info.dart';
 import 'package:tulpar/view/screen/driver/shift.dart';
@@ -240,6 +242,23 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                     title: Text("Перейти в режим клиента".tr),
                   );
                 }),
+                ListTile(
+                  onTap: () async {
+                    bool confirmed =
+                        await showDialog(context: context, builder: (context) => const LogoutConfirmDialog());
+                    if (confirmed == true) {
+                      Get.find<UserController>().logout();
+                    }
+                  },
+                  leading: Icon(
+                    Icons.logout_rounded,
+                    color: CoreColors.error,
+                  ),
+                  title: Text(
+                    "Выйти из аккаунта".tr,
+                    style: TextStyle(color: CoreColors.error),
+                  ),
+                )
               ],
             ),
           ),

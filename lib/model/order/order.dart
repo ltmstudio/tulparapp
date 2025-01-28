@@ -44,9 +44,14 @@ class OrderModel {
   DriverProfileModel? driver;
 
   String? get type {
-    if (isDelivery == true) return 'Доставка';
     var ordertypes = Get.find<UserOrderController>().orderTypes.value;
     return ordertypes.firstWhereOrNull((o) => o.id == typeId)?.name;
+  }
+
+  String? get className {
+    if (isCargo == true) return 'Груз';
+    if (isDelivery == true) return 'Доставка';
+    return carClass?.name;
   }
 
   // сколько минут назад

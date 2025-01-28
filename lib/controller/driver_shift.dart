@@ -200,4 +200,15 @@ class DriverShiftController extends GetxController {
       update();
     }
   }
+
+  void resetController() {
+    shiftStatus.value = null;
+    shiftStatusLoading.value = false;
+    shiftOrders.value = [];
+    shiftOrdersLoading.value = false;
+    orderShiftLoading.value = false;
+    availableShifts.value = null;
+    availableShiftsLoading.value = false;
+    selectedShift.value = null;
+  }
 }

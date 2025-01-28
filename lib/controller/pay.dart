@@ -28,4 +28,9 @@ class PayController extends GetxController {
       update();
     }
   }
+
+  void resetController() {
+    payInfo.value = null;
+    payInfoLoading.value = false;
+  }
 }

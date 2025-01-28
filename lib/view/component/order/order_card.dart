@@ -185,19 +185,17 @@ class OrderCard extends StatelessWidget {
                           shape: BoxShape.circle,
                           border: Border.all(color: CoreColors.primary, width: 3),
                         ),
-                        child:
-                            //  profile.avatar != null
-                            //     ? ClipRRect(
-                            //         borderRadius: BorderRadius.circular(40),
-                            //         child: CachedNetworkImage(
-                            //           imageUrl: profile.avatarUrl,
-                            //           width: 40,
-                            //           height: 40,
-                            //           fit: BoxFit.cover,
-                            //         ),
-                            //       )
-                            //     :
-                            const Icon(Icons.person, size: 20, color: CoreColors.white),
+                        child: profile.avatar != null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(40),
+                                child: CachedNetworkImage(
+                                  imageUrl: profile.avatarUrl,
+                                  width: 40,
+                                  height: 40,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : const Icon(Icons.person, size: 20, color: CoreColors.white),
                       ),
                       SizedBox(width: 10),
                       Expanded(

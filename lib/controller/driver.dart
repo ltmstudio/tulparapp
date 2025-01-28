@@ -137,4 +137,12 @@ class DriverController extends GetxController {
       Log.error('Ошибка удаления аватара $e');
     }
   }
+
+  void resetController() {
+    profile.value = null;
+    profileLoading.value = false;
+    tempFile.value = null;
+    tempFileLoading.value = false;
+    update();
+  }
 }

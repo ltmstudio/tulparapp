@@ -80,4 +80,9 @@ class AddressController extends GetxController {
     isAddressesLoading.value = false;
     update();
   }
+
+  void resetController() {
+    addresses.value = [];
+    isAddressesLoading.value = false;
+  }
 }

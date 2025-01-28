@@ -7,6 +7,7 @@ import 'package:tulpar/core/colors.dart';
 import 'package:tulpar/core/icons.dart';
 import 'package:tulpar/core/styles.dart';
 import 'package:tulpar/view/dialog/lang.dart';
+import 'package:tulpar/view/dialog/logout.dart';
 import 'package:tulpar/view/screen/driver/info/info.dart';
 
 class SettingsTab extends StatefulWidget {
@@ -79,6 +80,17 @@ class _SettingsTabState extends State<SettingsTab> {
               var appMode = appController.appMode.value;
               return ListTile(
                 onTap: () {
+                  appController.switchAppMode(AppMode.driver);
+                },
+                leading: const Icon(Icons.change_circle_outlined),
+                trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14),
+                title: Text("Стать водителем".tr),
+              );
+            }),
+            GetBuilder<AppController>(builder: (appController) {
+              var appMode = appController.appMode.value;
+              return ListTile(
+                onTap: () {
                   if (appMode == AppMode.user) {
                     appController.switchAppMode(AppMode.driver);
                   } else {
@@ -86,12 +98,26 @@ class _SettingsTabState extends State<SettingsTab> {
                   }
                 },
                 leading: const Icon(Icons.change_circle_outlined),
-                trailing: Text(appMode.name)
-                // const Icon(Icons.arrow_forward_ios_rounded, size: 14)
-                ,
-                title: Text("Стать водителем".tr),
+                trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14),
+                title: Text("Перейти в режим клиента".tr),
               );
-            })
+            }),
+            ListTile(
+              onTap: () async {
+                bool confirmed = await showDialog(context: context, builder: (context) => const LogoutConfirmDialog());
+                if (confirmed == true) {
+                  Get.find<UserController>().logout();
+                }
+              },
+              leading: Icon(
+                Icons.logout_rounded,
+                color: CoreColors.error,
+              ),
+              title: Text(
+                "Выйти из аккаунта".tr,
+                style: TextStyle(color: CoreColors.error),
+              ),
+            )
           ],
         ),
       );
