@@ -84,6 +84,19 @@ class _PayDialogState extends State<PayDialog> {
                   },
                 ),
               ),
+            if (info?.payQrPhone != null)
+              ListTile(
+                title: Text("Номер телефона".tr),
+                subtitle: Text(info!.payQrPhone!),
+                contentPadding: const EdgeInsets.all(0),
+                trailing: IconButton(
+                  icon: const Icon(Icons.copy),
+                  onPressed: () {
+                    Clipboard.setData(ClipboardData(text: info.payLink!));
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Скопировано".tr)));
+                  },
+                ),
+              ),
           ],
         ),
       );
