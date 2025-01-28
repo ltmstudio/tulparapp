@@ -18,7 +18,7 @@ class RideTypeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      constraints: BoxConstraints(minWidth: 90),
+      constraints: const BoxConstraints(minWidth: 90),
       duration: const Duration(milliseconds: 100),
       curve: Curves.easeInOut,
       padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -60,11 +60,11 @@ class RideTypeCard extends StatelessWidget {
             ),
           const SizedBox(height: 5),
           Text(carClass.name ?? '-',
-              style: TextStyle(color: CoreColors.primary, fontSize: 14, fontWeight: FontWeight.w700)),
+              style: const TextStyle(color: CoreColors.primary, fontSize: 14, fontWeight: FontWeight.w700)),
           const SizedBox(height: 3),
           Text(
             "от ${carClass.cost ?? ''} ₸",
-            style: TextStyle(color: CoreColors.primary, fontSize: 12),
+            style: const TextStyle(color: CoreColors.primary, fontSize: 12),
           ),
           const SizedBox(height: 5),
         ],

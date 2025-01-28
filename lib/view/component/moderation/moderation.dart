@@ -24,14 +24,14 @@ class ModerationModerationCard extends StatelessWidget {
         children: [
           Text(
             "Аккаунт TULPAR Водитель".tr,
-            style: TextStyle(fontSize: 18, color: CoreColors.white, fontWeight: FontWeight.w800),
+            style: const TextStyle(fontSize: 18, color: CoreColors.white, fontWeight: FontWeight.w800),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
             "Анкета на модерации. Вы получите уведомление после изменения статуса".tr,
-            style: TextStyle(fontSize: 15, color: CoreColors.white, fontWeight: FontWeight.w500),
+            style: const TextStyle(fontSize: 15, color: CoreColors.white, fontWeight: FontWeight.w500),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Row(
             children: [
               const Expanded(
@@ -53,10 +53,10 @@ class ModerationModerationCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text("Отправлено на модерацию:".tr,
-                          textAlign: TextAlign.end, style: TextStyle(color: CoreColors.white)),
+                          textAlign: TextAlign.end, style: const TextStyle(color: CoreColors.white)),
                       Text(DateFormat('dd.MM.yyyy в HH:mm').format(moderation!.updatedAt!).tr,
                           textAlign: TextAlign.end,
-                          style: TextStyle(color: CoreColors.white, fontWeight: FontWeight.w700)),
+                          style: const TextStyle(color: CoreColors.white, fontWeight: FontWeight.w700)),
                     ],
                   ),
                 );

@@ -20,11 +20,11 @@ class _ModerationPersonalScreenState extends State<ModerationPersonalScreen> {
         body: ReactiveForm(
           formGroup: moderationController.moderationForm,
           child: ListView(
-            padding: EdgeInsets.all(CoreDecoration.primaryPadding),
+            padding: const EdgeInsets.all(CoreDecoration.primaryPadding),
             children: [
               Text(
-                "Личная информация",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                "Личная информация".tr,
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 7),
               Padding(

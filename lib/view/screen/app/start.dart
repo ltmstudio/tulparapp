@@ -206,7 +206,7 @@ class _AuthStartScreenState extends State<AuthStartScreen> {
 }
 
 class TabBridge extends StatefulWidget {
-  const TabBridge({Key? key, required this.active, required this.tab}) : super(key: key);
+  const TabBridge({super.key, required this.active, required this.tab});
   final bool active;
   final TabDataModel tab;
 

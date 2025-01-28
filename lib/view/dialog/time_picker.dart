@@ -91,7 +91,7 @@ class _TimeNumberPickerDialogState extends State<TimeNumberPickerDialog> {
             child: Center(
                 child: Text(
               'Выбрать'.tr,
-              style: TextStyle(color: CoreColors.white, fontSize: 14, fontWeight: FontWeight.w500),
+              style: const TextStyle(color: CoreColors.white, fontSize: 14, fontWeight: FontWeight.w500),
             ))),
       ],
     );

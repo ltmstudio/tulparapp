@@ -121,11 +121,11 @@ class DriverOrderController extends GetxController {
       if (e.response?.data != null && e.response?.data['message'] != null) {
         return e.response?.data['message'];
       } else {
-        CoreToast.showToast("Ошибка запроса");
+        CoreToast.showToast("Ошибка запроса".tr);
       }
       Log.error("Ошибка при получении деталей заказа: $e");
     } catch (e) {
-      CoreToast.showToast("Ошибка запроса");
+      CoreToast.showToast("Ошибка запроса".tr);
       Log.error("Ошибка при получении деталей заказа: $e");
     } finally {
       expandedOrderLoading.value = false;
@@ -154,18 +154,18 @@ class DriverOrderController extends GetxController {
         update();
         return resp.data['message'];
       } else {
-        CoreToast.showToast("Ошибка запроса");
+        CoreToast.showToast("Ошибка запроса".tr);
         return null;
       }
     } on DioException catch (e) {
       if (e.response?.data != null && e.response?.data['message'] != null) {
         return e.response?.data['message'];
       } else {
-        CoreToast.showToast("Ошибка запроса");
+        CoreToast.showToast("Ошибка запроса".tr);
       }
       Log.error("Ошибка оформления заказа : $e");
     } catch (e) {
-      CoreToast.showToast("Ошибка запроса");
+      CoreToast.showToast("Ошибка запроса".tr);
       Log.error("Ошибка при получении деталей заказа: $e");
     } finally {
       expandedOrderLoading.value = false;
@@ -194,18 +194,18 @@ class DriverOrderController extends GetxController {
         update();
         return resp.data['message'];
       } else {
-        CoreToast.showToast("Ошибка запроса");
+        CoreToast.showToast("Ошибка запроса".tr);
         return null;
       }
     } on DioException catch (e) {
       if (e.response?.data != null && e.response?.data['message'] != null) {
         return e.response?.data['message'];
       } else {
-        CoreToast.showToast("Ошибка запроса");
+        CoreToast.showToast("Ошибка запроса".tr);
       }
       Log.error("Ошибка оформления заказа : $e");
     } catch (e) {
-      CoreToast.showToast("Ошибка запроса");
+      CoreToast.showToast("Ошибка запроса".tr);
       Log.error("Ошибка при получении деталей заказа: $e");
     } finally {
       expandedOrderLoading.value = false;
@@ -233,18 +233,18 @@ class DriverOrderController extends GetxController {
         update();
         return resp.data['message'];
       } else {
-        CoreToast.showToast("Ошибка запроса");
+        CoreToast.showToast("Ошибка запроса".tr);
         return null;
       }
     } on DioException catch (e) {
       if (e.response?.data != null && e.response?.data['message'] != null) {
         return e.response?.data['message'];
       } else {
-        CoreToast.showToast("Ошибка запроса");
+        CoreToast.showToast("Ошибка запроса".tr);
       }
       Log.error("Ошибка оформления заказа : $e");
     } catch (e) {
-      CoreToast.showToast("Ошибка запроса");
+      CoreToast.showToast("Ошибка запроса".tr);
       Log.error("Ошибка при получении деталей заказа: $e");
     } finally {
       expandedOrderLoading.value = false;

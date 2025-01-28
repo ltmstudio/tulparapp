@@ -84,7 +84,7 @@ class _ModerationAutoScreenState extends State<ModerationAutoScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,7 +179,7 @@ class _ModerationAutoScreenState extends State<ModerationAutoScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     flex: 3,
                     child: Column(
@@ -241,14 +241,14 @@ class _ModerationAutoScreenState extends State<ModerationAutoScreen> {
                           menuItems: <FocusedMenuItem>[
                             FocusedMenuItem(
                                 backgroundColor: Colors.transparent,
-                                title: const Text("Открыть камеру"),
+                                title: Text("Открыть камеру".tr),
                                 trailingIcon: const Icon(Icons.camera_alt_outlined, size: 16),
                                 onPressed: () {
                                   moderationController.pickNUploadPhoto(key: field.name, source: ImageSource.camera);
                                 }),
                             FocusedMenuItem(
                                 backgroundColor: Colors.transparent,
-                                title: const Text("Открыть галерею"),
+                                title: Text("Открыть галерею".tr),
                                 trailingIcon: const Icon(Icons.photo_library_outlined, size: 16),
                                 onPressed: () {
                                   moderationController.pickNUploadPhoto(key: field.name, source: ImageSource.gallery);
@@ -257,7 +257,7 @@ class _ModerationAutoScreenState extends State<ModerationAutoScreen> {
                                 false)
                               FocusedMenuItem(
                                   backgroundColor: Colors.transparent,
-                                  title: const Text("Удалить", style: TextStyle(color: CoreColors.delete)),
+                                  title: Text("Удалить".tr, style: const TextStyle(color: CoreColors.delete)),
                                   trailingIcon:
                                       const Icon(Icons.delete_outline_outlined, size: 16, color: CoreColors.delete),
                                   onPressed: () {

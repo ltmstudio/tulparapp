@@ -20,25 +20,25 @@ class _ModerationInfoScreenState extends State<ModerationInfoScreen> {
       padding: const EdgeInsets.all(CoreDecoration.primaryPadding),
       children: [
         Text(
-          "Общая информация",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          "Общая информация".tr,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: 7),
         GetBuilder<DriverModerationController>(builder: (moderationController) {
           return moderationController.moderation.value?.status == DriverModerationStatus.rejected &&
                   moderationController.moderation.value?.rejectMessage != null
               ? Container(
-                  margin: EdgeInsets.only(bottom: 10),
-                  padding: EdgeInsets.all(CoreDecoration.primaryPadding),
+                  margin: const EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.all(CoreDecoration.primaryPadding),
                   decoration: BoxDecoration(
                       color: CoreColors.error.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Ваша анкета была отклонена модератором.\nПричина:",
-                        style: TextStyle(fontWeight: FontWeight.w600),
+                      Text(
+                        "Ваша анкета была отклонена модератором.\nПричина:".tr,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(height: 7),
                       Text(moderationController.moderation.value?.rejectMessage ?? ""),
@@ -48,11 +48,11 @@ class _ModerationInfoScreenState extends State<ModerationInfoScreen> {
                 )
               : Container();
         }),
-        Text("Чтобы выполнять заказы в системе TULPAR требуется заполнить анкету водителя и пройти модерацию."),
+        const Text("Чтобы выполнять заказы в системе TULPAR требуется заполнить анкету водителя и пройти модерацию."),
         const SizedBox(height: 7),
-        Text("После проверки анкеты и документов, вам будет доступен следующий функционал:"),
-        Padding(
-          padding: const EdgeInsets.only(left: 10, top: 7),
+        const Text("После проверки анкеты и документов, вам будет доступен следующий функционал:"),
+        const Padding(
+          padding: EdgeInsets.only(left: 10, top: 7),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -64,9 +64,9 @@ class _ModerationInfoScreenState extends State<ModerationInfoScreen> {
           ),
         ),
         const SizedBox(height: 7),
-        Text("В анкете потребуется указать следующие данные и документы:"),
-        Padding(
-          padding: const EdgeInsets.only(left: 10, top: 7),
+        const Text("В анкете потребуется указать следующие данные и документы:"),
+        const Padding(
+          padding: EdgeInsets.only(left: 10, top: 7),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -81,16 +81,16 @@ class _ModerationInfoScreenState extends State<ModerationInfoScreen> {
           ),
         ),
         const SizedBox(height: 7),
-        Text(
+        const Text(
             "Все внесенные данные сохраняются на сервере в защищенном хранилище и не передаются третьим лицам. Модерация анкеты проходит в течение 2 рабочих дней после подтвержения отправки."),
         const SizedBox(height: 7),
-        Text("После успешной модерации вам придет смс на ваш номер телефона."),
+        const Text("После успешной модерации вам придет смс на ваш номер телефона."),
         const SizedBox(height: 7),
-        Text("Чтобы прожолжить отметьте пункт ознакомления с правилами использования сервиса."),
+        const Text("Чтобы прожолжить отметьте пункт ознакомления с правилами использования сервиса."),
         const SizedBox(height: 7),
         GetBuilder<DriverModerationController>(builder: (moderationController) {
           return CheckboxListTile(
-            contentPadding: EdgeInsets.symmetric(horizontal: 0),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
             value: moderationController.agreed.value,
             onChanged: (value) {
               if (value == null) return;
@@ -98,8 +98,8 @@ class _ModerationInfoScreenState extends State<ModerationInfoScreen> {
               moderationController.update();
             },
             title: Text(
-              "Я ознакомлен с правилами использования сервиса",
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+              "Я ознакомлен с правилами использования сервиса".tr,
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
             ),
           );
         }),

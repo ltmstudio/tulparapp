@@ -159,15 +159,15 @@ class DriverModerationController extends GetxController {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 404) {
-        CoreToast.showToast("Автомобиль не найден");
+        CoreToast.showToast("Автомобиль не найден".tr);
         searchResultCars.value = [];
         update();
       } else {
-        CoreToast.showToast("Ошибка запроса");
+        CoreToast.showToast("Ошибка запроса".tr);
         Log.error("Ошибка поиска авто $e");
       }
     } catch (e) {
-      CoreToast.showToast("Ошибка запроса");
+      CoreToast.showToast("Ошибка запроса".tr);
       Log.error("Ошибка поиска авто $e");
     }
     searchCarsLoading.value = false;
@@ -253,11 +253,11 @@ class DriverModerationController extends GetxController {
         scs = true;
       } else {
         Log.error("Ошибка сохранения данных модерации ${resp.statusCode} ${resp.data}");
-        CoreToast.showToast("Ошибка сохранения данных анкеты");
+        CoreToast.showToast("Ошибка сохранения данных анкеты".tr);
       }
     } catch (e) {
       Log.error("Ошибка сохранения данных модерации $e");
-      CoreToast.showToast("Ошибка сохранения данных анкеты");
+      CoreToast.showToast("Ошибка сохранения данных анкеты".tr);
     }
     stageLoading.value = false;
     update();
@@ -278,11 +278,11 @@ class DriverModerationController extends GetxController {
         scs = true;
       } else {
         Log.error("Ошибка отправки данных модерации на модерацию ${resp.statusCode} ${resp.data}");
-        CoreToast.showToast("Ошибка отправки данных анкеты на модерацию");
+        CoreToast.showToast("Ошибка отправки данных анкеты на модерацию".tr);
       }
     } catch (e) {
       Log.error("Ошибка отправки данных модерации на модерацию $e");
-      CoreToast.showToast("Ошибка отправки данных анкеты на модерацию");
+      CoreToast.showToast("Ошибка отправки данных анкеты на модерацию".tr);
     }
     stageLoading.value = false;
     update();
@@ -309,13 +309,13 @@ class DriverModerationController extends GetxController {
         if (agreed.value) {
           res = true;
         } else {
-          CoreToast.showToast("Отметьте пункт ознакомления");
+          CoreToast.showToast("Отметьте пункт ознакомления".tr);
         }
       case 1:
         if (moderationForm.control('name').invalid ||
             moderationForm.control('lastname').invalid ||
             moderationForm.control('birthdate').invalid) {
-          CoreToast.showToast("Заполните все обязательные поля");
+          CoreToast.showToast("Заполните все обязательные поля".tr);
           res = false;
         } else {
           bool scs = await storeModeration(['name', 'lastname', 'birthdate']);
@@ -327,7 +327,7 @@ class DriverModerationController extends GetxController {
             moderationForm.control('car_gos_number').invalid ||
             selectedCarModel.value == null ||
             selectedCar.value == null) {
-          CoreToast.showToast("Заполните все поля");
+          CoreToast.showToast("Заполните все поля".tr);
           res = false;
         } else {
           bool scs = await storeModeration(['car_vin', 'car_year', 'car_gos_number']);
@@ -336,7 +336,7 @@ class DriverModerationController extends GetxController {
       case 3:
         if (moderationForm.control('driver_license_date').invalid ||
             moderationForm.control('driver_license_number').invalid) {
-          CoreToast.showToast("Заполните все поля");
+          CoreToast.showToast("Заполните все поля".tr);
           res = false;
         } else {
           bool scs = await storeModeration(['driver_license_date', 'driver_license_number']);
@@ -385,7 +385,7 @@ class DriverModerationController extends GetxController {
       // ],
       uiSettings: [
         AndroidUiSettings(
-            toolbarTitle: 'Редактирование фото',
+            toolbarTitle: 'Редактирование фото'.tr,
             toolbarColor: CoreColors.primary,
             toolbarWidgetColor: CoreColors.white,
             initAspectRatio: CropAspectRatioPreset.original,
@@ -393,7 +393,7 @@ class DriverModerationController extends GetxController {
             cropFrameColor: CoreColors.primary,
             backgroundColor: CoreColors.white,
             activeControlsWidgetColor: CoreColors.primary),
-        IOSUiSettings(title: 'Редактирование фото', aspectRatioLockEnabled: true),
+        IOSUiSettings(title: 'Редактирование фото'.tr, aspectRatioLockEnabled: true),
       ],
     );
     if (croppedFile == null) {
@@ -411,7 +411,7 @@ class DriverModerationController extends GetxController {
           FormData.fromMap({'field_key': key, "image": await MultipartFile.fromFile(tempFile.value[key]!.path)});
       var resp = await dio.post('/driver/moderation/upload_image', data: formData);
       if (resp.statusCode == 200 && resp.data['image_path'] != null) {
-        Log.success('Фото успешно загружено');
+        Log.success('Фото успешно загружено'.tr);
         fetchModeration();
         moderationForm.control(key).updateValue(resp.data['image_path'].toString());
         tempFile.value.remove(key);
@@ -421,8 +421,8 @@ class DriverModerationController extends GetxController {
       } else {
         Log.error('Ошибка выгрузки фото ${resp.data.toString()}');
       }
-    } catch (_) {
-      Log.error(_.toString());
+    } catch (e) {
+      Log.error(e.toString());
     }
     tempFile.value.remove(key);
     tempFileLoading.value.remove(key);
@@ -440,7 +440,7 @@ class DriverModerationController extends GetxController {
         'field_key': key,
       });
       if (resp.statusCode == 200) {
-        Log.success('Фото успешно удалено');
+        Log.success('Фото успешно удалено'.tr);
         fetchModeration();
         moderationForm.control(key).updateValue(null);
         tempFile.value.remove(key);
@@ -450,8 +450,8 @@ class DriverModerationController extends GetxController {
       } else {
         Log.error('Ошибка удаления фото ${resp.data.toString()}');
       }
-    } catch (_) {
-      Log.error(_.toString());
+    } catch (e) {
+      Log.error(e.toString());
     }
     tempFile.value.remove(key);
     tempFileLoading.value.remove(key);

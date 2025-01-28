@@ -14,7 +14,6 @@ class DriverOrdersTab extends StatefulWidget {
 class _DriverOrdersTabState extends State<DriverOrdersTab> {
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
     return DefaultTabController(
       length: 2,
@@ -26,11 +25,11 @@ class _DriverOrdersTabState extends State<DriverOrdersTab> {
         var historyOrdersLoading = orderController.historyOrdersLoading.value;
         return Scaffold(
             appBar: AppBar(
-              title: Text('Мои заказы'),
+              title: Text('Мои заказы'.tr),
               bottom: TabBar(
                 tabs: [
-                  Tab(text: 'Активные'),
-                  Tab(text: 'История'),
+                  Tab(text: 'Активные'.tr),
+                  Tab(text: 'История'.tr),
                 ],
               ),
             ),
@@ -41,7 +40,7 @@ class _DriverOrdersTabState extends State<DriverOrdersTab> {
                     await orderController.fetchMyOrders();
                   },
                   child: ListView(
-                    padding: EdgeInsets.symmetric(vertical: CoreDecoration.primaryPadding),
+                    padding: const EdgeInsets.symmetric(vertical: CoreDecoration.primaryPadding),
                     children: [
                       if (myOrders.isEmpty && myOrdersLoading)
                         Column(
@@ -57,11 +56,11 @@ class _DriverOrdersTabState extends State<DriverOrdersTab> {
                           children: [
                             SizedBox(height: h * 0.3),
                             Text(
-                              'У вас нет заказов',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              'У вас нет заказов'.tr,
+                              style: const TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            SizedBox(height: 10),
-                            Text('Потяните вниз чтобы обновить'),
+                            const SizedBox(height: 10),
+                            Text('Потяните вниз чтобы обновить'.tr),
                           ],
                         )
                       else if (myOrders.isNotEmpty)
@@ -74,7 +73,7 @@ class _DriverOrdersTabState extends State<DriverOrdersTab> {
                     await orderController.fetchHistoryOrders();
                   },
                   child: ListView(
-                    padding: EdgeInsets.symmetric(vertical: CoreDecoration.primaryPadding),
+                    padding: const EdgeInsets.symmetric(vertical: CoreDecoration.primaryPadding),
                     children: [
                       if (historyOrders.isEmpty && historyOrdersLoading)
                         Column(
@@ -90,11 +89,11 @@ class _DriverOrdersTabState extends State<DriverOrdersTab> {
                           children: [
                             SizedBox(height: h * 0.3),
                             Text(
-                              'У вас нет заказов',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              'У вас нет заказов'.tr,
+                              style: const TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            SizedBox(height: 10),
-                            Text('Потяните вниз чтобы обновить'),
+                            const SizedBox(height: 10),
+                            Text('Потяните вниз чтобы обновить'.tr),
                           ],
                         )
                       else if (historyOrders.isNotEmpty)

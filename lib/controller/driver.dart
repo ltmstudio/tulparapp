@@ -6,7 +6,6 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tulpar/controller/app.dart';
 import 'package:tulpar/controller/dio.dart';
-import 'package:tulpar/controller/driver_moderation.dart';
 import 'package:tulpar/controller/driver_order.dart';
 import 'package:tulpar/controller/driver_shift.dart';
 import 'package:tulpar/core/colors.dart';
@@ -75,7 +74,7 @@ class DriverController extends GetxController {
       // ],
       uiSettings: [
         AndroidUiSettings(
-            toolbarTitle: 'Фото профиля',
+            toolbarTitle: 'Фото профиля'.tr,
             toolbarColor: CoreColors.primary,
             toolbarWidgetColor: CoreColors.white,
             initAspectRatio: CropAspectRatioPreset.original,
@@ -83,7 +82,7 @@ class DriverController extends GetxController {
             cropFrameColor: CoreColors.primary,
             backgroundColor: CoreColors.white,
             activeControlsWidgetColor: CoreColors.primary),
-        IOSUiSettings(title: 'Фото профиля', aspectRatioLockEnabled: true),
+        IOSUiSettings(title: 'Фото профиля'.tr, aspectRatioLockEnabled: true),
       ],
     );
     if (croppedFile == null) {
@@ -111,8 +110,8 @@ class DriverController extends GetxController {
       } else {
         Log.error('Ошибка выгрузки фото ${resp.data.toString()}');
       }
-    } catch (_) {
-      Log.error(_.toString());
+    } catch (e) {
+      Log.error(e.toString());
     }
     tempFile.value = null;
     tempFileLoading.value = false;

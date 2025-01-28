@@ -5,7 +5,6 @@ import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 import 'package:tulpar/controller/driver_moderation.dart';
 import 'package:tulpar/core/colors.dart';
 import 'package:tulpar/core/decoration.dart';
-import 'package:tulpar/core/styles.dart';
 
 class CatalogCarsScreen extends StatefulWidget {
   const CatalogCarsScreen({super.key});
@@ -129,7 +128,7 @@ class _CatalogCarsScreenState extends State<CatalogCarsScreen> {
                                           searchString.value = '';
                                         });
                                   }
-                                  return Icon(Icons.search);
+                                  return const Icon(Icons.search);
                                 })),
                       ),
                     ),
@@ -178,10 +177,10 @@ class _CatalogCarsScreenState extends State<CatalogCarsScreen> {
                                             itemBuilder: (context, index) {
                                               var model = car.models![index];
                                               return ListTile(
-                                                leading: Icon(Icons.remove, size: 12, color: CoreColors.primary),
+                                                leading: const Icon(Icons.remove, size: 12, color: CoreColors.primary),
                                                 title: Text(
                                                   "${model.name}",
-                                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                                  style: const TextStyle(fontWeight: FontWeight.bold),
                                                 ),
                                                 onTap: () {
                                                   moderationController.selectedCar.value = car;

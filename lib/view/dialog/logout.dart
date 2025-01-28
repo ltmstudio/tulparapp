@@ -15,14 +15,14 @@ class LogoutConfirmDialog extends StatelessWidget {
         children: [
           Padding(
               padding: const EdgeInsets.all(CoreDecoration.primaryPadding),
-              child: Text("Выход из акканута".tr, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600))),
+              child: Text("Выход из акканута".tr, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600))),
           Padding(
               padding: const EdgeInsets.all(CoreDecoration.primaryPadding),
               child: Text(
                   "Вы действительно хотите выйти из аккунта? Чтобы восстановить доступ потребуется смс подтверждение номера телефона"
                       .tr,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600))),
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600))),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding, vertical: 5),
             child: PrimaryElevatedButton(
@@ -30,7 +30,7 @@ class LogoutConfirmDialog extends StatelessWidget {
                 Navigator.of(context).pop(true);
               },
               light: true,
-              text: 'Выйти из аккаунта',
+              text: 'Выйти из аккаунта'.tr,
               textColor: CoreColors.error,
             ),
           ),
@@ -41,10 +41,10 @@ class LogoutConfirmDialog extends StatelessWidget {
                 Navigator.of(context).pop();
               },
               light: true,
-              text: 'Отмена',
+              text: 'Отмена'.tr,
             ),
           ),
-          SizedBox(height: CoreDecoration.primaryPadding)
+          const SizedBox(height: CoreDecoration.primaryPadding)
         ],
       ),
     );

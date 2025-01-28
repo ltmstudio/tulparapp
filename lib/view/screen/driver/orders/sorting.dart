@@ -19,12 +19,12 @@ class OrdersSortingDialog extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 16.0, left: CoreDecoration.primaryPadding),
-            child: Text("Сортировка", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+            child: Text("Сортировка".tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
           ),
           for (var value in sortingValues)
             RadioListTile<String?>(
               title: Text(
-                "${value.name}",
+                "${value.name}".tr,
                 style: const TextStyle(fontSize: 16),
               ),
               value: value.name,

@@ -69,11 +69,11 @@ class _DriverModerationFormScreenState extends State<DriverModerationFormScreen>
                                   Navigator.of(context).pop();
                                 },
                                 light: true,
-                                text: "Выйти"))
+                                text: "Выйти".tr))
                       else
                         Expanded(
                             child: PrimaryElevatedButton(
-                                onPressed: moderationController.previousPage, light: true, text: "Назад")),
+                                onPressed: moderationController.previousPage, light: true, text: "Назад".tr)),
                       const SizedBox(width: 10),
                       if (currentPage == allScreens.length - 1)
                         Expanded(
@@ -86,7 +86,7 @@ class _DriverModerationFormScreenState extends State<DriverModerationFormScreen>
                                     Navigator.of(context).pop();
                                   }
                                 },
-                                text: "Подтвердить"))
+                                text: "Подтвердить".tr))
                       else
                         Expanded(
                             child: PrimaryElevatedButton(
@@ -97,7 +97,7 @@ class _DriverModerationFormScreenState extends State<DriverModerationFormScreen>
                                     moderationController.nextPage();
                                   }
                                 },
-                                text: "Далее")),
+                                text: "Далее".tr)),
                     ],
                   ),
                 )

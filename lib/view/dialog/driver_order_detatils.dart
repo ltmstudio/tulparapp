@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:tulpar/controller/driver.dart';
 import 'package:tulpar/controller/driver_order.dart';
 import 'package:tulpar/core/colors.dart';
@@ -30,7 +29,6 @@ class _DriverOrderDetailsDialogState extends State<DriverOrderDetailsDialog> {
 
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
 
     return GetBuilder<DriverOrderController>(builder: (orderController) {
@@ -241,15 +239,17 @@ class _DriverOrderDetailsDialogState extends State<DriverOrderDetailsDialog> {
                 ),
               if (order?.phone != null)
                 ListTile(
-                    contentPadding: EdgeInsets.all(0),
+                    contentPadding: const EdgeInsets.all(0),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
                             onPressed: () async {
                               await Clipboard.setData(ClipboardData(text: "+7${order?.phone}"));
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(content: Text('Номер скопирован')));
+                              if (mounted) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(content: Text('Номер скопирован'.tr)));
+                              }
                             },
                             icon: const Icon(Icons.copy, color: CoreColors.primary)),
                         IconButton(
@@ -261,7 +261,7 @@ class _DriverOrderDetailsDialogState extends State<DriverOrderDetailsDialog> {
                               if (await canLaunchUrl(url)) {
                                 await launchUrl(url);
                               } else {
-                                CoreToast.showToast("Ошибка при попытке позвонить");
+                                CoreToast.showToast("Ошибка при попытке позвонить".tr);
                               }
                             },
                             icon: const Icon(Icons.phone, color: CoreColors.primary)),
@@ -271,7 +271,7 @@ class _DriverOrderDetailsDialogState extends State<DriverOrderDetailsDialog> {
                       "+7 ${order?.phone}",
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    subtitle: const Text('Телефон клиента')),
+                    subtitle: Text('Телефон клиента'.tr)),
             ])),
             Row(
               children: [
@@ -339,19 +339,19 @@ class _DriverOrderDetailsDialogState extends State<DriverOrderDetailsDialog> {
                                   itemBuilder: (context) {
                                     return [
                                       PopupMenuItem(
+                                          value: 'edit',
                                           child: Row(
                                             children: [
-                                              Icon(Icons.close, size: 14, color: CoreColors.error),
-                                              SizedBox(width: 5),
-                                              Text('Отказаться'.tr, style: TextStyle(color: CoreColors.error)),
+                                              const Icon(Icons.close, size: 14, color: CoreColors.error),
+                                              const SizedBox(width: 5),
+                                              Text('Отказаться'.tr, style: const TextStyle(color: CoreColors.error)),
                                             ],
-                                          ),
-                                          value: 'edit'),
+                                          )),
                                     ];
                                   },
                                   onSelected: (value) async {
                                     bool? confirmed = await showDialog(
-                                        context: context, builder: (context) => DriverOrderRejectConfirmDialog());
+                                        context: context, builder: (context) => const DriverOrderRejectConfirmDialog());
                                     if (confirmed == true) {
                                       if (order?.id != null) {
                                         String? alertMessage = await orderController.cancelOrderRequest(order!.id!);

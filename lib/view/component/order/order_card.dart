@@ -61,15 +61,15 @@ class OrderCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Divider(),
+                const Divider(),
                 Row(
                   children: [
-                    Icon(Icons.place_outlined, size: 26, color: CoreColors.primary),
+                    const Icon(Icons.place_outlined, size: 26, color: CoreColors.primary),
                     const SizedBox(width: 5),
                     Flexible(
                       child: Text(
                         order.pointA ?? '--',
-                        style: TextStyle(fontSize: 14, color: CoreColors.black),
+                        style: const TextStyle(fontSize: 14, color: CoreColors.black),
                       ),
                     ),
                   ],
@@ -81,13 +81,13 @@ class OrderCard extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.place_outlined, size: 26, color: CoreColors.primary),
+                    const Icon(Icons.place_outlined, size: 26, color: CoreColors.primary),
                     const SizedBox(width: 5),
                     Flexible(
                         child: Text(
                       order.pointB ?? '--',
                       softWrap: true,
-                      style: TextStyle(fontSize: 14, color: CoreColors.black),
+                      style: const TextStyle(fontSize: 14, color: CoreColors.black),
                     )),
                   ],
                 ),
@@ -97,7 +97,7 @@ class OrderCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Divider(),
+                const Divider(),
                 Text.rich(
                   TextSpan(
                     children: [
@@ -126,7 +126,7 @@ class OrderCard extends StatelessWidget {
                 ),
               ],
             ),
-          Divider(),
+          const Divider(),
           Row(
             children: [
               if (order.typeId != null)
@@ -163,7 +163,7 @@ class OrderCard extends StatelessWidget {
                 ),
             ],
           ),
-          Divider(),
+          const Divider(),
           if (order.driverId != null && order.driver != null)
             Builder(builder: (_) {
               var profile = order.driver!;
@@ -197,7 +197,7 @@ class OrderCard extends StatelessWidget {
                               )
                             : const Icon(Icons.person, size: 20, color: CoreColors.white),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Expanded(
                           child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -205,7 +205,7 @@ class OrderCard extends StatelessWidget {
                         children: [
                           Text(
                             profile.fullname,
-                            style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
                           ),
                           Row(children: [
                             if (profile.carName != null)
@@ -259,7 +259,7 @@ class OrderCard extends StatelessWidget {
                       bool? delete = await showDialog(
                         context: context,
                         builder: (context) {
-                          return UserOrderDeleteConfirmDialog();
+                          return const UserOrderDeleteConfirmDialog();
                         },
                       );
                       if (order.id != null && delete == true) {

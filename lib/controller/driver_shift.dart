@@ -122,7 +122,7 @@ class DriverShiftController extends GetxController {
   // Покупка смены
   Future<void> orderShift() async {
     if (selectedShift.value?.id == null) {
-      CoreToast.showToast("Веберите смену");
+      CoreToast.showToast("Выберите смену".tr);
       Log.warning("Не выбрана смена для покупки");
       return;
     }
@@ -147,7 +147,7 @@ class DriverShiftController extends GetxController {
         fetchShiftStatus();
         Get.find<DriverController>().fetchProfile();
       } else {
-        CoreToast.showToast("Ошибка покупки смены");
+        CoreToast.showToast("Ошибка покупки смены".tr);
         Log.error("Ошибка заказа смены");
       }
     } on DioException catch (e) {
@@ -166,7 +166,7 @@ class DriverShiftController extends GetxController {
           }
           break;
         default:
-          CoreToast.showToast("Ошибка заказа смены");
+          CoreToast.showToast("Ошибка покупки смены".tr);
           Log.error("Ошибка заказа смены - $e");
       }
     } catch (e) {

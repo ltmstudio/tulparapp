@@ -36,19 +36,19 @@ class _PayDialogState extends State<PayDialog> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "Пополнение баланса",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              "Пополнение баланса".tr,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
-              "Ваш баланс будет пополнен суммой оплаты после подтверждения модератором",
+              "Ваш баланс будет пополнен суммой оплаты после подтверждения модератором".tr,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
             if (loading)
-              Expanded(child: Center(child: CircularProgressIndicator()))
+              const Expanded(child: Center(child: CircularProgressIndicator()))
             else if (!loading && info == null)
-              Text("Ошибка получения данных")
+              Text("Ошибка получения данных".tr)
             else
               Expanded(
                   child: Column(
@@ -65,9 +65,9 @@ class _PayDialogState extends State<PayDialog> {
               )),
             if (info?.payLink != null)
               ListTile(
-                title: Text("Ссылка на оплату"),
+                title: Text("Ссылка на оплату".tr),
                 subtitle: Text(info!.payLink!),
-                contentPadding: EdgeInsets.all(0),
+                contentPadding: const EdgeInsets.all(0),
                 onTap: () async {
                   if (await canLaunchUrlString(info.payLink!)) {
                     Log.info("Открытие ссылки на оплату: ${info.payLink}");
@@ -77,10 +77,10 @@ class _PayDialogState extends State<PayDialog> {
                   }
                 },
                 trailing: IconButton(
-                  icon: Icon(Icons.copy),
+                  icon: const Icon(Icons.copy),
                   onPressed: () {
-                    Clipboard.setData(ClipboardData(text: info!.payLink!));
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Скопировано")));
+                    Clipboard.setData(ClipboardData(text: info.payLink!));
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Скопировано".tr)));
                   },
                 ),
               ),

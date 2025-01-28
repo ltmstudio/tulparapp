@@ -15,11 +15,11 @@ class UserOrderDeleteConfirmDialog extends StatelessWidget {
         children: [
           Padding(
               padding: const EdgeInsets.all(CoreDecoration.primaryPadding),
-              child: Text("Отмена заказа".tr, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600))),
+              child: Text("Отмена заказа".tr, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600))),
           Padding(
               padding: const EdgeInsets.all(CoreDecoration.primaryPadding),
               child: Text("Вы действительно хотите отменить заказ?".tr,
-                  textAlign: TextAlign.center, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600))),
+                  textAlign: TextAlign.center, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600))),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding, vertical: 5),
             child: PrimaryElevatedButton(
@@ -27,7 +27,7 @@ class UserOrderDeleteConfirmDialog extends StatelessWidget {
                 Navigator.of(context).pop(true);
               },
               light: true,
-              text: 'Отменить заказ',
+              text: 'Отменить заказ'.tr,
               textColor: CoreColors.error,
             ),
           ),
@@ -38,10 +38,10 @@ class UserOrderDeleteConfirmDialog extends StatelessWidget {
                 Navigator.of(context).pop();
               },
               light: true,
-              text: 'Назад',
+              text: 'Назад'.tr,
             ),
           ),
-          SizedBox(height: CoreDecoration.primaryPadding)
+          const SizedBox(height: CoreDecoration.primaryPadding)
         ],
       ),
     );

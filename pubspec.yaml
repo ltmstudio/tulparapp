@@ -61,6 +61,7 @@ dependencies:
   focused_menu: ^1.0.5
   url_launcher: ^6.3.1
 
+  collection: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

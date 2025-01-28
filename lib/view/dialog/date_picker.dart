@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
-import 'package:tulpar/core/colors.dart';
 import 'package:tulpar/core/decoration.dart';
 import 'package:tulpar/view/widget/elevated_button.dart';
 

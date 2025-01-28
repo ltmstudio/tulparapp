@@ -62,7 +62,7 @@ class DriverOrderCard extends StatelessWidget {
                   }),
               ],
             ),
-            Divider(),
+            const Divider(),
             if (order.typeId == 1 && order.pointA != null && order.pointB != null)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,7 +74,7 @@ class DriverOrderCard extends StatelessWidget {
                       Flexible(
                         child: Text(
                           order.pointA ?? '--',
-                          style: TextStyle(fontSize: 14, color: CoreColors.black, fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontSize: 14, color: CoreColors.black, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
@@ -86,13 +86,13 @@ class DriverOrderCard extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.place_outlined, size: 26, color: CoreColors.primary),
+                      const Icon(Icons.place_outlined, size: 26, color: CoreColors.primary),
                       const SizedBox(width: 5),
                       Flexible(
                           child: Text(
                         order.pointB ?? '--',
                         softWrap: true,
-                        style: TextStyle(fontSize: 14, color: CoreColors.black, fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontSize: 14, color: CoreColors.black, fontWeight: FontWeight.bold),
                       )),
                     ],
                   ),
@@ -130,7 +130,7 @@ class DriverOrderCard extends StatelessWidget {
                   ),
                 ],
               ),
-            Divider(),
+            const Divider(),
             Row(
               children: [
                 Row(
@@ -140,7 +140,7 @@ class DriverOrderCard extends StatelessWidget {
                       const SizedBox(width: 5),
                       Text(
                         order.className!,
-                        style: TextStyle(fontSize: 14, color: CoreColors.black),
+                        style: const TextStyle(fontSize: 14, color: CoreColors.black),
                       ),
                       const SizedBox(width: 14),
                     ],
@@ -149,7 +149,7 @@ class DriverOrderCard extends StatelessWidget {
                       const SizedBox(width: 5),
                       Text(
                         "${order.people}",
-                        style: TextStyle(fontSize: 14, color: CoreColors.black),
+                        style: const TextStyle(fontSize: 14, color: CoreColors.black),
                       ),
                     ]
                   ],
@@ -157,7 +157,7 @@ class DriverOrderCard extends StatelessWidget {
                 const Spacer(),
                 Text(
                   "+${order.userCost} ₸",
-                  style: TextStyle(fontSize: 16, color: CoreColors.primary, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 16, color: CoreColors.primary, fontWeight: FontWeight.bold),
                 ),
               ],
             )

@@ -13,7 +13,7 @@ class CatalogCarModelsScreen extends StatefulWidget {
 class _CatalogCarModelsScreenState extends State<CatalogCarModelsScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Get.find<DriverModerationController>().fetchCarModels(widget.carId);
     });
     super.initState();

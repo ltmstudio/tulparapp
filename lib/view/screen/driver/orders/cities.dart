@@ -24,7 +24,7 @@ class OrdersCitiesFiltersDialog extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 16.0, left: CoreDecoration.primaryPadding),
-            child: Text("Фильтр по городам", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+            child: Text("Фильтр по городам".tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
@@ -82,7 +82,7 @@ class OrdersCitiesFiltersDialog extends StatelessWidget {
                       child: DropdownButton<CityModel?>(
                         isExpanded: true,
                         underline: const SizedBox(),
-                        value: orderController.selectedCityB.value,
+                        value: cityB,
                         items: [
                           DropdownMenuItem<CityModel?>(
                             value: null,
@@ -108,7 +108,7 @@ class OrdersCitiesFiltersDialog extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Row(
                   children: [
                     Expanded(
@@ -118,7 +118,7 @@ class OrdersCitiesFiltersDialog extends StatelessWidget {
                             orderController.unsetSelectedCities();
                             Navigator.of(context).pop(true);
                           },
-                          text: 'Сбросить'),
+                          text: 'Сбросить'.tr),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
@@ -128,7 +128,7 @@ class OrdersCitiesFiltersDialog extends StatelessWidget {
                                 orderController.selectedCityA.value, orderController.selectedCityB.value);
                             Navigator.of(context).pop(true);
                           },
-                          text: 'Применить'),
+                          text: 'Применить'.tr),
                     ),
                   ],
                 )

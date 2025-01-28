@@ -19,11 +19,11 @@ class OrdersFiltersDialog extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 16.0, left: CoreDecoration.primaryPadding),
-            child: Text("Фильтрация", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+            child: Text("Фильтрация".tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
           ),
           RadioListTile<int?>(
             title: Text(
-              "Все",
+              "Все".tr,
               style: const TextStyle(fontSize: 16),
             ),
             value: null,

@@ -67,14 +67,14 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                           menuItems: <FocusedMenuItem>[
                             FocusedMenuItem(
                                 backgroundColor: Colors.transparent,
-                                title: const Text("Открыть камеру"),
+                                title: Text("Открыть камеру".tr),
                                 trailingIcon: const Icon(Icons.camera_alt_outlined, size: 16),
                                 onPressed: () {
                                   driverController.pickNUploadPhoto(source: ImageSource.camera);
                                 }),
                             FocusedMenuItem(
                                 backgroundColor: Colors.transparent,
-                                title: const Text("Открыть галерею"),
+                                title: Text("Открыть галерею".tr),
                                 trailingIcon: const Icon(Icons.photo_library_outlined, size: 16),
                                 onPressed: () {
                                   driverController.pickNUploadPhoto(source: ImageSource.gallery);
@@ -82,7 +82,7 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                             if (profile.avatar != null)
                               FocusedMenuItem(
                                   backgroundColor: Colors.transparent,
-                                  title: const Text("Удалить", style: TextStyle(color: CoreColors.delete)),
+                                  title: Text("Удалить".tr, style: const TextStyle(color: CoreColors.delete)),
                                   trailingIcon:
                                       const Icon(Icons.delete_outline_outlined, size: 16, color: CoreColors.delete),
                                   onPressed: () {
@@ -108,7 +108,7 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                                     borderRadius: BorderRadius.circular(75),
                                     child: Builder(builder: (_) {
                                       var tempFile = driverController.tempFile.value;
-                                      var tempFileLoading = driverController.tempFileLoading.value;
+                                      // var tempFileLoading = driverController.tempFileLoading.value;
                                       if (tempFile != null) {
                                         return Image.file(
                                           File(tempFile.path),
@@ -140,7 +140,7 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                           children: [
                             Text(
                               profile.fullname,
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                             Row(children: [
                               if (profile.carName != null)
@@ -184,7 +184,7 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                         child: ListTile(
                           contentPadding: EdgeInsets.zero,
                           title: Text(
-                            "Текущий баланс: ${profile?.balance} ₸",
+                            "${"Текущий баланс".tr}: ${profile?.balance} ₸",
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           subtitle: profile?.level == null
@@ -198,20 +198,20 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                                 ),
                           trailing: TextButton(
                               onPressed: () {
-                                showModalBottomSheet(context: context, builder: (context) => PayDialog());
+                                showModalBottomSheet(context: context, builder: (context) => const PayDialog());
                               },
-                              child: Text("Пополнить")),
+                              child: Text("Пополнить".tr)),
                         ),
                       );
                     default:
                       return const ModerationPreparationCard();
                   }
                 }),
-                SizedBox(height: 15),
-                Divider(),
+                const SizedBox(height: 15),
+                const Divider(),
                 ListTile(
                   leading: const Icon(Icons.info_outline_rounded),
-                  title: const Text("Справочник и FAQ"),
+                  title: Text("Справочник и FAQ".tr),
                   trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14),
                   onTap: () {
                     Navigator.of(context).push(
@@ -250,13 +250,13 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                       Get.find<UserController>().logout();
                     }
                   },
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.logout_rounded,
                     color: CoreColors.error,
                   ),
                   title: Text(
                     "Выйти из аккаунта".tr,
-                    style: TextStyle(color: CoreColors.error),
+                    style: const TextStyle(color: CoreColors.error),
                   ),
                 )
               ],

@@ -21,7 +21,7 @@ class PayController extends GetxController {
       payInfo.value = payInfoModelFromJson(json.encode(response.data));
       Log.info('Получена информация о платеже');
     } catch (e) {
-      CoreToast.showToast("Ошибка запроса");
+      CoreToast.showToast("Ошибка запроса".tr);
       Log.error("Ощибка получения информации о платеже: $e");
     } finally {
       payInfoLoading.value = false;

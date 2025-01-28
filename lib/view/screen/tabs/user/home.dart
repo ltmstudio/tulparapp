@@ -25,7 +25,6 @@ import 'package:tulpar/core/log.dart';
 import 'package:tulpar/core/styles.dart';
 import 'package:tulpar/core/toast.dart';
 import 'package:tulpar/extension/string.dart';
-import 'package:tulpar/model/app/city.dart';
 import 'package:tulpar/model/order/car_class.dart';
 import 'package:tulpar/model/order/order.dart';
 import 'package:tulpar/model/user/address.dart';
@@ -121,7 +120,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
     var tabBar = TabBar(
         controller: _tabController,
         onTap: (value) => selectedIndex.value = value,
-        tabs: [Tab(text: "Город"), Tab(text: "Межгород"), Tab(text: "Грузоперевозки межгород")]);
+        tabs: [Tab(text: "Город".tr), Tab(text: "Межгород".tr), Tab(text: "Грузоперевозки межгород".tr)]);
     return GetBuilder<UserOrderController>(builder: (orderController) {
       // map
       var followLocation = orderController.followLocation.value;
@@ -178,13 +177,13 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                         );
 
                                         var bounds = LatLngBounds.fromPoints([pointALatLng, pointBLatLng]);
-                                        Future.delayed(Duration(milliseconds: 300), () {
+                                        Future.delayed(const Duration(milliseconds: 300), () {
                                           if (pointA.geo != null &&
                                               pointB.geo != null &&
                                               index == 0 &&
                                               !isLocSelector) {
                                             mapController.fitCamera(
-                                                CameraFit.bounds(bounds: bounds, padding: EdgeInsets.all(50)));
+                                                CameraFit.bounds(bounds: bounds, padding: const EdgeInsets.all(50)));
                                           }
                                         });
                                       } else if (myPos != null && followLocation && !isLocSelector) {
@@ -308,7 +307,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                                         child: const Center(
                                                           child: Text("A",
                                                               textAlign: TextAlign.center,
-                                                              style: const TextStyle(
+                                                              style: TextStyle(
                                                                   height: 1,
                                                                   color: CoreColors.primary,
                                                                   fontSize: 18,
@@ -335,7 +334,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                                         child: const Center(
                                                           child: Text("Б",
                                                               textAlign: TextAlign.center,
-                                                              style: const TextStyle(
+                                                              style: TextStyle(
                                                                   height: 1,
                                                                   color: CoreColors.primary,
                                                                   fontSize: 18,
@@ -386,10 +385,10 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                                 Text(locSelectorTitle,
                                                     style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
                                               if (isGeocodeLoading)
-                                                Column(
+                                                const Column(
                                                   children: [
-                                                    const SizedBox(height: 10),
-                                                    const LinearProgressIndicator(color: CoreColors.primary),
+                                                    SizedBox(height: 10),
+                                                    LinearProgressIndicator(color: CoreColors.primary),
                                                   ],
                                                 ),
                                               const SizedBox(height: 10),
@@ -432,7 +431,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                                       mainAxisAlignment: MainAxisAlignment.center,
                                                       children: [
                                                         Icon(Icons.check_rounded),
-                                                        Text(' Выбрать адресс'),
+                                                        Text(' Выбрать адрес'),
                                                       ],
                                                     ),
                                                   ),
@@ -457,13 +456,13 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                   child: geoRoute?.route?.distance == null ||
                                           geoRoute?.route?.duration == null ||
                                           isLocSelector
-                                      ? SizedBox()
+                                      ? const SizedBox()
                                       : Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Container(
-                                              margin: EdgeInsets.only(bottom: 10),
-                                              padding: EdgeInsets.symmetric(horizontal: 15),
+                                              margin: const EdgeInsets.only(bottom: 10),
+                                              padding: const EdgeInsets.symmetric(horizontal: 15),
                                               height: 40,
                                               decoration: BoxDecoration(
                                                 color: CoreColors.white,
@@ -472,24 +471,24 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  Icon(
+                                                  const Icon(
                                                     Icons.route_outlined,
                                                     color: CoreColors.primary,
                                                     size: 18,
                                                   ),
                                                   Text(
                                                     ' ${geoRoute?.route?.distanceInKilometers ?? ''} км',
-                                                    style: TextStyle(fontSize: 14),
+                                                    style: const TextStyle(fontSize: 14),
                                                   ),
                                                   const SizedBox(width: 10),
-                                                  Icon(
+                                                  const Icon(
                                                     Icons.access_time_rounded,
                                                     color: CoreColors.primary,
                                                     size: 18,
                                                   ),
                                                   Text(
                                                     ' ${geoRoute?.route?.durationInMinutes ?? ''} мин',
-                                                    style: TextStyle(fontSize: 14),
+                                                    style: const TextStyle(fontSize: 14),
                                                   ),
                                                 ],
                                               ),
@@ -512,7 +511,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
               tabBar,
               Expanded(
                   child: TabBarView(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 controller: _tabController,
                 children: [
                   GetBuilder<AddressController>(builder: (addressController) {
@@ -521,7 +520,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                         await orderController.fetchCarClasses();
                       },
                       child: ListView(
-                        padding: EdgeInsets.symmetric(vertical: CoreDecoration.primaryPadding),
+                        padding: const EdgeInsets.symmetric(vertical: CoreDecoration.primaryPadding),
                         children: [
                           Padding(
                               padding: const EdgeInsets.only(left: 15, bottom: 10),
@@ -548,7 +547,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                         ),
                                       ),
                                     ),
-                                  VerticalDivider(width: 2),
+                                  const VerticalDivider(width: 2),
                                   ValueListenableBuilder(
                                       valueListenable: isDelivery,
                                       builder: (_, isD, __) {
@@ -563,7 +562,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                               isDelivery.value = !isD;
                                             },
                                             child: RideTypeCard(
-                                              carClass: CarClassModel(name: "Курьер", cost: 100),
+                                              carClass: CarClassModel(name: "Курьер".tr, cost: 100),
                                               isActive: isD,
                                               asset: CoreAssets.deliveryClass,
                                             ),
@@ -584,7 +583,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                               isCargo.value = !isD;
                                             },
                                             child: RideTypeCard(
-                                              carClass: CarClassModel(name: "Груз", cost: 100),
+                                              carClass: CarClassModel(name: "Груз".tr, cost: 100),
                                               isActive: isD,
                                               asset: CoreAssets.cargoClass,
                                             ),
@@ -767,7 +766,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                         decoration: CoreDecoration.textField.copyWith(
                                             hintText: 'Укажите за сколько хотите доехать'.tr,
-                                            suffixIcon: IconButton(
+                                            suffixIcon: const IconButton(
                                                 onPressed: null,
                                                 icon: Text(
                                                   "₸",
@@ -780,7 +779,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                     ],
                                   ),
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -828,12 +827,12 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                                       timeController.clear();
                                                       setState(() {});
                                                     },
-                                                    icon: Icon(
+                                                    icon: const Icon(
                                                       Icons.close,
                                                       color: CoreColors.primary,
                                                       size: 16,
                                                     ))
-                                                : IconButton(
+                                                : const IconButton(
                                                     onPressed: null,
                                                     icon: Icon(
                                                       Icons.access_time_rounded,
@@ -844,7 +843,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                     ],
                                   ),
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -874,7 +873,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                                           peopleValue.value = peopleValue.value - 1;
                                                         }
                                                       },
-                                                      icon: Icon(
+                                                      icon: const Icon(
                                                         Icons.remove,
                                                         color: CoreColors.primary,
                                                         size: 16,
@@ -883,7 +882,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                                       onPressed: () {
                                                         peopleValue.value = peopleValue.value + 1;
                                                       },
-                                                      icon: Icon(
+                                                      icon: const Icon(
                                                         Icons.add,
                                                         color: CoreColors.primary,
                                                         size: 16,
@@ -920,9 +919,9 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                           child: child,
                                         ),
                                     child: !expanded
-                                        ? SizedBox()
+                                        ? const SizedBox()
                                         : Container(
-                                            padding: EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
+                                            padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
                                             child: TextField(
                                               controller: commentsController,
                                               onTapOutside: (event) {
@@ -981,7 +980,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                           )
                                         : Text(
                                             'Заказать TULPAR'.tr,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 color: CoreColors.white, fontSize: 14, fontWeight: FontWeight.w500),
                                           ))),
                           ),

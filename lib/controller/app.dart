@@ -79,8 +79,8 @@ class AppController extends GetxController {
         Log.error("Ошибка подключения");
         appStatus.value = AppConnectionStatus.error;
       }
-    } catch (_) {
-      Log.error('Ошибка подключения $_');
+    } catch (e) {
+      Log.error('Ошибка подключения $e');
       appStatus.value = AppConnectionStatus.error;
     }
     update();

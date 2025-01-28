@@ -18,7 +18,7 @@ class LanguageDialog extends StatelessWidget {
           children: [
             Padding(
                 padding: const EdgeInsets.all(CoreDecoration.primaryPadding),
-                child: Text("Язык".tr, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600))),
+                child: Text("Язык".tr, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600))),
             for (var lang in AppController.supportedLocales)
               ListTile(
                 leading: ClipRRect(

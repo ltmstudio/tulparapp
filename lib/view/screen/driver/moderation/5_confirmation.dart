@@ -42,7 +42,7 @@ class _ModerationConfirmationScreenState extends State<ModerationConfirmationScr
             ),
             const SizedBox(height: 7),
             Text("Убедитесь что все данные заполнены верно".tr),
-            Divider(),
+            const Divider(),
             Padding(padding: labelPadding, child: Text('Имя'.tr, style: labelStyle)),
             Padding(
                 padding: valuePadding,

@@ -49,8 +49,8 @@ class OrderModel {
   }
 
   String? get className {
-    if (isCargo == true) return 'Груз';
-    if (isDelivery == true) return 'Доставка';
+    if (isCargo == true) return 'Груз'.tr;
+    if (isDelivery == true) return 'Доставка'.tr;
     return carClass?.name;
   }
 
@@ -58,11 +58,11 @@ class OrderModel {
   String? get timeAgo {
     if (createdAt == null) return null;
     var diff = DateTime.now().difference(createdAt!);
-    if (diff.inMinutes < 1) return 'только что';
-    if (diff.inMinutes < 60) return '${diff.inMinutes} мин. назад';
-    if (diff.inHours < 24) return '${diff.inHours} ч. назад';
-    if (diff.inDays < 30) return '${diff.inDays} д. назад';
-    return 'больше месяца назад';
+    if (diff.inMinutes < 1) return 'только что'.tr;
+    if (diff.inMinutes < 60) return '${diff.inMinutes} ${"мин. назад".tr}';
+    if (diff.inHours < 24) return '${diff.inHours} ${"ч. назад".tr}';
+    if (diff.inDays < 30) return '${diff.inDays} ${"д. назад".tr}';
+    return 'больше месяца назад'.tr;
   }
 
   OrderModel({

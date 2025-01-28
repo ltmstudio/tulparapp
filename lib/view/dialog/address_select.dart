@@ -39,7 +39,7 @@ class AddressSelectDialog extends StatelessWidget {
                   padding: const EdgeInsets.only(
                     bottom: 15,
                   ),
-                  child: Text(title!, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700))),
+                  child: Text(title!, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700))),
             if (addresses.isEmpty)
               Expanded(
                   child: Center(
@@ -51,20 +51,20 @@ class AddressSelectDialog extends StatelessWidget {
                 itemBuilder: (context, index) {
                   var address = addresses[index];
                   return ListTile(
-                    contentPadding: EdgeInsets.all(0),
+                    contentPadding: const EdgeInsets.all(0),
                     leading: PopupMenuButton(
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                         itemBuilder: (context) {
                           return [
                             PopupMenuItem(
+                                value: 'edit',
                                 child: Row(
                                   children: [
-                                    Icon(Icons.delete_outline_outlined, size: 14, color: CoreColors.error),
-                                    SizedBox(width: 5),
-                                    Text('Удалить'.tr, style: TextStyle(color: CoreColors.error)),
+                                    const Icon(Icons.delete_outline_outlined, size: 14, color: CoreColors.error),
+                                    const SizedBox(width: 5),
+                                    Text('Удалить'.tr, style: const TextStyle(color: CoreColors.error)),
                                   ],
-                                ),
-                                value: 'edit'),
+                                )),
                           ];
                         },
                         onSelected: (value) {
@@ -76,9 +76,9 @@ class AddressSelectDialog extends StatelessWidget {
                       onSelected?.call(address);
                       Navigator.of(context).pop();
                     },
-                    trailing: Padding(
-                      padding: const EdgeInsets.only(right: 5),
-                      child: const Icon(Icons.chevron_right),
+                    trailing: const Padding(
+                      padding: EdgeInsets.only(right: 5),
+                      child: Icon(Icons.chevron_right),
                     ),
                     title: Text('${address.address}'),
                   );

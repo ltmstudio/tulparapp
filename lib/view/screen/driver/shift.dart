@@ -27,7 +27,6 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
-    double h = MediaQuery.of(context).size.height;
     return DefaultTabController(
       length: 2,
       child: GetBuilder<DriverShiftController>(builder: (shiftController) {
@@ -41,13 +40,13 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
         var shiftStatus = shiftController.shiftStatus.value;
         return Scaffold(
           appBar: AppBar(
-            title: Text("Смены"),
+            title: Text("Смены".tr),
             bottom: TabBar(tabs: [
               Tab(
-                text: "Статус",
+                text: "Статус".tr,
               ),
               Tab(
-                text: "История",
+                text: "История".tr,
               ),
             ]),
           ),
@@ -55,7 +54,7 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
             children: [
               // Статус
               ListView(
-                padding: EdgeInsets.all(CoreDecoration.primaryPadding),
+                padding: const EdgeInsets.all(CoreDecoration.primaryPadding),
                 children: [
                   shiftStatus?.isActive == true
                       ? Container(
@@ -139,8 +138,8 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                         ),
                   const SizedBox(height: 15),
                   Text(
-                    "Приобрести смену",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    "Приобрести смену".tr,
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   Container(
                     margin: const EdgeInsets.only(top: 10),
@@ -173,14 +172,14 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                                       children: [
                                         SizedBox(width: w, height: 15),
                                         Text(
-                                          "Смены не найдены",
-                                          style: TextStyle(fontSize: 16),
+                                          "Смены не найдены".tr,
+                                          style: const TextStyle(fontSize: 16),
                                         ),
                                         TextButton(
                                             onPressed: () {
                                               shiftController.fetchAvailableShifts();
                                             },
-                                            child: const Text("Обновить")),
+                                            child: Text("Обновить".tr)),
                                         SizedBox(width: w, height: 15),
                                       ],
                                     )
@@ -191,7 +190,7 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                                           return ListTile(
                                             contentPadding: EdgeInsets.zero,
                                             title: Text(
-                                              "Текущий баланс: ${driver?.balance} ₸",
+                                              "${"Текущий баланс".tr}: ${driver?.balance} ₸",
                                               style: const TextStyle(fontWeight: FontWeight.bold),
                                             ),
                                             subtitle: driver?.level == null
@@ -207,12 +206,12 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                                             trailing: TextButton(
                                                 onPressed: () {
                                                   showModalBottomSheet(
-                                                      context: context, builder: (context) => PayDialog());
+                                                      context: context, builder: (context) => const PayDialog());
                                                 },
-                                                child: Text("Пополнить")),
+                                                child: Text("Пополнить".tr)),
                                           );
                                         }),
-                                        Divider(),
+                                        const Divider(),
                                         for (var shift in availableShifts!.shifts!)
                                           RadioListTile<int?>(
                                             title: Row(
@@ -237,7 +236,7 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                                             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                             contentPadding: EdgeInsets.zero,
                                           ),
-                                        Divider(),
+                                        const Divider(),
                                         Row(
                                           children: [
                                             TextButton(
@@ -245,7 +244,7 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                                                   Get.find<DriverController>().fetchProfile();
                                                   shiftController.fetchAvailableShifts();
                                                 },
-                                                child: Text("Обновить")),
+                                                child: Text("Обновить".tr)),
                                             const Spacer(),
                                             Expanded(
                                                 child: PrimaryElevatedButton(
@@ -256,7 +255,7 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                                                             shiftController.orderShift();
                                                           },
                                                     loading: orderShiftLoading,
-                                                    text: "Приобрести")),
+                                                    text: "Приобрести".tr)),
                                           ],
                                         ),
                                       ],

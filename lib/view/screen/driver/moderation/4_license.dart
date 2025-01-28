@@ -32,7 +32,7 @@ class _ModerationLicenseScreenState extends State<ModerationLicenseScreen> {
         formGroup: moderationController.moderationForm,
         child: ListView(padding: const EdgeInsets.all(CoreDecoration.primaryPadding), children: [
           Text(
-            "Водительское удостоверение \nи Тех. пасспорт".tr,
+            "Водительское удостоверение \nи Тех. паспорт".tr,
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 7),
@@ -97,7 +97,7 @@ class _ModerationLicenseScreenState extends State<ModerationLicenseScreen> {
                       menuItems: <FocusedMenuItem>[
                         FocusedMenuItem(
                             backgroundColor: Colors.transparent,
-                            title: const Text("Открыть камеру"),
+                            title: Text("Открыть камеру".tr),
                             trailingIcon: const Icon(Icons.camera_alt_outlined, size: 16),
                             onPressed: () {
                               moderationController.pickNUploadPhoto(
@@ -107,7 +107,7 @@ class _ModerationLicenseScreenState extends State<ModerationLicenseScreen> {
                             }),
                         FocusedMenuItem(
                             backgroundColor: Colors.transparent,
-                            title: const Text("Открыть галерею"),
+                            title: Text("Открыть галерею".tr),
                             trailingIcon: const Icon(Icons.photo_library_outlined, size: 16),
                             onPressed: () {
                               moderationController.pickNUploadPhoto(
@@ -119,7 +119,7 @@ class _ModerationLicenseScreenState extends State<ModerationLicenseScreen> {
                             false)
                           FocusedMenuItem(
                               backgroundColor: Colors.transparent,
-                              title: const Text("Удалить", style: TextStyle(color: CoreColors.delete)),
+                              title: Text("Удалить".tr, style: const TextStyle(color: CoreColors.delete)),
                               trailingIcon:
                                   const Icon(Icons.delete_outline_outlined, size: 16, color: CoreColors.delete),
                               onPressed: () {
@@ -223,7 +223,7 @@ class _ModerationLicenseScreenState extends State<ModerationLicenseScreen> {
                       menuItems: <FocusedMenuItem>[
                         FocusedMenuItem(
                             backgroundColor: Colors.transparent,
-                            title: const Text("Открыть камеру"),
+                            title: Text("Открыть камеру".tr),
                             trailingIcon: const Icon(Icons.camera_alt_outlined, size: 16),
                             onPressed: () {
                               moderationController.pickNUploadPhoto(
@@ -233,7 +233,7 @@ class _ModerationLicenseScreenState extends State<ModerationLicenseScreen> {
                             }),
                         FocusedMenuItem(
                             backgroundColor: Colors.transparent,
-                            title: const Text("Открыть галерею"),
+                            title: Text("Открыть галерею".tr),
                             trailingIcon: const Icon(Icons.photo_library_outlined, size: 16),
                             onPressed: () {
                               moderationController.pickNUploadPhoto(
@@ -245,7 +245,7 @@ class _ModerationLicenseScreenState extends State<ModerationLicenseScreen> {
                             false)
                           FocusedMenuItem(
                               backgroundColor: Colors.transparent,
-                              title: const Text("Удалить", style: TextStyle(color: CoreColors.delete)),
+                              title: Text("Удалить".tr, style: const TextStyle(color: CoreColors.delete)),
                               trailingIcon:
                                   const Icon(Icons.delete_outline_outlined, size: 16, color: CoreColors.delete),
                               onPressed: () {

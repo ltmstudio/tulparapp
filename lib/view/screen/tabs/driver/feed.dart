@@ -71,7 +71,6 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
     return GetBuilder<DriverOrderController>(builder: (orderController) {
       var orders = orderController.orders.value;
@@ -126,7 +125,7 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                   },
                   child: Text.rich(TextSpan(children: [
                     TextSpan(
-                      text: isActive ? 'СМЕНА АКТИВНА' : 'НАЧАТЬ СМЕНУ',
+                      text: isActive ? 'СМЕНА АКТИВНА'.tr : 'НАЧАТЬ СМЕНУ'.tr,
                       style: TextStyle(
                           color: isActive ? CoreColors.moderationApprovedStatus : CoreColors.primary,
                           fontSize: 14,
@@ -137,7 +136,7 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                       child: Container(
                         width: 10,
                         height: 10,
-                        margin: EdgeInsets.all(4),
+                        margin: const EdgeInsets.all(4),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
@@ -296,7 +295,7 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                                 child: const Center(
                                                   child: Text("A",
                                                       textAlign: TextAlign.center,
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
                                                           height: 1,
                                                           color: CoreColors.primary,
                                                           fontSize: 18,
@@ -321,7 +320,7 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                                 child: const Center(
                                                   child: Text("Б",
                                                       textAlign: TextAlign.center,
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
                                                           height: 1,
                                                           color: CoreColors.primary,
                                                           fontSize: 18,
@@ -422,7 +421,7 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                 const Icon(Icons.sort, color: CoreColors.primary),
                                 const SizedBox(width: 6),
                                 Text(
-                                  selectedSortingValue?.name ?? 'Сортировка',
+                                  selectedSortingValue?.name ?? 'Сортировка'.tr,
                                   style: const TextStyle(fontSize: 14),
                                 ),
                                 const SizedBox(width: 15),
@@ -444,14 +443,14 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                           IconButton(
                             icon: Row(
                               children: [
-                                SizedBox(width: 10),
-                                Icon(Icons.filter_alt_outlined, color: CoreColors.primary),
-                                SizedBox(width: 6),
+                                const SizedBox(width: 10),
+                                const Icon(Icons.filter_alt_outlined, color: CoreColors.primary),
+                                const SizedBox(width: 6),
                                 Text(
-                                  selectedOrderType?.name ?? 'Фильтрация',
-                                  style: TextStyle(fontSize: 14),
+                                  selectedOrderType?.name ?? 'Фильтрация'.tr,
+                                  style: const TextStyle(fontSize: 14),
                                 ),
-                                SizedBox(width: 15),
+                                const SizedBox(width: 15),
                               ],
                             ),
                             onPressed: () async {
@@ -487,17 +486,17 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                   child: Row(
                                     children: [
                                       Text(
-                                        "Город А:  ",
-                                        style: TextStyle(fontSize: 15),
+                                        "Город А:  ".tr,
+                                        style: const TextStyle(fontSize: 15),
                                       ),
                                       Text(
-                                        selectedCityA?.name ?? "Все",
-                                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                        selectedCityA?.name ?? "Все".tr,
+                                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                                       )
                                     ],
                                   ),
                                 ),
-                                Padding(
+                                const Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 5),
                                   child: Icon(Icons.keyboard_double_arrow_right_sharp,
                                       size: 16, color: CoreColors.primary),
@@ -506,12 +505,12 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                   child: Row(
                                     children: [
                                       Text(
-                                        "Город Б:  ",
-                                        style: TextStyle(fontSize: 15),
+                                        "Город Б:  ".tr,
+                                        style: const TextStyle(fontSize: 15),
                                       ),
                                       Text(
-                                        selectedCityB?.name ?? "Все",
-                                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                        selectedCityB?.name ?? "Все".tr,
+                                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                                       )
                                     ],
                                   ),
@@ -521,18 +520,19 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                     child: TextButton(
                                         onPressed: () async {
                                           bool? changed = await showModalBottomSheet(
-                                              context: context, builder: (context) => OrdersCitiesFiltersDialog());
+                                              context: context,
+                                              builder: (context) => const OrdersCitiesFiltersDialog());
                                           if (changed ?? false) {
                                             orderController.fetchOrdersFeed(resetAll: true);
                                           }
                                         },
-                                        style: TextButton.styleFrom(padding: EdgeInsets.all(5)),
-                                        child: Text("Выбрать")))
+                                        style: TextButton.styleFrom(padding: const EdgeInsets.all(5)),
+                                        child: Text("Выбрать".tr)))
                               ],
                             ),
                           ),
                   ),
-                  Divider(),
+                  const Divider(),
                   Expanded(
                     child: RefreshIndicator(
                       onRefresh: () async {
