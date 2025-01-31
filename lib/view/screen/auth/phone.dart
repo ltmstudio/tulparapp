@@ -7,6 +7,7 @@ import 'package:tulpar/core/colors.dart';
 import 'package:tulpar/core/decoration.dart';
 import 'package:tulpar/core/styles.dart';
 import 'package:tulpar/core/toast.dart';
+import 'package:tulpar/view/screen/auth/public_offer.dart';
 import 'package:tulpar/view/widget/elevated_button.dart';
 
 class AuthPhoneScreen extends StatefulWidget {
@@ -18,6 +19,7 @@ class AuthPhoneScreen extends StatefulWidget {
 
 class _AuthPhoneScreenState extends State<AuthPhoneScreen> {
   var phoneController = TextEditingController();
+  var checked = ValueNotifier(false);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,6 +56,37 @@ class _AuthPhoneScreenState extends State<AuthPhoneScreen> {
                         // textInputAction: TextInputAction.next,
                       ),
                     ),
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => const PublicOfferScreen()),
+                        );
+                      },
+                      title: Text.rich(
+                        TextSpan(
+                          text: 'Я ознакомился с '.tr,
+                          children: [
+                            TextSpan(
+                                text: 'Лицензионным соглашением'.tr,
+                                style:
+                                    const TextStyle(color: CoreColors.primary, decoration: TextDecoration.underline)),
+                            TextSpan(text: ' и принимаю условия публичной оферты')
+                          ],
+                        ),
+                        style: TextStyle(height: 1.1),
+                      ),
+                      trailing: ValueListenableBuilder(
+                          valueListenable: checked,
+                          builder: (_, c, __) {
+                            return Checkbox(
+                                value: c,
+                                onChanged: (_) {
+                                  checked.value = !c;
+                                });
+                          }),
+                    ),
+                    SizedBox(height: 15),
                     GetBuilder<UserController>(builder: (userController) {
                       var loading = userController.phoneToSmsLoading.value;
                       return Padding(
@@ -65,6 +98,10 @@ class _AuthPhoneScreenState extends State<AuthPhoneScreen> {
                             var phone = phoneController.text.replaceAll(RegExp(r'\D'), '');
                             if (phone.length < 10) {
                               CoreToast.showToast("Введите корректный номер телефона".tr);
+                              return;
+                            }
+                            if (checked.value != true) {
+                              CoreToast.showToast('Ознакомьтесь с Лицензионным соглашением');
                               return;
                             }
                             userController.phoneToSms(phone);
