@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tulpar/controller/app.dart';
 import 'package:tulpar/controller/dio.dart';
+import 'package:tulpar/controller/driver.dart';
 import 'package:tulpar/controller/stream.dart';
 import 'package:tulpar/controller/user_order.dart';
 import 'package:tulpar/core/log.dart';
@@ -13,6 +14,7 @@ import 'package:tulpar/core/toast.dart';
 import 'package:tulpar/extension/string.dart';
 import 'package:tulpar/model/app/city.dart';
 import 'package:tulpar/model/geo/route.dart';
+import 'package:tulpar/model/order/car_class.dart';
 import 'package:tulpar/model/order/order.dart';
 import 'package:tulpar/model/order/sorting_value.dart';
 import 'package:tulpar/model/order/type.dart';
@@ -40,6 +42,16 @@ class DriverOrderController extends GetxController {
 
   List<OrderTypeModel> get orderTypes => Get.find<UserOrderController>().orderTypes.value;
   var selectedOrderType = Rx<OrderTypeModel?>(null);
+
+  List<CarClassModel> get orderClasses => Get.find<UserOrderController>()
+      .carClasses
+      .value
+      .where((element) => (element.id ?? 99) <= (Get.find<DriverController>().profile.value?.classId ?? 0))
+      .toList();
+  var selectedOrderClass = Rx<CarClassModel?>(null);
+
+  var selectedNotDelivery = Rx<bool>(false);
+  var selectedNoCargo = Rx<bool>(false);
 
   List<CityModel> get cities => Get.find<UserOrderController>().cities.value;
   var selectedCityA = Rx<CityModel?>(null);
@@ -92,6 +104,15 @@ class DriverOrderController extends GetxController {
         },
         if (selectedCityB.value?.id != null) ...{
           "city_b_id": selectedCityB.value?.id,
+        },
+        if (selectedOrderClass.value?.id != null) ...{
+          "class": selectedOrderClass.value?.id,
+        },
+        if (selectedNotDelivery.value) ...{
+          "no_delivery": true,
+        },
+        if (selectedNoCargo.value) ...{
+          "no_cargo": true,
         },
       });
       var newOrders = orderModelFromJson(json.encode(resp.data));

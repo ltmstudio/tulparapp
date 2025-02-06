@@ -7,6 +7,7 @@ import 'package:tulpar/core/colors.dart';
 import 'package:tulpar/core/styles.dart';
 import 'package:tulpar/view/dialog/lang.dart';
 import 'package:tulpar/view/dialog/logout.dart';
+import 'package:tulpar/view/screen/app/log.dart';
 import 'package:tulpar/view/screen/driver/info/info.dart';
 
 class SettingsTab extends StatefulWidget {
@@ -91,6 +92,11 @@ class _SettingsTabState extends State<SettingsTab> {
                 if (confirmed == true) {
                   Get.find<UserController>().logout();
                 }
+              },
+              onLongPress: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const LogScreen()),
+                );
               },
               leading: const Icon(
                 Icons.logout_rounded,

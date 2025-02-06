@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:tulpar/controller/driver.dart';
 import 'package:tulpar/controller/driver_order.dart';
 import 'package:tulpar/core/colors.dart';
@@ -50,9 +51,22 @@ class _DriverOrderDetailsDialogState extends State<DriverOrderDetailsDialog> {
         padding: const EdgeInsets.all(CoreDecoration.primaryPadding),
         child: Column(
           children: [
-            Text(
-              'Заказ №${order?.id}',
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: CoreColors.black),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Заказ №${order?.id}',
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: CoreColors.black),
+                ),
+                if (order?.createdAt != null)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Text(
+                      DateFormat('dd.MM.yyyy в HH:mm').format(order!.createdAt!),
+                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: CoreColors.grey),
+                    ),
+                  ),
+              ],
             ),
             const Divider(height: 25),
             Expanded(

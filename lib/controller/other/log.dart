@@ -8,6 +8,12 @@ class LogController extends GetxController {
     if (list.value.length > 300) {
       list.value = list.value.sublist(20, list.value.length);
     }
+    if (list.value.isNotEmpty) {
+      var lastLog = list.value.last;
+      if (lastLog.text == l.text && lastLog.color.toString() == l.color.toString()) {
+        list.value.removeLast();
+      }
+    }
     list.value.add(l);
     update();
   }

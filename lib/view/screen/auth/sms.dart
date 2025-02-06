@@ -68,7 +68,9 @@ class _AuthSmsScreenState extends State<AuthSmsScreen> {
                         onTapOutside: (PointerDownEvent event) {
                           FocusManager.instance.primaryFocus?.unfocus();
                         },
+                        maxLength: 6,
                         style: CoreStyles.h4,
+                        textAlign: TextAlign.center,
                         obscureText: true,
                         obscuringCharacter: '*',
                         decoration: CoreDecoration.textField,
