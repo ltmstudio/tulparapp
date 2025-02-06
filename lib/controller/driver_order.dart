@@ -19,6 +19,7 @@ import 'package:tulpar/model/order/order.dart';
 import 'package:tulpar/model/order/sorting_value.dart';
 import 'package:tulpar/model/order/type.dart';
 import 'package:tulpar/view/component/order/order_card_driver.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DriverOrderController extends GetxController {
   var orders = Rx<List<OrderModel>>([]);

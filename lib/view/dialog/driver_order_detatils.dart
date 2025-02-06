@@ -4,9 +4,12 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:tulpar/controller/driver.dart';
 import 'package:tulpar/controller/driver_order.dart';
+import 'package:tulpar/controller/route_launcher.dart';
 import 'package:tulpar/core/colors.dart';
 import 'package:tulpar/core/decoration.dart';
+import 'package:tulpar/core/log.dart';
 import 'package:tulpar/core/toast.dart';
+import 'package:tulpar/extension/string.dart';
 import 'package:tulpar/view/component/order/order_card.dart';
 import 'package:tulpar/view/dialog/driver_order_reject.dart';
 import 'package:tulpar/view/widget/elevated_button.dart';
@@ -161,6 +164,24 @@ class _DriverOrderDetailsDialogState extends State<DriverOrderDetailsDialog> {
                         )),
                       ],
                     ),
+                    if (order?.geoA?.toLatLng != null && order?.geoB?.toLatLng != null)
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                            onPressed: () {
+                              try {
+                                Get.find<RouteLauncher>().open2GIS(
+                                    // orderController.open2GIS(
+                                    order!.geoA!.toLatLng!.latitude,
+                                    order.geoA!.toLatLng!.longitude,
+                                    order.geoB!.toLatLng!.latitude,
+                                    order.geoB!.toLatLng!.longitude);
+                              } on Exception catch (e) {
+                                Log.error("Не удалось открыть маршрут");
+                              }
+                            },
+                            child: const Text("Открыть маршрут")),
+                      )
                   ],
                 ),
               if (order?.typeId == 2 && order?.cityA != null && order?.cityB != null)

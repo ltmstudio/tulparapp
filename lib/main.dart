@@ -13,6 +13,7 @@ import 'package:tulpar/controller/driver_order.dart';
 import 'package:tulpar/controller/driver_shift.dart';
 import 'package:tulpar/controller/other/log.dart';
 import 'package:tulpar/controller/pay.dart';
+import 'package:tulpar/controller/route_launcher.dart';
 import 'package:tulpar/controller/stream.dart';
 import 'package:tulpar/controller/user.dart';
 import 'package:tulpar/controller/user_order.dart';
@@ -88,6 +89,7 @@ class MyApp extends StatelessWidget {
           Get.put<DriverModerationController>(DriverModerationController(), permanent: true);
           Get.put<DriverOrderController>(DriverOrderController(), permanent: true);
           Get.put<DriverShiftController>(DriverShiftController(), permanent: true);
+          Get.put<RouteLauncher>(RouteLauncher(), permanent: true);
           Get.put<PayController>(PayController(), permanent: true);
         }),
         routeInformationParser: _informationParser,

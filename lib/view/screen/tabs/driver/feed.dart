@@ -12,10 +12,12 @@ import 'package:latlong2/latlong.dart';
 import 'package:tulpar/controller/driver_order.dart';
 import 'package:tulpar/controller/driver_shift.dart';
 import 'package:tulpar/controller/location.dart';
+import 'package:tulpar/controller/route_launcher.dart';
 import 'package:tulpar/controller/user_order.dart';
 import 'package:tulpar/core/colors.dart';
 import 'package:tulpar/core/decoration.dart';
 import 'package:tulpar/core/icons.dart';
+import 'package:tulpar/core/log.dart';
 import 'package:tulpar/extension/string.dart';
 import 'package:tulpar/model/order/order.dart';
 import 'package:tulpar/view/component/order/order_card_driver.dart';
@@ -173,7 +175,8 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                 var bounds = LatLngBounds.fromPoints([pointALatLng, pointBLatLng]);
                                 Future.delayed(const Duration(milliseconds: 300), () {
                                   mapController.fitCamera(CameraFit.bounds(
-                                      bounds: bounds, padding: const EdgeInsets.all(40).copyWith(bottom: 100)));
+                                      bounds: bounds,
+                                      padding: const EdgeInsets.all(40).copyWith(top: 100, bottom: 80)));
                                 });
                               } else if (myPos != null) {
                                 _animatedMapMove(myPos, mapController.camera.zoom);
@@ -351,7 +354,7 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                       ),
                       // distance - time
                       Align(
-                        alignment: Alignment.bottomCenter,
+                        alignment: Alignment.topCenter,
                         child: AnimatedSwitcher(
                           duration: Durations.short4,
                           transitionBuilder: (child, animation) => SizeTransition(
@@ -367,7 +370,7 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
-                                      margin: const EdgeInsets.only(bottom: 50),
+                                      margin: const EdgeInsets.only(top: 15),
                                       padding: const EdgeInsets.symmetric(horizontal: 15),
                                       height: 40,
                                       decoration: BoxDecoration(
