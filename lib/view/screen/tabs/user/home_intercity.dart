@@ -1,19 +1,23 @@
 import 'dart:async';
 
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:tulpar/controller/user_order.dart';
 import 'package:tulpar/core/assets.dart';
 import 'package:tulpar/core/colors.dart';
 import 'package:tulpar/core/decoration.dart';
 import 'package:tulpar/core/event.dart';
+import 'package:tulpar/core/log.dart';
 import 'package:tulpar/core/styles.dart';
 import 'package:tulpar/core/toast.dart';
 import 'package:tulpar/extension/string.dart';
 import 'package:tulpar/model/app/city.dart';
 import 'package:tulpar/model/order/order.dart';
+import 'package:tulpar/view/dialog/datetime_picker.dart';
 import 'package:tulpar/view/dialog/time_picker.dart';
 
 class HomeIntercityTab extends StatefulWidget {
@@ -68,82 +72,150 @@ class _HomeIntercityTabState extends State<HomeIntercityTab> {
                     const SizedBox(height: 10),
                     Container(
                       decoration: BoxDecoration(
-                          color: CoreColors.white,
-                          borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius)),
-                      child: Ink(
-                        decoration:
-                            BoxDecoration(borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius)),
-                        child: Material(
-                          borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
-                          color: Colors.transparent,
-                          child: DropdownButton<CityModel?>(
-                            isExpanded: true,
-                            value: orderController.cityA.value,
-                            underline: const SizedBox(),
-                            items: [
-                              DropdownMenuItem<CityModel?>(
-                                value: null,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
-                                  child: Text("Выберите город".tr, style: CoreStyles.hint),
-                                ),
-                              ),
-                              for (var city in orderController.cities.value)
-                                DropdownMenuItem<CityModel?>(
-                                  value: city,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
-                                    child: Text("${city.name}", style: CoreStyles.h4),
-                                  ),
-                                )
-                            ],
-                            onChanged: (CityModel? newValue) {
-                              orderController.cityA.value = newValue;
-                              orderController.update();
-                            },
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: DropdownSearch<CityModel?>(
+                        popupProps: PopupProps.menu(
+                          menuProps: const MenuProps(
+                            backgroundColor: CoreColors.white,
+                          ),
+                          showSearchBox: true, // Включаем поиск
+                          searchFieldProps: TextFieldProps(
+                            decoration: CoreDecoration.textField.copyWith(
+                              hintText: "Введите город",
+                            ),
+                            style: CoreStyles.h4,
                           ),
                         ),
+
+                        compareFn: (item1, item2) => item1?.id == item2?.id,
+                        items: (_, __) => orderController.cities.value, // Список городов
+                        selectedItem: orderController.cityA.value,
+                        decoratorProps: DropDownDecoratorProps(
+                            baseStyle: CoreStyles.h4,
+                            decoration: CoreDecoration.textField.copyWith(
+                              hintText: "Выберите город",
+                            )),
+                        itemAsString: (item) => item?.name ?? "",
+                        onChanged: (CityModel? newValue) {
+                          orderController.cityA.value = newValue;
+                          orderController.update();
+                        },
                       ),
                     ),
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //       color: CoreColors.white,
+                    //       borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius)),
+                    //   child: Ink(
+                    //     decoration:
+                    //         BoxDecoration(borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius)),
+                    //     child: Material(
+                    //       borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
+                    //       color: Colors.transparent,
+                    //       child: DropdownButton<CityModel?>(
+                    //         isExpanded: true,
+                    //         value: orderController.cityA.value,
+                    //         underline: const SizedBox(),
+                    //         items: [
+                    //           DropdownMenuItem<CityModel?>(
+                    //             value: null,
+                    //             child: Padding(
+                    //               padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
+                    //               child: Text("Выберите город".tr, style: CoreStyles.hint),
+                    //             ),
+                    //           ),
+                    //           for (var city in orderController.cities.value)
+                    //             DropdownMenuItem<CityModel?>(
+                    //               value: city,
+                    //               child: Padding(
+                    //                 padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
+                    //                 child: Text("${city.name}", style: CoreStyles.h4),
+                    //               ),
+                    //             )
+                    //         ],
+                    //         onChanged: (CityModel? newValue) {
+                    //           orderController.cityA.value = newValue;
+                    //           orderController.update();
+                    //         },
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     const SizedBox(height: 15),
                     Text('Куда'.tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
                     const SizedBox(height: 10),
                     Container(
                       decoration: BoxDecoration(
-                          color: CoreColors.white,
-                          borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius)),
-                      child: Ink(
-                        child: Material(
-                          color: Colors.transparent,
-                          child: DropdownButton<CityModel?>(
-                            isExpanded: true,
-                            underline: const SizedBox(),
-                            value: orderController.cityB.value,
-                            items: [
-                              DropdownMenuItem<CityModel?>(
-                                value: null,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
-                                  child: Text("Выберите город".tr, style: CoreStyles.hint),
-                                ),
-                              ),
-                              for (var city in orderController.cities.value)
-                                DropdownMenuItem<CityModel?>(
-                                  value: city,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
-                                    child: Text("${city.name}", style: CoreStyles.h4),
-                                  ),
-                                )
-                            ],
-                            onChanged: (CityModel? newValue) {
-                              orderController.cityB.value = newValue;
-                              orderController.update();
-                            },
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: DropdownSearch<CityModel?>(
+                        popupProps: PopupProps.menu(
+                          menuProps: const MenuProps(
+                            backgroundColor: CoreColors.white,
+                          ),
+                          showSearchBox: true, // Включаем поиск
+                          searchFieldProps: TextFieldProps(
+                            decoration: CoreDecoration.textField.copyWith(
+                              hintText: "Введите город",
+                            ),
+                            style: CoreStyles.h4,
                           ),
                         ),
+
+                        compareFn: (item1, item2) => item1?.id == item2?.id,
+                        items: (_, __) => orderController.cities.value, // Список городов
+                        selectedItem: orderController.cityB.value,
+                        decoratorProps: DropDownDecoratorProps(
+                            baseStyle: CoreStyles.h4,
+                            decoration: CoreDecoration.textField.copyWith(
+                              hintText: "Выберите город",
+                            )),
+                        itemAsString: (item) => item?.name ?? "",
+                        onChanged: (CityModel? newValue) {
+                          orderController.cityB.value = newValue;
+                          orderController.update();
+                        },
                       ),
                     ),
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //       color: CoreColors.white,
+                    //       borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius)),
+                    //   child: Ink(
+                    //     child: Material(
+                    //       color: Colors.transparent,
+                    //       child: DropdownButton<CityModel?>(
+                    //         isExpanded: true,
+                    //         underline: const SizedBox(),
+                    //         value: orderController.cityB.value,
+                    //         items: [
+                    //           DropdownMenuItem<CityModel?>(
+                    //             value: null,
+                    //             child: Padding(
+                    //               padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
+                    //               child: Text("Выберите город".tr, style: CoreStyles.hint),
+                    //             ),
+                    //           ),
+                    //           for (var city in orderController.cities.value)
+                    //             DropdownMenuItem<CityModel?>(
+                    //               value: city,
+                    //               child: Padding(
+                    //                 padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
+                    //                 child: Text("${city.name}", style: CoreStyles.h4),
+                    //               ),
+                    //             )
+                    //         ],
+                    //         onChanged: (CityModel? newValue) {
+                    //           orderController.cityB.value = newValue;
+                    //           orderController.update();
+                    //         },
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -175,69 +247,6 @@ class _HomeIntercityTabState extends State<HomeIntercityTab> {
                             onTapOutside: (event) {
                               FocusManager.instance.primaryFocus?.unfocus();
                             },
-                          )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                              padding: const EdgeInsets.only(bottom: 10, top: 15),
-                              child:
-                                  Text('Время'.tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))),
-                          TextField(
-                            controller: timeController,
-                            readOnly: true,
-                            onTap: () async {
-                              TimeOfDay? time = await showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    var now = DateTime.now().add(const Duration(minutes: 20));
-                                    var hour = now.hour;
-                                    var roundedMinute = (now.minute / 10).ceil() * 10;
-                                    var currentSelectedTime = timeController.text.toTimeOfDay;
-                                    if (currentSelectedTime != null) {
-                                      return TimeNumberPickerDialog(
-                                        initialTime: TimeOfDay(
-                                            hour: currentSelectedTime.hour, minute: currentSelectedTime.minute),
-                                      );
-                                    }
-                                    return TimeNumberPickerDialog(
-                                      initialTime: TimeOfDay(hour: hour, minute: roundedMinute),
-                                    );
-                                  });
-                              if (time != null && mounted) {
-                                timeController.text = time.format(context).padLeft(5, '0');
-                                setState(() {});
-                              }
-                            },
-                            onTapOutside: (event) {
-                              FocusManager.instance.primaryFocus?.unfocus();
-                            },
-                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                            decoration: CoreDecoration.textField.copyWith(
-                                hintText: 'Как можно быстрее'.tr,
-                                suffixIcon: timeController.text.isNotEmpty
-                                    ? IconButton(
-                                        onPressed: () {
-                                          timeController.clear();
-                                          setState(() {});
-                                        },
-                                        icon: const Icon(
-                                          Icons.close,
-                                          color: CoreColors.primary,
-                                          size: 16,
-                                        ))
-                                    : const IconButton(
-                                        onPressed: null,
-                                        icon: Icon(
-                                          Icons.access_time_rounded,
-                                          color: CoreColors.primary,
-                                          size: 16,
-                                        ))),
                           )
                         ],
                       ),
@@ -291,7 +300,74 @@ class _HomeIntercityTabState extends State<HomeIntercityTab> {
                         ],
                       ),
                     ),
+                    // const SizedBox(width: 10),
+
+                    // Expanded(
+                    //   flex: 2,
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: [
+
+                    //     ],
+                    //   ),
+                    // ),
                   ],
+                ),
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(bottom: 10, top: 15, left: CoreDecoration.primaryPadding),
+                  child: Text('Время'.tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
+                child: TextField(
+                  controller: timeController,
+                  readOnly: true,
+                  onTap: () async {
+                    DateTime? time = await showDialog(
+                        context: context,
+                        builder: (context) {
+                          var now = DateTime.now().add(const Duration(minutes: 20));
+                          var hour = now.hour;
+                          var roundedMinute = (now.minute / 10).ceil() * 10;
+                          var currentSelectedTime = timeController.text.toDateTime;
+                          if (currentSelectedTime != null) {
+                            return DateTimePickerDialog(
+                              initialDateTime: currentSelectedTime,
+                            );
+                          }
+                          return DateTimePickerDialog(
+                            initialDateTime: DateTime(now.year, now.month, now.day, hour, roundedMinute),
+                          );
+                        });
+                    if (time != null && mounted) {
+                      timeController.text = DateFormat('dd-MM-yyyy HH:mm').format(time);
+                      setState(() {});
+                    }
+                  },
+                  onTapOutside: (event) {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  decoration: CoreDecoration.textField.copyWith(
+                      hintText: 'Как можно быстрее'.tr,
+                      suffixIcon: timeController.text.isNotEmpty
+                          ? IconButton(
+                              onPressed: () {
+                                timeController.clear();
+                                setState(() {});
+                              },
+                              icon: const Icon(
+                                Icons.close,
+                                color: CoreColors.primary,
+                                size: 16,
+                              ))
+                          : const IconButton(
+                              onPressed: null,
+                              icon: Icon(
+                                Icons.access_time_rounded,
+                                color: CoreColors.primary,
+                                size: 16,
+                              ))),
                 ),
               ),
               ListTile(
@@ -369,7 +445,8 @@ class _HomeIntercityTabState extends State<HomeIntercityTab> {
                               )
                             : Text(
                                 'Заказать TULPAR'.tr,
-                                style: const TextStyle(color: CoreColors.white, fontSize: 14, fontWeight: FontWeight.w500),
+                                style:
+                                    const TextStyle(color: CoreColors.white, fontSize: 14, fontWeight: FontWeight.w500),
                               ))),
               ),
             ]),
