@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp.router(
         title: 'TULPAR',
         locale: const Locale('ru', 'RU'),
+        debugShowCheckedModeBanner: false,
         supportedLocales: AppController.supportedLocales.map((e) => e.locale).toList(),
         localizationsDelegates: GlobalMaterialLocalizations.delegates,
         translations: CoreTranslations(),
