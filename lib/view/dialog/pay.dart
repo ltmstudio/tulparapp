@@ -41,7 +41,7 @@ class _PayDialogState extends State<PayDialog> {
             ),
             const SizedBox(height: 10),
             Text(
-              "Ваш баланс будет пополнен суммой оплаты после подтверждения модератором".tr,
+              "Отправьте сумму который хотите пополнить и в комментарий напишите гос.номер авто".tr,
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
@@ -59,7 +59,7 @@ class _PayDialogState extends State<PayDialog> {
                       padding: const EdgeInsets.symmetric(vertical: CoreDecoration.primaryPadding),
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
-                          child: CachedNetworkImage(imageUrl: info!.payQrImage!, width: w)),
+                          child: CachedNetworkImage(imageUrl: info!.image!, width: w)),
                     )),
                 ],
               )),

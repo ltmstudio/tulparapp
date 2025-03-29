@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
     return ReactiveFormConfig(
       validationMessages: AppController.validationMessages,
       child: GetMaterialApp.router(
-        title: 'TULPAR',
+        title: 'tulpar',
         locale: const Locale('ru', 'RU'),
         debugShowCheckedModeBanner: false,
         supportedLocales: AppController.supportedLocales.map((e) => e.locale).toList(),

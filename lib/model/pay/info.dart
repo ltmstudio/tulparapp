@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:tulpar/core/env.dart';
+
 PayInfoModel payInfoModelFromJson(String str) => PayInfoModel.fromJson(json.decode(str));
 
 String payInfoModelToJson(PayInfoModel data) => json.encode(data.toJson());
@@ -18,6 +20,8 @@ class PayInfoModel {
     this.payQrImage,
     this.payQrPhone,
   });
+
+  String? get image => '${CoreEnvironment.appUrl}/${payQrImage?.replaceFirst('public', 'storage')}';
 
   PayInfoModel copyWith({
     String? payLink,

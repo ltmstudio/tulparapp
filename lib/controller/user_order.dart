@@ -179,6 +179,9 @@ class UserOrderController extends GetxController {
       var resp = await dio.get('/catalog/car_classes');
       var newClasses = carClassModelFromJson(json.encode(resp.data));
       carClasses.value = newClasses;
+      if (selectedCarClassId.value == null && newClasses.isNotEmpty) {
+        selectedCarClassId.value = newClasses.first.id;
+      }
       Log.success("Получен список из ${newClasses.length} классов авто");
       update();
     } catch (e) {

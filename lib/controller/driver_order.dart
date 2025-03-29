@@ -408,7 +408,7 @@ class DriverOrderController extends GetxController {
 
   void _startPeriodicUpdates() {
     _updateTimer = Timer.periodic(
-      const Duration(seconds: 60),
+      const Duration(seconds: 15),
       (timer) {
         if (Get.find<AppController>().appMode.value == AppMode.driver) {
           fetchOrdersFeed();
