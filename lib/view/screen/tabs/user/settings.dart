@@ -5,8 +5,10 @@ import 'package:tulpar/controller/user.dart';
 import 'package:tulpar/core/assets.dart';
 import 'package:tulpar/core/colors.dart';
 import 'package:tulpar/core/styles.dart';
+import 'package:tulpar/view/dialog/account_delete.dart';
 import 'package:tulpar/view/dialog/lang.dart';
 import 'package:tulpar/view/dialog/logout.dart';
+import 'package:tulpar/view/screen/app/log.dart';
 import 'package:tulpar/view/screen/driver/info/info.dart';
 
 class SettingsTab extends StatefulWidget {
@@ -87,10 +89,15 @@ class _SettingsTabState extends State<SettingsTab> {
             }),
             ListTile(
               onTap: () async {
-                bool confirmed = await showDialog(context: context, builder: (context) => const LogoutConfirmDialog());
+                bool? confirmed = await showDialog(context: context, builder: (context) => const LogoutConfirmDialog());
                 if (confirmed == true) {
                   Get.find<UserController>().logout();
                 }
+              },
+              onLongPress: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const LogScreen()),
+                );
               },
               leading: const Icon(
                 Icons.logout_rounded,
@@ -98,6 +105,27 @@ class _SettingsTabState extends State<SettingsTab> {
               ),
               title: Text(
                 "Выйти из аккаунта".tr,
+                style: const TextStyle(color: CoreColors.error),
+              ),
+            ),
+            ListTile(
+              onTap: () async {
+                bool? confirmed = await showDialog(context: context, builder: (context) => const AccountDeleteConfirmDialog());
+                if (confirmed == true) {
+                  Get.find<UserController>().logout();
+                }
+              },
+              onLongPress: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const LogScreen()),
+                );
+              },
+              leading: const Icon(
+                Icons.person_remove_outlined,
+                color: CoreColors.error,
+              ),
+              title: Text(
+                "Удалить аккаунт".tr,
                 style: const TextStyle(color: CoreColors.error),
               ),
             )

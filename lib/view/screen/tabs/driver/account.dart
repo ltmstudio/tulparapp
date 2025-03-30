@@ -19,6 +19,7 @@ import 'package:tulpar/view/component/moderation/preparation.dart';
 import 'package:tulpar/view/component/moderation/rejected.dart';
 import 'package:tulpar/view/dialog/logout.dart';
 import 'package:tulpar/view/dialog/pay.dart';
+import 'package:tulpar/view/screen/app/log.dart';
 import 'package:tulpar/view/screen/driver/info/info.dart';
 import 'package:tulpar/view/screen/driver/shift.dart';
 
@@ -249,6 +250,11 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                     if (confirmed == true) {
                       Get.find<UserController>().logout();
                     }
+                  },
+                  onLongPress: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const LogScreen()),
+                    );
                   },
                   leading: const Icon(
                     Icons.logout_rounded,

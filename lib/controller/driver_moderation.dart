@@ -55,22 +55,22 @@ class DriverModerationController extends GetxController {
   void onInit() {
     ever(moderation, (m) {
       if (m != null) {
-        moderationForm.patchValue({
-          'name': m.name,
-          'lastname': m.lastname,
-          'birthdate': m.birthdate,
-          'car_id': m.carId,
-          'car_model_id': m.carModelId,
-          'car_vin': m.carVin,
-          'car_year': m.carYear,
-          'car_gos_number': m.carGosNumber,
-          'driver_license_number': m.driverLicenseNumber,
-          'driver_license_date': m.driverLicenseDate,
-          for (var field in carImagesFields) field.name: m.carImages[field.name],
-          for (var field in driverLicenseImagesFields) field.name: m.driverLicenseImages[field.name],
-          for (var field in stoImagesFields) field.name: m.stoImages[field.name]
-        });
-        setSelectedCarByModerarionFileds();
+        // moderationForm.patchValue({
+        //   'name': m.name,
+        //   'lastname': m.lastname,
+        //   'birthdate': m.birthdate,
+        //   'car_id': m.carId,
+        //   'car_model_id': m.carModelId,
+        //   'car_vin': m.carVin,
+        //   'car_year': m.carYear,
+        //   'car_gos_number': m.carGosNumber,
+        //   'driver_license_number': m.driverLicenseNumber,
+        //   'driver_license_date': m.driverLicenseDate,
+        //   for (var field in carImagesFields) field.name: m.carImages[field.name],
+        //   for (var field in driverLicenseImagesFields) field.name: m.driverLicenseImages[field.name],
+        //   for (var field in stoImagesFields) field.name: m.stoImages[field.name]
+        // });
+        // setSelectedCarByModerarionFileds();
       }
     });
     super.onInit();
@@ -175,7 +175,7 @@ class DriverModerationController extends GetxController {
   }
 
   // fetch moderation
-  Future<void> fetchModeration() async {
+  Future<void> fetchModeration({bool patchImagesOnly = false}) async {
     var inDio = InDio();
     var dio = inDio.instance;
     try {
@@ -183,6 +183,30 @@ class DriverModerationController extends GetxController {
       if (resp.statusCode == 200 && resp.data != null) {
         moderation.value = driverModerationModelFromJson(json.encode(resp.data));
         update();
+        // patch
+        var m = moderation.value;
+        if (m != null) {
+          moderationForm.patchValue({
+            if (!patchImagesOnly) ...{
+              'name': m.name,
+              'lastname': m.lastname,
+              'birthdate': m.birthdate,
+              'car_id': m.carId,
+              'car_model_id': m.carModelId,
+              'car_vin': m.carVin,
+              'car_year': m.carYear,
+              'car_gos_number': m.carGosNumber,
+              'driver_license_number': m.driverLicenseNumber,
+              'driver_license_date': m.driverLicenseDate
+            },
+            for (var field in carImagesFields) field.name: m.carImages[field.name],
+            for (var field in driverLicenseImagesFields) field.name: m.driverLicenseImages[field.name],
+            for (var field in stoImagesFields) field.name: m.stoImages[field.name]
+          });
+          if (!patchImagesOnly) {
+            setSelectedCarByModerarionFileds();
+          }
+        }
       } else {
         Log.error("Ошибка загрузки модерации ${resp.statusCode} ${resp.data}");
       }
@@ -249,6 +273,27 @@ class DriverModerationController extends GetxController {
       if (resp.statusCode == 200 && resp.data != null) {
         moderation.value = driverModerationModelFromJson(json.encode(resp.data));
         update();
+        // patch
+        // patch
+        var m = moderation.value;
+        if (m != null) {
+          moderationForm.patchValue({
+            'name': m.name,
+            'lastname': m.lastname,
+            'birthdate': m.birthdate,
+            'car_id': m.carId,
+            'car_model_id': m.carModelId,
+            'car_vin': m.carVin,
+            'car_year': m.carYear,
+            'car_gos_number': m.carGosNumber,
+            'driver_license_number': m.driverLicenseNumber,
+            'driver_license_date': m.driverLicenseDate,
+            for (var field in carImagesFields) field.name: m.carImages[field.name],
+            for (var field in driverLicenseImagesFields) field.name: m.driverLicenseImages[field.name],
+            for (var field in stoImagesFields) field.name: m.stoImages[field.name]
+          });
+          setSelectedCarByModerarionFileds();
+        }
         Log.success("Даные модерации по полям ${fields.toString()} сохранены");
         scs = true;
       } else {
@@ -412,7 +457,7 @@ class DriverModerationController extends GetxController {
       var resp = await dio.post('/driver/moderation/upload_image', data: formData);
       if (resp.statusCode == 200 && resp.data['image_path'] != null) {
         Log.success('Фото успешно загружено'.tr);
-        fetchModeration();
+        fetchModeration(patchImagesOnly: true);
         moderationForm.control(key).updateValue(resp.data['image_path'].toString());
         tempFile.value.remove(key);
         tempFileLoading.value.remove(key);

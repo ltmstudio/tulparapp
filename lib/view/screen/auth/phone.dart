@@ -104,6 +104,7 @@ class _AuthPhoneScreenState extends State<AuthPhoneScreen> {
                               CoreToast.showToast('Ознакомьтесь с Лицензионным соглашением');
                               return;
                             }
+                            FocusScope.of(context).unfocus();
                             userController.phoneToSms(phone);
                           },
                         ),

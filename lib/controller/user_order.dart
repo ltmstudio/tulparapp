@@ -221,6 +221,9 @@ class UserOrderController extends GetxController {
       }
     } on DioException catch (e) {
       Log.error("Ошибка создания заказа $e");
+      if (e.response?.data != null) {
+        Log.error(e.response!.data.toString());
+      }
     } catch (e) {
       Log.error("Ошибка создания заказа $e");
     }
