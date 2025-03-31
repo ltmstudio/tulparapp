@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:tulpar/controller/user_order.dart';
 import 'package:tulpar/model/app/city.dart';
 import 'package:tulpar/model/driver/profile.dart';
@@ -42,6 +43,16 @@ class OrderModel {
   DateTime? updatedAt;
   String? status;
   DriverProfileModel? driver;
+
+  String? get userTimeFormat {
+    if (userTime == null) return null;
+    try {
+      final parsedDate = DateTime.parse(userTime!.replaceAll('-', '.').replaceAll(' ', 'T'));
+      return DateFormat('dd.MM.yyyy HH:mm').format(parsedDate);
+    } catch (e) {
+      return userTime;
+    }
+  }
 
   String? get type {
     var ordertypes = Get.find<UserOrderController>().orderTypes.value;

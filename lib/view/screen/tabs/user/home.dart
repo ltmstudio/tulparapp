@@ -445,6 +445,27 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                               ),
                               // distance - time
                               Align(
+                                alignment: Alignment.topRight,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: IconButton.filled(
+                                    style: IconButton.styleFrom(
+                                      backgroundColor: CoreColors.white,
+                                      padding: EdgeInsets.zero,
+                                    ),
+                                    icon: Icon(Icons.my_location, color: CoreColors.primary),
+                                    onPressed: () {
+                                      var myPos = locationProvider.currentPosition.value;
+                                      if (myPos != null) {
+                                        _animatedMapMove(myPos, mapController.camera.zoom);
+                                      } else {
+                                        CoreToast.showToast('Местоположение не найдено');
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Align(
                                 alignment: Alignment.bottomCenter,
                                 child: AnimatedSwitcher(
                                   duration: Durations.short4,
@@ -780,70 +801,70 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                   ),
                                 ),
                                 const SizedBox(width: 10),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                          padding: const EdgeInsets.only(bottom: 10, top: 15),
-                                          child: Text('Время'.tr,
-                                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))),
-                                      TextField(
-                                        controller: timeController,
-                                        readOnly: true,
-                                        onTap: () async {
-                                          TimeOfDay? time = await showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                var now = DateTime.now().add(const Duration(minutes: 20));
-                                                var hour = now.hour;
-                                                var roundedMinute = (now.minute / 10).ceil() * 10;
-                                                var currentSelectedTime = timeController.text.toTimeOfDay;
-                                                if (currentSelectedTime != null) {
-                                                  return TimeNumberPickerDialog(
-                                                    initialTime: TimeOfDay(
-                                                        hour: currentSelectedTime.hour,
-                                                        minute: currentSelectedTime.minute),
-                                                  );
-                                                }
-                                                return TimeNumberPickerDialog(
-                                                  initialTime: TimeOfDay(hour: hour, minute: roundedMinute),
-                                                );
-                                              });
-                                          if (time != null && mounted) {
-                                            timeController.text = time.format(context).padLeft(5, '0');
-                                            setState(() {});
-                                          }
-                                        },
-                                        onTapOutside: (event) {
-                                          FocusManager.instance.primaryFocus?.unfocus();
-                                        },
-                                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                        decoration: CoreDecoration.textField.copyWith(
-                                            hintText: 'Как можно быстрее'.tr,
-                                            suffixIcon: timeController.text.isNotEmpty
-                                                ? IconButton(
-                                                    onPressed: () {
-                                                      timeController.clear();
-                                                      setState(() {});
-                                                    },
-                                                    icon: const Icon(
-                                                      Icons.close,
-                                                      color: CoreColors.primary,
-                                                      size: 16,
-                                                    ))
-                                                : const IconButton(
-                                                    onPressed: null,
-                                                    icon: Icon(
-                                                      Icons.access_time_rounded,
-                                                      color: CoreColors.primary,
-                                                      size: 16,
-                                                    ))),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
+                                // Expanded(
+                                //   child: Column(
+                                //     crossAxisAlignment: CrossAxisAlignment.start,
+                                //     children: [
+                                //       Padding(
+                                //           padding: const EdgeInsets.only(bottom: 10, top: 15),
+                                //           child: Text('Время'.tr,
+                                //               style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))),
+                                //       TextField(
+                                //         controller: timeController,
+                                //         readOnly: true,
+                                //         onTap: () async {
+                                //           TimeOfDay? time = await showDialog(
+                                //               context: context,
+                                //               builder: (context) {
+                                //                 var now = DateTime.now().add(const Duration(minutes: 20));
+                                //                 var hour = now.hour;
+                                //                 var roundedMinute = (now.minute / 10).ceil() * 10;
+                                //                 var currentSelectedTime = timeController.text.toTimeOfDay;
+                                //                 if (currentSelectedTime != null) {
+                                //                   return TimeNumberPickerDialog(
+                                //                     initialTime: TimeOfDay(
+                                //                         hour: currentSelectedTime.hour,
+                                //                         minute: currentSelectedTime.minute),
+                                //                   );
+                                //                 }
+                                //                 return TimeNumberPickerDialog(
+                                //                   initialTime: TimeOfDay(hour: hour, minute: roundedMinute),
+                                //                 );
+                                //               });
+                                //           if (time != null && mounted) {
+                                //             timeController.text = time.format(context).padLeft(5, '0');
+                                //             setState(() {});
+                                //           }
+                                //         },
+                                //         onTapOutside: (event) {
+                                //           FocusManager.instance.primaryFocus?.unfocus();
+                                //         },
+                                //         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                //         decoration: CoreDecoration.textField.copyWith(
+                                //             hintText: 'Как можно быстрее'.tr,
+                                //             suffixIcon: timeController.text.isNotEmpty
+                                //                 ? IconButton(
+                                //                     onPressed: () {
+                                //                       timeController.clear();
+                                //                       setState(() {});
+                                //                     },
+                                //                     icon: const Icon(
+                                //                       Icons.close,
+                                //                       color: CoreColors.primary,
+                                //                       size: 16,
+                                //                     ))
+                                //                 : const IconButton(
+                                //                     onPressed: null,
+                                //                     icon: Icon(
+                                //                       Icons.access_time_rounded,
+                                //                       color: CoreColors.primary,
+                                //                       size: 16,
+                                //                     ))),
+                                //       )
+                                //     ],
+                                //   ),
+                                // ),
+                                // const SizedBox(width: 10),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -921,7 +942,8 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                     child: !expanded
                                         ? const SizedBox()
                                         : Container(
-                                            padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
+                                            padding:
+                                                const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
                                             child: TextField(
                                               controller: commentsController,
                                               onTapOutside: (event) {

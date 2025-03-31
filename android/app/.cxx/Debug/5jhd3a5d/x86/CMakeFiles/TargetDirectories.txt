@@ -1,0 +1,2 @@
+C:/flutter_projets/tulpar/android/app/.cxx/Debug/5jhd3a5d/x86/CMakeFiles/edit_cache.dir
+C:/flutter_projets/tulpar/android/app/.cxx/Debug/5jhd3a5d/x86/CMakeFiles/rebuild_cache.dir

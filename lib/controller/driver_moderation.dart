@@ -371,7 +371,8 @@ class DriverModerationController extends GetxController {
             moderationForm.control('car_year').invalid ||
             moderationForm.control('car_gos_number').invalid ||
             selectedCarModel.value == null ||
-            selectedCar.value == null) {
+            selectedCar.value == null ||
+            carImagesFields.where((field) => moderationForm.control(field.name).value != null).length < 2) {
           CoreToast.showToast("Заполните все поля".tr);
           res = false;
         } else {
@@ -380,7 +381,9 @@ class DriverModerationController extends GetxController {
         }
       case 3:
         if (moderationForm.control('driver_license_date').invalid ||
-            moderationForm.control('driver_license_number').invalid) {
+            moderationForm.control('driver_license_number').invalid ||
+            driverLicenseImagesFields.where((field) => moderationForm.control(field.name).value != null).length < 2 ||
+            stoImagesFields.where((field) => moderationForm.control(field.name).value != null).length < 2) {
           CoreToast.showToast("Заполните все поля".tr);
           res = false;
         } else {

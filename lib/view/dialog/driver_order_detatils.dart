@@ -248,7 +248,7 @@ class _DriverOrderDetailsDialogState extends State<DriverOrderDetailsDialog> {
                             style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
                           ),
                           Text(
-                            order?.userTime ?? '--',
+                            order?.userTimeFormat ?? '--',
                             style:
                                 const TextStyle(fontSize: 25, fontWeight: FontWeight.w600, color: CoreColors.primary),
                           ),
