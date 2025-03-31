@@ -154,10 +154,17 @@ class OrderCard extends StatelessWidget {
                         'Статус'.tr,
                         style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
                       ),
-                      Text(
-                        order.status?.tr ?? '--',
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: CoreColors.primary),
-                      ),
+                      if (order.driverId != null && order.driver != null && order.status == 'new')
+                        Text(
+                          'Водитель назначен'.tr,
+                          // 'Жүргізуші тағайындалды'.tr,
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: CoreColors.primary),
+                        )
+                      else
+                        Text(
+                          order.status?.tr ?? '--',
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: CoreColors.primary),
+                        ),
                     ],
                   ),
                 ),
@@ -235,9 +242,9 @@ class OrderCard extends StatelessWidget {
                                 scheme: 'tel',
                                 path: "+7${profile.phone!}",
                               );
-                              if (await canLaunchUrl(url)) {
+                              try {
                                 await launchUrl(url);
-                              } else {
+                              } catch (e) {
                                 // copy to clipboard
                                 Clipboard.setData(ClipboardData(text: "+7${profile.phone!}"));
                                 CoreToast.showToast('Номер скопирован в буфер обмена'.tr);

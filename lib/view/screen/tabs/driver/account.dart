@@ -22,6 +22,7 @@ import 'package:tulpar/view/dialog/pay.dart';
 import 'package:tulpar/view/screen/app/log.dart';
 import 'package:tulpar/view/screen/driver/info/info.dart';
 import 'package:tulpar/view/screen/driver/shift.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class DriverAccountTab extends StatefulWidget {
   const DriverAccountTab({super.key});
@@ -215,9 +216,9 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                   title: Text("Справочник и FAQ".tr),
                   trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14),
                   onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const InfoAndFaqScreen()),
-                    );
+                    try {
+                      launchUrlString('https://wa.me/77470415466');
+                    } catch (e) {}
                   },
                 ),
                 ListTile(

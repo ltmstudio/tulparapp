@@ -9,6 +9,7 @@ import 'package:tulpar/view/dialog/lang.dart';
 import 'package:tulpar/view/dialog/logout.dart';
 import 'package:tulpar/view/screen/app/log.dart';
 import 'package:tulpar/view/screen/driver/info/info.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class SettingsTab extends StatefulWidget {
   const SettingsTab({super.key});
@@ -71,9 +72,9 @@ class _SettingsTabState extends State<SettingsTab> {
               title: const Text("Справочник и FAQ"),
               trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14),
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const InfoAndFaqScreen()),
-                );
+                try {
+                  launchUrlString('https://wa.me/77470415466');
+                } catch (e) {}
               },
             ),
             GetBuilder<AppController>(builder: (appController) {

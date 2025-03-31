@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tulpar/controller/other/log.dart';
+import 'package:tulpar/controller/user.dart';
+import 'package:tulpar/core/log.dart';
 
 class LogScreen extends StatefulWidget {
   const LogScreen({super.key});
@@ -17,6 +19,14 @@ class _LogScreenState extends State<LogScreen> {
       appBar: AppBar(
         title: const Text("Logs"),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_applications_rounded),
+            onPressed: () {
+              Log.warning(Get.find<UserController>().token.value ?? 'null');
+            },
+          ),
+        ],
       ),
       body: GetBuilder<LogController>(builder: (l) {
         return ListView(

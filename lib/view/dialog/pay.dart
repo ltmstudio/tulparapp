@@ -30,7 +30,7 @@ class _PayDialogState extends State<PayDialog> {
       var loading = payController.payInfoLoading.value;
       return Container(
         width: w,
-        height: h * 0.5,
+        height: h * 0.8,
         padding: const EdgeInsets.all(CoreDecoration.primaryPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -69,10 +69,10 @@ class _PayDialogState extends State<PayDialog> {
                 subtitle: Text(info!.payLink!),
                 contentPadding: const EdgeInsets.all(0),
                 onTap: () async {
-                  if (await canLaunchUrlString(info.payLink!)) {
+                  try {
                     Log.info("Открытие ссылки на оплату: ${info.payLink}");
                     launchUrlString(info.payLink!);
-                  } else {
+                  } catch (e) {
                     Log.error("Ошибка открытия ссылки на оплату: ${info.payLink}");
                   }
                 },
@@ -92,7 +92,7 @@ class _PayDialogState extends State<PayDialog> {
                 trailing: IconButton(
                   icon: const Icon(Icons.copy),
                   onPressed: () {
-                    Clipboard.setData(ClipboardData(text: info.payLink!));
+                    Clipboard.setData(ClipboardData(text: info.payQrPhone!));
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Скопировано".tr)));
                   },
                 ),

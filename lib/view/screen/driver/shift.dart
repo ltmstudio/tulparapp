@@ -206,7 +206,9 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                                             trailing: TextButton(
                                                 onPressed: () {
                                                   showModalBottomSheet(
-                                                      context: context, builder: (context) => const PayDialog());
+                                                      context: context,
+                                                      isScrollControlled: true,
+                                                      builder: (context) => const PayDialog());
                                                 },
                                                 child: Text("Пополнить".tr)),
                                           );

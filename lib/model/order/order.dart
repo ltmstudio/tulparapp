@@ -105,6 +105,36 @@ class OrderModel {
     this.driver,
   });
 
+  OrderModel mergeWith(OrderModel other) {
+    return OrderModel(
+      id: other.id ?? id,
+      phone: other.phone ?? phone,
+      typeId: other.typeId ?? typeId,
+      classId: other.classId ?? classId,
+      userId: other.userId ?? userId,
+      driverId: other.driverId ?? driverId,
+      userCost: other.userCost ?? userCost,
+      userTime: other.userTime ?? userTime,
+      people: other.people ?? people,
+      userComment: other.userComment ?? userComment,
+      driverComment: other.driverComment ?? driverComment,
+      pointA: other.pointA ?? pointA,
+      pointB: other.pointB ?? pointB,
+      geoA: other.geoA ?? geoA,
+      geoB: other.geoB ?? geoB,
+      cityAId: other.cityAId ?? cityAId,
+      cityBId: other.cityBId ?? cityBId,
+      cityA: other.cityA ?? cityA,
+      cityB: other.cityB ?? cityB,
+      isDelivery: other.isDelivery ?? isDelivery,
+      isCargo: other.isCargo ?? isCargo,
+      carClass: other.carClass ?? carClass,
+      createdAt: other.createdAt ?? createdAt,
+      updatedAt: other.updatedAt ?? updatedAt,
+      status: other.status ?? status,
+    );
+  }
+
   OrderModel copyWith({
     int? id,
     String? phone,
@@ -219,6 +249,16 @@ class OrderModel {
         "status": status,
         "driver": driver?.toJson(),
       };
+
+  @override
+  String toString() {
+    var jsn = toJson();
+    var result = '';
+    for (var j in jsn.entries) {
+      result += '${j.key}: ${j.value}\n';
+    }
+    return result;
+  }
 
   Map<String, dynamic> toCreateForm() {
     Map<String, dynamic> form = {
