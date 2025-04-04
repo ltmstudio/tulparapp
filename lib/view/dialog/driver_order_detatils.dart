@@ -46,7 +46,7 @@ class _DriverOrderDetailsDialogState extends State<DriverOrderDetailsDialog> {
           if (expanded.phone != null) {
             isOrderExpanded = true;
           }
-          order = expanded;
+          order = order.mergeWith(expanded);
         }
       }
       return Container(
@@ -289,14 +289,21 @@ class _DriverOrderDetailsDialogState extends State<DriverOrderDetailsDialog> {
                             icon: const Icon(Icons.copy, color: CoreColors.primary)),
                         IconButton(
                             onPressed: () async {
-                              final Uri url = Uri(
-                                scheme: 'tel',
-                                path: "+7${order!.phone!}",
-                              );
-                              if (await canLaunchUrl(url)) {
+                              if (order?.phone == null) return;
+                              try {
+                                final Uri url = Uri(
+                                  scheme: 'tel',
+                                  path: "+7${order!.phone!}",
+                                );
                                 await launchUrl(url);
-                              } else {
-                                CoreToast.showToast("Ошибка при попытке позвонить".tr);
+                              } catch (e) {
+                                await Clipboard.setData(ClipboardData(text: "+7${order!.phone}"));
+                                if (mounted) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(content: Text('Номер скопирован'.tr)));
+                                } else {
+                                  CoreToast.showToast("Ошибка при попытке позвонить".tr);
+                                }
                               }
                             },
                             icon: const Icon(Icons.phone, color: CoreColors.primary)),
@@ -308,6 +315,12 @@ class _DriverOrderDetailsDialogState extends State<DriverOrderDetailsDialog> {
                     ),
                     subtitle: Text('Телефон клиента'.tr)),
             ])),
+            // Expanded(
+            //   child: SingleChildScrollView(
+            //     child: Text(order?.toString() ?? '--',
+            //         style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: CoreColors.grey)),
+            //   ),
+            // ),
             Row(
               children: [
                 Expanded(

@@ -64,41 +64,41 @@ class OrdersFiltersDialog extends StatelessWidget {
                     contentPadding: EdgeInsets.zero,
                   ),
                 Divider(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0, left: CoreDecoration.primaryPadding),
-                  child: Text("Класс поездки".tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                ),
-                RadioListTile<int?>(
-                  title: Text(
-                    "Все".tr,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  value: null,
-                  groupValue: selectedOrderClass?.id,
-                  onChanged: (v) {
-                    orderController.selectedOrderClass.value = null;
-                    orderController.update();
-                    Navigator.of(context).pop(true);
-                  },
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  contentPadding: EdgeInsets.zero,
-                ),
-                for (var orderClass in orderClasses)
-                  RadioListTile<int?>(
-                    title: Text(
-                      "${orderClass.name}",
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    value: orderClass.id,
-                    groupValue: selectedOrderClass?.id,
-                    onChanged: (v) {
-                      orderController.selectedOrderClass.value = orderClass;
-                      orderController.update();
-                      Navigator.of(context).pop(true);
-                    },
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    contentPadding: EdgeInsets.zero,
-                  ),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 16.0, left: CoreDecoration.primaryPadding),
+                //   child: Text("Класс поездки".tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                // ),
+                // RadioListTile<int?>(
+                //   title: Text(
+                //     "Все".tr,
+                //     style: const TextStyle(fontSize: 16),
+                //   ),
+                //   value: null,
+                //   groupValue: selectedOrderClass?.id,
+                //   onChanged: (v) {
+                //     orderController.selectedOrderClass.value = null;
+                //     orderController.update();
+                //     Navigator.of(context).pop(true);
+                //   },
+                //   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                //   contentPadding: EdgeInsets.zero,
+                // ),
+                // for (var orderClass in orderClasses)
+                //   RadioListTile<int?>(
+                //     title: Text(
+                //       "${orderClass.name}",
+                //       style: const TextStyle(fontSize: 16),
+                //     ),
+                //     value: orderClass.id,
+                //     groupValue: selectedOrderClass?.id,
+                //     onChanged: (v) {
+                //       orderController.selectedOrderClass.value = orderClass;
+                //       orderController.update();
+                //       Navigator.of(context).pop(true);
+                //     },
+                //     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                //     contentPadding: EdgeInsets.zero,
+                //   ),
                 GetBuilder<DriverController>(builder: (driverController) {
                   var profile = driverController.profile.value;
                   if (profile?.delivery != 1 && profile?.cargo != 1) return const SizedBox();
