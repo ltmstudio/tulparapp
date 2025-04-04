@@ -446,23 +446,31 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                               // distance - time
                               Align(
                                 alignment: Alignment.topRight,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: IconButton.filled(
-                                    style: IconButton.styleFrom(
-                                      backgroundColor: CoreColors.white,
-                                      padding: EdgeInsets.zero,
-                                    ),
-                                    icon: Icon(Icons.my_location, color: CoreColors.primary),
-                                    onPressed: () {
-                                      var myPos = locationProvider.currentPosition.value;
-                                      if (myPos != null) {
-                                        _animatedMapMove(myPos, mapController.camera.zoom);
-                                      } else {
-                                        CoreToast.showToast('Местоположение не найдено');
-                                      }
-                                    },
-                                  ),
+                                child: AnimatedSwitcher(
+                                  duration: Durations.short2,
+                                  transitionBuilder: (child, animation) {
+                                    return FadeTransition(opacity: animation, child: child);
+                                  },
+                                  child: index == 0
+                                      ? Padding(
+                                          padding: const EdgeInsets.all(15.0),
+                                          child: IconButton.filled(
+                                            style: IconButton.styleFrom(
+                                              backgroundColor: CoreColors.white,
+                                              padding: EdgeInsets.zero,
+                                            ),
+                                            icon: Icon(Icons.my_location, color: CoreColors.primary),
+                                            onPressed: () {
+                                              var myPos = locationProvider.currentPosition.value;
+                                              if (myPos != null) {
+                                                _animatedMapMove(myPos, mapController.camera.zoom);
+                                              } else {
+                                                CoreToast.showToast('Местоположение не найдено');
+                                              }
+                                            },
+                                          ),
+                                        )
+                                      : SizedBox(),
                                 ),
                               ),
                               Align(
