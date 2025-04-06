@@ -31,36 +31,41 @@ class ShiftStatusModel {
   int? now;
   int? max;
   int? diffSec;
-  String? left;
+  // String? left;
+  // String? totalLeft;
 
   ShiftStatusModel({
     this.now,
     this.max,
     this.diffSec,
-    this.left,
+    // this.left,
   });
 
   bool get isActive => max != null && now != null && diffSec != null && diffSec! > 0 && now! < max!;
 
-  void decreaseLeftByOneSecond() {
-    if (left != null) {
-      List<String> parts = left!.split(':');
-      int? hours = int.tryParse(parts[0]);
-      int? minutes = int.tryParse(parts[1]);
-      int? seconds = int.tryParse(parts[2]);
-      if (hours == null || minutes == null || seconds == null) {
-        return;
+  String get left {
+    if (diffSec != null && diffSec! > 0) {
+      Duration duration = Duration(seconds: diffSec!);
+      if (duration.inDays > 0) {
+        var hours = duration.inHours % 24;
+        var minutes = duration.inMinutes % 60;
+        var seconds = duration.inSeconds % 60;
+        return '${duration.inDays}d ${hours.toString().padLeft(2, "0")}:${minutes.toString().padLeft(2, "0")}:${seconds.toString().padLeft(2, "0")}';
       }
-      if (hours == 0 && minutes == 0 && seconds == 0) {
-        Get.find<DriverShiftController>()
-          ..shiftStatus.value = null
-          ..update();
-        return;
-      }
+      return duration.toString().split('.').first.padLeft(8, "0");
+    } else {
+      return '00:00:00';
+    }
+  }
 
-      Duration duration = Duration(hours: hours, minutes: minutes, seconds: seconds);
-      duration -= const Duration(seconds: 1);
-      left = duration.toString().split('.').first.padLeft(8, "0");
+  void decreaseLeftByOneSecond() {
+    if (diffSec != null && diffSec! > 0) {
+      diffSec = diffSec! - 1;
+    } else {
+      Get.find<DriverShiftController>()
+        ..shiftStatus.value = null
+        ..update();
+      return;
     }
   }
 
@@ -74,20 +79,20 @@ class ShiftStatusModel {
         now: now ?? this.now,
         max: max ?? this.max,
         diffSec: diffSec ?? this.diffSec,
-        left: left ?? this.left,
+        // left: left ?? this.left,
       );
 
   factory ShiftStatusModel.fromJson(Map<String, dynamic> json) => ShiftStatusModel(
         now: json["now"],
         max: json["max"],
         diffSec: json["diff_sec"],
-        left: json["left"],
+        // left: json["left"],
       );
 
   Map<String, dynamic> toJson() => {
         "now": now,
         "max": max,
         "diff_sec": diffSec,
-        "left": left,
+        // "left": left,
       };
 }
