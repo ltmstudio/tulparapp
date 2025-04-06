@@ -32,6 +32,7 @@ class DriverOrderCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: CoreColors.white,
           borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: CoreColors.primary),
           boxShadow: [
             BoxShadow(
               color: CoreColors.primary.withOpacity(0.08),
