@@ -27,7 +27,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   prefs = await SharedPreferences.getInstance();
-  runApp(MyApp());
+  runApp(Builder(builder: (context) {
+    return MediaQuery.withNoTextScaling(child: MyApp());
+  }));
 }
 
 class MyApp extends StatelessWidget {
@@ -38,69 +40,71 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MediaQuery(
-      data: MediaQueryData.fromView(View.of(context)).copyWith(
-        textScaler: const TextScaler.linear(1.0),
-      ),
-      child: ReactiveFormConfig(
-        validationMessages: AppController.validationMessages,
-        child: GetMaterialApp.router(
-          title: 'tulpar',
-          locale: const Locale('ru', 'RU'),
-          debugShowCheckedModeBanner: false,
-          supportedLocales: AppController.supportedLocales.map((e) => e.locale).toList(),
-          localizationsDelegates: GlobalMaterialLocalizations.delegates,
-          translations: CoreTranslations(),
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: CoreColors.primary),
-            useMaterial3: true,
-            fontFamily: 'Mulish',
-            progressIndicatorTheme: const ProgressIndicatorThemeData(color: CoreColors.primary),
-            textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: CoreColors.primary)),
-            dropdownMenuTheme: DropdownMenuThemeData(
-                inputDecorationTheme: InputDecorationTheme(
-              errorStyle: CoreStyles.hint.copyWith(color: CoreColors.error),
-              hintStyle: CoreStyles.hint,
-              prefixStyle: CoreStyles.h4,
-              labelStyle: CoreStyles.hint,
-              contentPadding: const EdgeInsets.symmetric(horizontal: CoreDecoration.secondaryPadding),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius), borderSide: BorderSide.none),
-              disabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius), borderSide: BorderSide.none),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius), borderSide: BorderSide.none),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
-                  borderSide: const BorderSide(color: CoreColors.primary, width: 2)),
-              fillColor: CoreColors.white,
-              filled: true,
-              errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
-                  borderSide: const BorderSide(color: CoreColors.error, width: 2)),
-              focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
-                  borderSide: const BorderSide(color: CoreColors.errorFocused, width: 2)),
-            )),
-          ),
-          initialBinding: BindingsBuilder(() {
-            Get.put<LogController>(LogController(), permanent: true);
-            Get.put<WidgetStreamController>(WidgetStreamController(), permanent: true);
-            Get.put<AppController>(AppController(), permanent: true);
-            Get.put<UserController>(UserController(), permanent: true);
-            Get.put<UserOrderController>(UserOrderController(), permanent: true);
-            Get.put<AddressController>(AddressController(), permanent: true);
-            Get.put<DriverController>(DriverController(), permanent: true);
-            Get.put<DriverModerationController>(DriverModerationController(), permanent: true);
-            Get.put<DriverOrderController>(DriverOrderController(), permanent: true);
-            Get.put<DriverShiftController>(DriverShiftController(), permanent: true);
-            Get.put<RouteLauncher>(RouteLauncher(), permanent: true);
-            Get.put<PayController>(PayController(), permanent: true);
-          }),
-          routeInformationParser: _informationParser,
-          routerDelegate: _routerDelegate,
+    return
+        // MediaQuery(
+        //   data: MediaQueryData.fromView(View.of(context)).copyWith(
+        //     textScaler: const TextScaler.linear(1.0),
+        //   ),
+        //   child:
+        ReactiveFormConfig(
+      validationMessages: AppController.validationMessages,
+      child: GetMaterialApp.router(
+        title: 'tulpar',
+        locale: const Locale('ru', 'RU'),
+        debugShowCheckedModeBanner: false,
+        supportedLocales: AppController.supportedLocales.map((e) => e.locale).toList(),
+        localizationsDelegates: GlobalMaterialLocalizations.delegates,
+        translations: CoreTranslations(),
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: CoreColors.primary),
+          useMaterial3: true,
+          fontFamily: 'Mulish',
+          progressIndicatorTheme: const ProgressIndicatorThemeData(color: CoreColors.primary),
+          textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: CoreColors.primary)),
+          dropdownMenuTheme: DropdownMenuThemeData(
+              inputDecorationTheme: InputDecorationTheme(
+            errorStyle: CoreStyles.hint.copyWith(color: CoreColors.error),
+            hintStyle: CoreStyles.hint,
+            prefixStyle: CoreStyles.h4,
+            labelStyle: CoreStyles.hint,
+            contentPadding: const EdgeInsets.symmetric(horizontal: CoreDecoration.secondaryPadding),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius), borderSide: BorderSide.none),
+            disabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius), borderSide: BorderSide.none),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius), borderSide: BorderSide.none),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
+                borderSide: const BorderSide(color: CoreColors.primary, width: 2)),
+            fillColor: CoreColors.white,
+            filled: true,
+            errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
+                borderSide: const BorderSide(color: CoreColors.error, width: 2)),
+            focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
+                borderSide: const BorderSide(color: CoreColors.errorFocused, width: 2)),
+          )),
         ),
+        initialBinding: BindingsBuilder(() {
+          Get.put<LogController>(LogController(), permanent: true);
+          Get.put<WidgetStreamController>(WidgetStreamController(), permanent: true);
+          Get.put<AppController>(AppController(), permanent: true);
+          Get.put<UserController>(UserController(), permanent: true);
+          Get.put<UserOrderController>(UserOrderController(), permanent: true);
+          Get.put<AddressController>(AddressController(), permanent: true);
+          Get.put<DriverController>(DriverController(), permanent: true);
+          Get.put<DriverModerationController>(DriverModerationController(), permanent: true);
+          Get.put<DriverOrderController>(DriverOrderController(), permanent: true);
+          Get.put<DriverShiftController>(DriverShiftController(), permanent: true);
+          Get.put<RouteLauncher>(RouteLauncher(), permanent: true);
+          Get.put<PayController>(PayController(), permanent: true);
+        }),
+        routeInformationParser: _informationParser,
+        routerDelegate: _routerDelegate,
       ),
+      // ),
     );
   }
 }
