@@ -384,6 +384,11 @@ class DriverModerationController extends GetxController {
             moderationForm.control('driver_license_number').invalid ||
             driverLicenseImagesFields.where((field) => moderationForm.control(field.name).value != null).length < 2 ||
             stoImagesFields.where((field) => moderationForm.control(field.name).value != null).length < 2) {
+          Log.warning("""
+            ${moderationForm.control('driver_license_date').invalid} ${moderationForm.control('driver_license_number').invalid}
+            ${driverLicenseImagesFields.where((field) => moderationForm.control(field.name).value != null).length < 2}
+            ${stoImagesFields.where((field) => moderationForm.control(field.name).value != null).length < 2}
+          """);
           CoreToast.showToast("Заполните все поля".tr);
           res = false;
         } else {
