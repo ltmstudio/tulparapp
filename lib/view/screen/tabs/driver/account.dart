@@ -200,7 +200,10 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                                 ),
                           trailing: TextButton(
                               onPressed: () {
-                                showModalBottomSheet(context: context, builder: (context) => const PayDialog());
+                                showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    builder: (context) => const PayDialog());
                               },
                               child: Text("Пополнить".tr)),
                         ),
