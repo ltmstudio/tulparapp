@@ -446,7 +446,7 @@ class DriverModerationController extends GetxController {
             cropFrameColor: CoreColors.primary,
             backgroundColor: CoreColors.white,
             activeControlsWidgetColor: CoreColors.primary),
-        IOSUiSettings(title: 'Редактирование фото'.tr, aspectRatioLockEnabled: true),
+        IOSUiSettings(title: 'Редактирование фото'.tr, aspectRatioLockEnabled: true, rectWidth: 1000, rectHeight: 500),
       ],
     );
     if (croppedFile == null) {

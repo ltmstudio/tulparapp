@@ -27,9 +27,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   prefs = await SharedPreferences.getInstance();
-  runApp(Builder(builder: (context) {
-    return MediaQuery.withNoTextScaling(child: MyApp());
-  }));
+  runApp(
+      // Builder(builder: (context) {
+      // return MediaQuery.withNoTextScaling(child:
+      MyApp()
+      //   );
+      // })
+      );
 }
 
 class MyApp extends StatelessWidget {
