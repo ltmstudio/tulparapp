@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tulpar/controller/address.dart';
 import 'package:tulpar/controller/app.dart';
 import 'package:tulpar/controller/dio.dart';
@@ -156,15 +157,9 @@ class UserController extends GetxController {
     try {
       var resp = await dio.post('/auth/login', data: {"phone": phone.value, "sms": codeNumber, "salt": salt.value});
       var response = smsResponseModelFromJson(json.encode(resp.data));
-      if (response.success == true && response.data?.token != null) {
-        token.value = response.data!.token;
-        user.value = response.data!.profile;
-        userStage.value = UserLoginStage.done;
-        clearForm();
-        if (response.message != null) {
-          CoreToast.showToast(response.message!);
-        }
-        Log.success('SMS отправлено');
+      if (response.success == true && response.data?.token != null && response.data?.profile != null) {
+        _handleSuccessfulAuth(response.data!.token!, response.data!.profile!, response.message);
+        Log.success('Авторизация успешна');
       }
     } catch (e) {
       Log.error('Ошибка подтверждения $e');
@@ -180,10 +175,84 @@ class UserController extends GetxController {
   var salt = Rx<String?>(null);
   var phoneToSmsLoading = Rx<bool>(false);
   var smsToTokenLoading = Rx<bool>(false);
+  var googleSignInLoading = Rx<bool>(false);
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: ['email'],
+  );
 
   void clearForm() {
     phone.value = null;
     salt.value = null;
+  }
+
+  void _handleSuccessfulAuth(String token, UserModel profile, String? message) {
+    this.token.value = token;
+    user.value = profile;
+    userStage.value = UserLoginStage.done;
+    clearForm();
+    if (message != null) {
+      CoreToast.showToast(message);
+    }
+  }
+
+  Future<void> loginWithGoogle() async {
+    try {
+      googleSignInLoading.value = true;
+      update();
+
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      
+      if (googleUser == null) {
+        Log.warning('Google Sign In отменен пользователем');
+        googleSignInLoading.value = false;
+        update();
+        return;
+      }
+      
+      final String? googleId = googleUser.id;
+      final String? name = googleUser.displayName ?? 'User';
+      final String? email = googleUser.email;
+
+      if (googleId == null) {
+        CoreToast.showToast('Ошибка получения данных Google'.tr);
+        Log.error('Google ID не получен');
+        googleSignInLoading.value = false;
+        update();
+        return;
+      }
+
+      var inDio = InDio();
+      var dio = inDio.instance;
+
+      var resp = await dio.post('/register/google', data: {
+        "name": name,
+        "email": email,
+        "google_id": googleId,
+        "auth_type": "google"
+      });
+
+      var response = smsResponseModelFromJson(json.encode(resp.data));
+      
+      if (response.success == true && response.data?.token != null && response.data?.profile != null) {
+        _handleSuccessfulAuth(
+          response.data!.token!, 
+          response.data!.profile!, 
+          response.message ?? 'Успешная авторизация через Google'.tr
+        );
+        Log.success('Авторизация через Google успешна');
+      } else {
+        CoreToast.showToast('Ошибка авторизации через Google'.tr);
+        Log.error('Ошибка авторизации через Google - неверный ответ сервера');
+      }
+    } catch (e) {
+      Log.error('Ошибка авторизации через Google: $e');
+      CoreToast.showToast('Ошибка авторизации через Google'.tr);
+      await _googleSignIn.signOut();
+    } finally {
+      googleSignInLoading.value = false;
+      update();
+    }
   }
 
   void logout() async {
@@ -191,8 +260,8 @@ class UserController extends GetxController {
     token.value = null;
     user.value = null;
     userStage.value = UserLoginStage.phone;
+    await _googleSignIn.signOut();
     update();
-    // reset all controllers
     Get.find<AppController>().resetController();
     Get.find<AddressController>().resetController();
     Get.find<DriverController>().resetController();

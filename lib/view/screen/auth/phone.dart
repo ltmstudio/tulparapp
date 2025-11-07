@@ -110,6 +110,62 @@ class _AuthPhoneScreenState extends State<AuthPhoneScreen> {
                         ),
                       );
                     }),
+                    SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Expanded(child: Divider()),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text('или'.tr, style: TextStyle(color: Colors.grey)),
+                        ),
+                        Expanded(child: Divider()),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    GetBuilder<UserController>(builder: (userController) {
+                      var loading = userController.googleSignInLoading.value;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: OutlinedButton(
+                          onPressed: loading ? null : () {
+                            if (checked.value != true) {
+                              CoreToast.showToast('Ознакомьтесь с Лицензионным соглашением');
+                              return;
+                            }
+                            FocusScope.of(context).unfocus();
+                            userController.loginWithGoogle();
+                          },
+                          style: OutlinedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 16),
+                            side: BorderSide(color: CoreColors.primary, width: 1.5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
+                            ),
+                          ),
+                          child: loading
+                              ? SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(strokeWidth: 2),
+                                )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.g_mobiledata, size: 28, color: CoreColors.primary),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      'Войти через Google'.tr,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: CoreColors.primary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                        ),
+                      );
+                    }),
                   ],
                 ),
               ),
