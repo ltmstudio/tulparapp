@@ -131,7 +131,7 @@ class _AuthPhoneScreenState extends State<AuthPhoneScreen> {
                             if (checked.value != true) {
                               CoreToast.showToast('Ознакомьтесь с Лицензионным соглашением');
                               return;
-                            }
+                            } 
                             FocusScope.of(context).unfocus();
                             userController.loginWithGoogle();
                           },
@@ -149,20 +149,20 @@ class _AuthPhoneScreenState extends State<AuthPhoneScreen> {
                                   child: CircularProgressIndicator(strokeWidth: 2),
                                 )
                               : Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.g_mobiledata, size: 28, color: CoreColors.primary),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      'Войти через Google'.tr,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                        color: CoreColors.primary,
-                                      ),
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.g_mobiledata, size: 28, color: CoreColors.primary),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    'Войти через Google'.tr,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: CoreColors.primary,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
+                              ),
                         ),
                       );
                     }),

@@ -158,7 +158,7 @@ class UserController extends GetxController {
       var resp = await dio.post('/auth/login', data: {"phone": phone.value, "sms": codeNumber, "salt": salt.value});
       var response = smsResponseModelFromJson(json.encode(resp.data));
       if (response.success == true && response.data?.token != null && response.data?.profile != null) {
-        _handleSuccessfulAuth(response.data!.token!, response.data!.profile!, response.message);
+        handleSuccessfulAuth(response.data!.token!, response.data!.profile!, response.message);
         Log.success('Авторизация успешна');
       }
     } catch (e) {
@@ -178,80 +178,127 @@ class UserController extends GetxController {
   var googleSignInLoading = Rx<bool>(false);
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: ['email'],
+    scopes: [
+      'email',
+      'profile',
+    ],
+    // clientId: '648672995413-mc1d2qp2tk44tgn43149cudodalus88t.apps.googleusercontent.com', // Ваш client_id
   );
-
-  void clearForm() {
-    phone.value = null;
-    salt.value = null;
-  }
-
-  void _handleSuccessfulAuth(String token, UserModel profile, String? message) {
-    this.token.value = token;
-    user.value = profile;
-    userStage.value = UserLoginStage.done;
-    clearForm();
-    if (message != null) {
-      CoreToast.showToast(message);
-    }
-  }
 
   Future<void> loginWithGoogle() async {
     try {
       googleSignInLoading.value = true;
       update();
 
+      Log.info('Начало авторизации через Google Sign In');
+      
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       
       if (googleUser == null) {
-        Log.warning('Google Sign In отменен пользователем');
-        googleSignInLoading.value = false;
-        update();
-        return;
-      }
-      
-      final String? googleId = googleUser.id;
-      final String? name = googleUser.displayName ?? 'User';
-      final String? email = googleUser.email;
-
-      if (googleId == null) {
-        CoreToast.showToast('Ошибка получения данных Google'.tr);
-        Log.error('Google ID не получен');
-        googleSignInLoading.value = false;
-        update();
+        Log.warning('Пользователь отменил авторизацию');
         return;
       }
 
-      var inDio = InDio();
-      var dio = inDio.instance;
-
-      var resp = await dio.post('/register/google', data: {
-        "name": name,
-        "email": email,
-        "google_id": googleId,
-        "auth_type": "google"
-      });
-
-      var response = smsResponseModelFromJson(json.encode(resp.data));
+      Log.info('Google пользователь получен: ${googleUser.email}');
       
-      if (response.success == true && response.data?.token != null && response.data?.profile != null) {
-        _handleSuccessfulAuth(
-          response.data!.token!, 
-          response.data!.profile!, 
-          response.message ?? 'Успешная авторизация через Google'.tr
-        );
-        Log.success('Авторизация через Google успешна');
-      } else {
-        CoreToast.showToast('Ошибка авторизации через Google'.tr);
-        Log.error('Ошибка авторизации через Google - неверный ответ сервера');
-      }
-    } catch (e) {
+      // Получаем токен доступа
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      
+      Log.info('Токен доступа получен: ${googleAuth.accessToken != null ? 'да' : 'нет'}');
+      Log.info('ID токен получен: ${googleAuth.idToken != null ? 'да' : 'нет'}');
+
+      // Отправляем данные на ваш сервер
+      await _sendGoogleAuthToServer(
+        googleAuth.accessToken,
+        googleAuth.idToken,
+        googleUser,
+      );
+
+    } catch (e, stackTrace) {
       Log.error('Ошибка авторизации через Google: $e');
-      CoreToast.showToast('Ошибка авторизации через Google'.tr);
-      await _googleSignIn.signOut();
+      Log.error('Stack trace: $stackTrace');
+      CoreToast.showToast('Ошибка авторизации через Google: $e');
     } finally {
       googleSignInLoading.value = false;
       update();
+    }
+  }
+
+  Future<void> _sendGoogleAuthToServer(
+    String? accessToken,
+    String? idToken,
+    GoogleSignInAccount googleUser,
+  ) async {
+    try {
+      Log.info('Отправка данных Google на сервер...');
+      Log.info('Access Token: ${accessToken != null ? 'есть' : 'нет'}');
+      Log.info('ID Token: ${idToken != null ? 'есть' : 'нет'}');
+      
+      if (accessToken == null) {
+        throw Exception('Access token не получен');
+      }
+      
+      var inDio = InDio();
+      var dio = inDio.instance;
+      
+      // Формируем данные для отправки
+      final Map<String, dynamic> requestData = {
+        'access_token': accessToken,
+        'email': googleUser.email ?? '',
+        'name': googleUser.displayName ?? '',
+        'google_id': googleUser.id,
+      };
+      
+      // Добавляем id_token только если он есть
+      if (idToken != null && idToken.isNotEmpty) {
+        requestData['id_token'] = idToken;
+      }
+      
+      final response = await dio.post(
+        '/auth/google/mobile',
+        data: requestData,
+      );
+
+      final responseData = response.data;
+      Log.info('Ответ от сервера: $responseData');
+
+      if (responseData['success'] == true && responseData['data'] != null) {
+        final token = responseData['data']['token'] as String;
+        final profileJson = responseData['data']['profile'];
+        
+        final profile = UserModel.fromJson(profileJson);
+        
+        handleSuccessfulAuth(token, profile, 'Успешная авторизация через Google');
+        
+        Log.success('Авторизация через Google успешна');
+      } else {
+        final error = responseData['error'] ?? responseData['message'] ?? 'Неизвестная ошибка';
+        throw Exception(error);
+      }
+    } catch (e, stackTrace) {
+      Log.error('Ошибка отправки данных на сервер: $e');
+      Log.error('Stack trace: $stackTrace');
+      rethrow;
+    }
+  }
+
+  Future<void> logoutGoogle() async {
+    await _googleSignIn.signOut();
+    Log.info('Выход из Google аккаунта выполнен');
+  }
+
+  void clearForm() {
+    phone.value = null;
+    salt.value = null;
+  }
+
+  void handleSuccessfulAuth(String token, UserModel profile, String? message) {
+    this.token.value = token;
+    user.value = profile;
+    userStage.value = UserLoginStage.done;
+    clearForm();
+    if (message != null) {
+      CoreToast.showToast(message);
     }
   }
 
