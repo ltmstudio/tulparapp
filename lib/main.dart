@@ -53,12 +53,28 @@ class MyApp extends StatelessWidget {
         ReactiveFormConfig(
       validationMessages: AppController.validationMessages,
       child: GetMaterialApp.router(
-        title: 'tulpar',
+        title: 'Tulpar',
         locale: const Locale('ru', 'RU'),
         debugShowCheckedModeBanner: false,
         supportedLocales: AppController.supportedLocales.map((e) => e.locale).toList(),
         localizationsDelegates: GlobalMaterialLocalizations.delegates,
         translations: CoreTranslations(),
+
+        // 🔹 ГЛОБАЛЬНО ОТКЛЮЧАЕМ МАСШТАБИРОВАНИЕ ТЕКСТА
+        builder: (context, child) {
+          final mediaQuery = MediaQuery.of(context);
+          return MediaQuery(
+            data: mediaQuery.copyWith(
+              // Для Flutter 3.7+
+              textScaler: const TextScaler.linear(1.0),
+
+              // Если у тебя более старая версия Flutter:
+              // textScaleFactor: 1.0,
+            ),
+            child: child!,
+          );
+        },
+
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: CoreColors.primary),
           useMaterial3: true,

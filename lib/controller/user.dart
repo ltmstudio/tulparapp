@@ -46,7 +46,8 @@ class UserController extends GetxController {
         orderController.fetchCarClasses();
         orderController.fetchOrderTypes();
         orderController.fetchCities();
-        if (Get.find<AppController>().appMode.value == AppMode.driver && u.driverId != null) {
+        if (Get.find<AppController>().appMode.value == AppMode.driver &&
+            u.driverId != null) {
           Get.find<DriverController>().fetchProfile();
           Get.find<DriverModerationController>().fetchModeration();
           Get.find<AddressController>().fetchAddresses();
@@ -125,7 +126,8 @@ class UserController extends GetxController {
     phoneToSmsLoading.value = true;
     update();
     try {
-      var resp = await dio.post('/auth/phone_to_sms', data: {"phone": phoneNumber});
+      var resp =
+          await dio.post('/auth/phone_to_sms', data: {"phone": phoneNumber});
       var response = phoneResponseModelFromJson(json.encode(resp.data));
       if (response.success == true && response.data?.sms != null) {
         phone.value = phoneNumber;
@@ -155,10 +157,14 @@ class UserController extends GetxController {
     smsToTokenLoading.value = true;
     update();
     try {
-      var resp = await dio.post('/auth/login', data: {"phone": phone.value, "sms": codeNumber, "salt": salt.value});
+      var resp = await dio.post('/auth/login',
+          data: {"phone": phone.value, "sms": codeNumber, "salt": salt.value});
       var response = smsResponseModelFromJson(json.encode(resp.data));
-      if (response.success == true && response.data?.token != null && response.data?.profile != null) {
-        handleSuccessfulAuth(response.data!.token!, response.data!.profile!, response.message);
+      if (response.success == true &&
+          response.data?.token != null &&
+          response.data?.profile != null) {
+        handleSuccessfulAuth(
+            response.data!.token!, response.data!.profile!, response.message);
         Log.success('Авторизация успешна');
       }
     } catch (e) {
@@ -185,35 +191,38 @@ class UserController extends GetxController {
     // clientId: '648672995413-mc1d2qp2tk44tgn43149cudodalus88t.apps.googleusercontent.com', // Ваш client_id
   );
 
-  Future<void> loginWithGoogle() async {
+  Future<void> loginWithGoogle(String phoneNumber) async {
     try {
       googleSignInLoading.value = true;
       update();
 
       Log.info('Начало авторизации через Google Sign In');
-      
+
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      
+
       if (googleUser == null) {
         Log.warning('Пользователь отменил авторизацию');
         return;
       }
 
       Log.info('Google пользователь получен: ${googleUser.email}');
-      
+
       // Получаем токен доступа
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      
-      Log.info('Токен доступа получен: ${googleAuth.accessToken != null ? 'да' : 'нет'}');
-      Log.info('ID токен получен: ${googleAuth.idToken != null ? 'да' : 'нет'}');
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      Log.info(
+          'Токен доступа получен: ${googleAuth.accessToken != null ? 'да' : 'нет'}');
+      Log.info(
+          'ID токен получен: ${googleAuth.idToken != null ? 'да' : 'нет'}');
 
       // Отправляем данные на ваш сервер
       await _sendGoogleAuthToServer(
         googleAuth.accessToken,
         googleAuth.idToken,
         googleUser,
+        phoneNumber,
       );
-
     } catch (e, stackTrace) {
       Log.error('Ошибка авторизации через Google: $e');
       Log.error('Stack trace: $stackTrace');
@@ -228,32 +237,34 @@ class UserController extends GetxController {
     String? accessToken,
     String? idToken,
     GoogleSignInAccount googleUser,
+    String phone,
   ) async {
     try {
       Log.info('Отправка данных Google на сервер...');
       Log.info('Access Token: ${accessToken != null ? 'есть' : 'нет'}');
       Log.info('ID Token: ${idToken != null ? 'есть' : 'нет'}');
-      
+
       if (accessToken == null) {
         throw Exception('Access token не получен');
       }
-      
+
       var inDio = InDio();
       var dio = inDio.instance;
-      
+
       // Формируем данные для отправки
       final Map<String, dynamic> requestData = {
         'access_token': accessToken,
         'email': googleUser.email ?? '',
         'name': googleUser.displayName ?? '',
         'google_id': googleUser.id,
+        'phone': phone,
       };
-      
+
       // Добавляем id_token только если он есть
       if (idToken != null && idToken.isNotEmpty) {
         requestData['id_token'] = idToken;
       }
-      
+
       final response = await dio.post(
         '/auth/google/mobile',
         data: requestData,
@@ -265,14 +276,17 @@ class UserController extends GetxController {
       if (responseData['success'] == true && responseData['data'] != null) {
         final token = responseData['data']['token'] as String;
         final profileJson = responseData['data']['profile'];
-        
+
         final profile = UserModel.fromJson(profileJson);
-        
-        handleSuccessfulAuth(token, profile, 'Успешная авторизация через Google');
-        
+
+        handleSuccessfulAuth(
+            token, profile, 'Успешная авторизация через Google');
+
         Log.success('Авторизация через Google успешна');
       } else {
-        final error = responseData['error'] ?? responseData['message'] ?? 'Неизвестная ошибка';
+        final error = responseData['error'] ??
+            responseData['message'] ??
+            'Неизвестная ошибка';
         throw Exception(error);
       }
     } catch (e, stackTrace) {

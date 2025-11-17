@@ -198,7 +198,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                               mapController: mapController,
                                               options: MapOptions(
                                                 initialCenter: const LatLng(43.29446, 76.94687),
-                                                initialZoom: 12,
+                                                initialZoom: 15,
                                                 onMapReady: () {
                                                   mapControllerInitialized.value = true;
                                                 },
