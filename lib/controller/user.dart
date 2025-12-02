@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:tulpar/controller/address.dart';
 import 'package:tulpar/controller/app.dart';
 import 'package:tulpar/controller/dio.dart';
@@ -182,6 +184,7 @@ class UserController extends GetxController {
   var phoneToSmsLoading = Rx<bool>(false);
   var smsToTokenLoading = Rx<bool>(false);
   var googleSignInLoading = Rx<bool>(false);
+  var appleSignInLoading = Rx<bool>(false);
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
@@ -299,6 +302,141 @@ class UserController extends GetxController {
   Future<void> logoutGoogle() async {
     await _googleSignIn.signOut();
     Log.info('Выход из Google аккаунта выполнен');
+  }
+
+  //todo loginWithApple
+
+  Future<void> loginWithApple(String phoneNumber) async {
+    if (!Platform.isIOS) {
+      CoreToast.showToast('Apple Sign In доступен только на iOS'.tr);
+      Log.warning('Apple Sign In вызван на не-iOS платформе');
+      return;
+    }
+
+    try {
+      appleSignInLoading.value = true;
+      update();
+
+      Log.info('Начало авторизации через Apple Sign In');
+
+      // Проверяем доступность Apple Sign In
+      final isAvailable = await SignInWithApple.isAvailable();
+      if (!isAvailable) {
+        throw Exception('Apple Sign In недоступен на этом устройстве');
+      }
+
+      // Запрашиваем авторизацию
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+
+      if (credential.userIdentifier!.isEmpty) {
+        Log.warning('Пользователь отменил авторизацию');
+        return;
+      }
+
+      Log.info('Apple пользователь получен: ${credential.userIdentifier}');
+      Log.info('Email: ${credential.email ?? "не предоставлен"}');
+      Log.info('Имя: ${credential.givenName ?? "не предоставлено"}');
+      Log.info('Фамилия: ${credential.familyName ?? "не предоставлена"}');
+
+      // Отправляем данные на сервер
+      await _sendAppleAuthToServer(
+        credential,
+        phoneNumber,
+      );
+    } catch (e, stackTrace) {
+      Log.error('Ошибка авторизации через Apple: $e');
+      Log.error('Stack trace: $stackTrace');
+      
+      if (e.toString().contains('userCancel')) {
+        Log.warning('Пользователь отменил авторизацию');
+        return;
+      }
+      
+      CoreToast.showToast('Ошибка авторизации через Apple: $e');
+    } finally {
+      appleSignInLoading.value = false;
+      update();
+    }
+  }
+
+  Future<void> _sendAppleAuthToServer(
+    AuthorizationCredentialAppleID credential,
+    String phone,
+  ) async {
+    try {
+      Log.info('Отправка данных Apple на сервер...');
+      Log.info('User ID: ${credential.userIdentifier}');
+      Log.info('Identity Token: ${credential.identityToken != null ? 'есть' : 'нет'}');
+      Log.info('Authorization Code: ${credential.authorizationCode != null ? 'есть' : 'нет'}');
+
+      if (credential.userIdentifier!.isEmpty) {
+        throw Exception('User identifier не получен');
+      }
+
+      var inDio = InDio();
+      var dio = inDio.instance;
+
+      // Формируем имя из имени и фамилии
+      String? fullName;
+      if (credential.givenName != null || credential.familyName != null) {
+        final parts = <String>[];
+        if (credential.givenName != null) parts.add(credential.givenName!);
+        if (credential.familyName != null) parts.add(credential.familyName!);
+        fullName = parts.join(' ').trim();
+        if (fullName.isEmpty) fullName = null;
+      }
+
+      // Формируем данные для отправки
+      final Map<String, dynamic> requestData = {
+        'apple_id': credential.userIdentifier,
+        'email': credential.email ?? '',
+        'name': fullName ?? '',
+        'phone': phone,
+      };
+
+      // Добавляем токены только если они есть
+      if (credential.identityToken != null && credential.identityToken!.isNotEmpty) {
+        requestData['identity_token'] = credential.identityToken;
+      }
+      
+      if (credential.authorizationCode != null && credential.authorizationCode!.isNotEmpty) {
+        requestData['authorization_code'] = credential.authorizationCode;
+      }
+
+      final response = await dio.post(
+        '/auth/apple/mobile',
+        data: requestData,
+      );
+
+      final responseData = response.data;
+      Log.info('Ответ от сервера: $responseData');
+
+      if (responseData['success'] == true && responseData['data'] != null) {
+        final token = responseData['data']['token'] as String;
+        final profileJson = responseData['data']['profile'];
+
+        final profile = UserModel.fromJson(profileJson);
+
+        handleSuccessfulAuth(
+            token, profile, 'Успешная авторизация через Apple');
+
+        Log.success('Авторизация через Apple успешна');
+      } else {
+        final error = responseData['error'] ??
+            responseData['message'] ??
+            'Неизвестная ошибка';
+        throw Exception(error);
+      }
+    } catch (e, stackTrace) {
+      Log.error('Ошибка отправки данных на сервер: $e');
+      Log.error('Stack trace: $stackTrace');
+      rethrow;
+    }
   }
 
   void clearForm() {

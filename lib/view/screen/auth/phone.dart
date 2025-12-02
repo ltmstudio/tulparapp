@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:masked_text_field/masked_text_field.dart';
@@ -65,7 +67,7 @@ class _AuthPhoneScreenState extends State<AuthPhoneScreen> {
                                 ),
                               ),
                               ListTile(
-                                contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 5),
                                 onTap: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(builder: (context) => const PublicOfferScreen()),
@@ -79,10 +81,10 @@ class _AuthPhoneScreenState extends State<AuthPhoneScreen> {
                                           text: 'Лицензионным соглашением'.tr,
                                           style:
                                               const TextStyle(color: CoreColors.primary, decoration: TextDecoration.underline)),
-                                      TextSpan(text: ' и принимаю условия публичной оферты')
+                                      const TextSpan(text: ' и принимаю условия публичной оферты')
                                     ],
                                   ),
-                                  style: TextStyle(height: 1.1),
+                                  style: const TextStyle(height: 1.1),
                                 ),
                                 trailing: ValueListenableBuilder(
                                     valueListenable: checked,
@@ -94,7 +96,7 @@ class _AuthPhoneScreenState extends State<AuthPhoneScreen> {
                                           });
                                     }),
                               ),
-                              SizedBox(height: 15),
+                              const SizedBox(height: 15),
                               GetBuilder<UserController>(builder: (userController) {
                                 var loading = userController.phoneToSmsLoading.value;
                                 return Padding(
@@ -118,18 +120,18 @@ class _AuthPhoneScreenState extends State<AuthPhoneScreen> {
                                   ),
                                 );
                               }),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               Row(
                                 children: [
-                                  Expanded(child: Divider()),
+                                  const Expanded(child: Divider()),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                                    child: Text('или'.tr, style: TextStyle(color: Colors.grey)),
+                                    child: Text('или'.tr, style: const TextStyle(color: Colors.grey)),
                                   ),
-                                  Expanded(child: Divider()),
+                                  const Expanded(child: Divider()),
                                 ],
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               GetBuilder<UserController>(builder: (userController) {
                                 var loading = userController.googleSignInLoading.value;
                                 return Padding(
@@ -149,14 +151,14 @@ class _AuthPhoneScreenState extends State<AuthPhoneScreen> {
                                       userController.loginWithGoogle(phone);
                                     },
                                     style: OutlinedButton.styleFrom(
-                                      padding: EdgeInsets.symmetric(vertical: 16),
-                                      side: BorderSide(color: CoreColors.primary, width: 1.5),
+                                      padding: const EdgeInsets.symmetric(vertical: 16),
+                                      side: const BorderSide(color: CoreColors.primary, width: 1.5),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
                                       ),
                                     ),
                                     child: loading
-                                        ? SizedBox(
+                                        ? const SizedBox(
                                             height: 20,
                                             width: 20,
                                             child: CircularProgressIndicator(strokeWidth: 2),
@@ -164,11 +166,11 @@ class _AuthPhoneScreenState extends State<AuthPhoneScreen> {
                                         : Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
-                                            Icon(Icons.g_mobiledata, size: 28, color: CoreColors.primary),
-                                            SizedBox(width: 8),
+                                            const Icon(Icons.g_mobiledata, size: 28, color: CoreColors.primary),
+                                            const SizedBox(width: 8),
                                             Text(
                                               'Войти через Google'.tr,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w600,
                                                 color: CoreColors.primary,
@@ -179,6 +181,56 @@ class _AuthPhoneScreenState extends State<AuthPhoneScreen> {
                                   ),
                                 );
                               }),
+                           //   if (Platform.isIOS)
+                                GetBuilder<UserController>(builder: (userController) {
+                                  var loading = userController.appleSignInLoading.value;
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 5),
+                                    child: OutlinedButton(
+                                      onPressed: loading ? null : () {
+                                        var phone = phoneController.text.replaceAll(RegExp(r'\D'), '');
+                                        if (phone.length < 10) {
+                                          CoreToast.showToast("Введите корректный номер телефона".tr);
+                                          return;
+                                        }
+                                        if (checked.value != true) {
+                                          CoreToast.showToast('Ознакомьтесь с Лицензионным соглашением');
+                                          return;
+                                        }
+                                        FocusScope.of(context).unfocus();
+                                        userController.loginWithApple(phone);
+                                      },
+                                      style: OutlinedButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(vertical: 16),
+                                        side: const BorderSide(color: CoreColors.primary, width: 1.5),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
+                                        ),
+                                      ),
+                                      child: loading
+                                          ? const SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: CircularProgressIndicator(strokeWidth: 2),
+                                            )
+                                          : Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              const Icon(Icons.apple,size: 26),
+                                              const SizedBox(width: 8),
+                                              Text(
+                                                'Войти через Apple'.tr,
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: CoreColors.primary,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                    ),
+                                  );
+                                }),
                             ],
                           ),
                         ),
