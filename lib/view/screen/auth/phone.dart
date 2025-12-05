@@ -132,6 +132,7 @@ class _AuthPhoneScreenState extends State<AuthPhoneScreen> {
                                 ],
                               ),
                               const SizedBox(height: 10),
+                              if (Platform.isAndroid) 
                               GetBuilder<UserController>(builder: (userController) {
                                 var loading = userController.googleSignInLoading.value;
                                 return Padding(
@@ -181,7 +182,7 @@ class _AuthPhoneScreenState extends State<AuthPhoneScreen> {
                                   ),
                                 );
                               }),
-                           //   if (Platform.isIOS)
+                             if (Platform.isIOS)
                                 GetBuilder<UserController>(builder: (userController) {
                                   var loading = userController.appleSignInLoading.value;
                                   return Padding(

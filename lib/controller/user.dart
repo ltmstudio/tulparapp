@@ -333,6 +333,7 @@ class UserController extends GetxController {
         ],
       );
 
+
       if (credential.userIdentifier!.isEmpty) {
         Log.warning('Пользователь отменил авторизацию');
         return;
@@ -364,6 +365,7 @@ class UserController extends GetxController {
     }
   }
 
+
   Future<void> _sendAppleAuthToServer(
     AuthorizationCredentialAppleID credential,
     String phone,
@@ -382,20 +384,22 @@ class UserController extends GetxController {
       var dio = inDio.instance;
 
       // Формируем имя из имени и фамилии
-      String? fullName;
-      if (credential.givenName != null || credential.familyName != null) {
-        final parts = <String>[];
-        if (credential.givenName != null) parts.add(credential.givenName!);
-        if (credential.familyName != null) parts.add(credential.familyName!);
-        fullName = parts.join(' ').trim();
-        if (fullName.isEmpty) fullName = null;
-      }
+     String? fullName = '';
+    if (credential.givenName != null || credential.familyName != null) {
+      final parts = <String>[];
+      if (credential.givenName != null) parts.add(credential.givenName!);
+      if (credential.familyName != null) parts.add(credential.familyName!);
+      fullName = parts.join(' ').trim();
+    }
+
+    // Fallback if name is still empty
+    fullName = fullName.isEmpty ? 'Без имени' : fullName;
 
       // Формируем данные для отправки
       final Map<String, dynamic> requestData = {
         'apple_id': credential.userIdentifier,
         'email': credential.email ?? '',
-        'name': fullName ?? '',
+        'name': fullName ?? credential.givenName ?? credential.familyName ?? 'Без имени',
         'phone': phone,
       };
 
