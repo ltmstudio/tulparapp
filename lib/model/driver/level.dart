@@ -42,13 +42,18 @@ class DriverLevelModel {
         updatedAt: updatedAt ?? this.updatedAt,
       );
 
-  factory DriverLevelModel.fromJson(Map<String, dynamic> json) => DriverLevelModel(
+  factory DriverLevelModel.fromJson(Map<String, dynamic> json) =>
+      DriverLevelModel(
         id: json["id"],
         name: json["name"],
         count: json["count"],
         color: json["color"],
-        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {

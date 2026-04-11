@@ -64,30 +64,36 @@ class OrderCard extends StatelessWidget {
                 const Divider(),
                 Row(
                   children: [
-                    const Icon(Icons.place_outlined, size: 26, color: CoreColors.primary),
+                    const Icon(Icons.place_outlined,
+                        size: 26, color: CoreColors.primary),
                     const SizedBox(width: 5),
                     Flexible(
                       child: Text(
                         order.pointA ?? '--',
-                        style: const TextStyle(fontSize: 14, color: CoreColors.black),
+                        style: const TextStyle(
+                            fontSize: 14, color: CoreColors.black),
                       ),
                     ),
                   ],
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 13.0),
-                  child: CustomPaint(size: const Size(1, 15), painter: DashedLineVerticalPainter()),
+                  child: CustomPaint(
+                      size: const Size(1, 15),
+                      painter: DashedLineVerticalPainter()),
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.place_outlined, size: 26, color: CoreColors.primary),
+                    const Icon(Icons.place_outlined,
+                        size: 26, color: CoreColors.primary),
                     const SizedBox(width: 5),
                     Flexible(
                         child: Text(
                       order.pointB ?? '--',
                       softWrap: true,
-                      style: const TextStyle(fontSize: 14, color: CoreColors.black),
+                      style: const TextStyle(
+                          fontSize: 14, color: CoreColors.black),
                     )),
                   ],
                 ),
@@ -104,22 +110,26 @@ class OrderCard extends StatelessWidget {
                       const WidgetSpan(
                         child: Padding(
                           padding: EdgeInsets.only(right: 10),
-                          child: Icon(Icons.route, size: 16, color: CoreColors.primary),
+                          child: Icon(Icons.route,
+                              size: 16, color: CoreColors.primary),
                         ),
                       ),
                       TextSpan(
                         text: order.cityA?.name ?? '--',
-                        style: const TextStyle(fontSize: 14, color: CoreColors.black),
+                        style: const TextStyle(
+                            fontSize: 14, color: CoreColors.black),
                       ),
                       const WidgetSpan(
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 5),
-                          child: Icon(Icons.keyboard_double_arrow_right_sharp, size: 16, color: CoreColors.primary),
+                          child: Icon(Icons.keyboard_double_arrow_right_sharp,
+                              size: 16, color: CoreColors.primary),
                         ),
                       ),
                       TextSpan(
                         text: order.cityB?.name ?? '--',
-                        style: const TextStyle(fontSize: 14, color: CoreColors.black),
+                        style: const TextStyle(
+                            fontSize: 14, color: CoreColors.black),
                       ),
                     ],
                   ),
@@ -136,11 +146,15 @@ class OrderCard extends StatelessWidget {
                     children: [
                       Text(
                         'Тип'.tr,
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                        style: const TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w700),
                       ),
                       Text(
                         order.type ?? order.typeId.toString(),
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: CoreColors.primary),
+                        style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: CoreColors.primary),
                       ),
                     ],
                   ),
@@ -152,18 +166,27 @@ class OrderCard extends StatelessWidget {
                     children: [
                       Text(
                         'Статус'.tr,
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                        style: const TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w700),
                       ),
-                      if (order.driverId != null && order.driver != null && order.status == 'new')
+                      if (order.driverId != null &&
+                          order.driver != null &&
+                          order.status == 'new')
                         Text(
                           'Водитель назначен'.tr,
                           // 'Жүргізуші тағайындалды'.tr,
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: CoreColors.primary),
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: CoreColors.primary),
                         )
                       else
                         Text(
                           order.status?.tr ?? '--',
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: CoreColors.primary),
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: CoreColors.primary),
                         ),
                     ],
                   ),
@@ -179,7 +202,8 @@ class OrderCard extends StatelessWidget {
                 children: [
                   Text(
                     'Данные водителя'.tr,
-                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 5),
                   Row(
@@ -190,7 +214,8 @@ class OrderCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: CoreColors.lightGrey,
                           shape: BoxShape.circle,
-                          border: Border.all(color: CoreColors.primary, width: 3),
+                          border:
+                              Border.all(color: CoreColors.primary, width: 3),
                         ),
                         child: profile.avatar != null
                             ? ClipRRect(
@@ -202,7 +227,8 @@ class OrderCard extends StatelessWidget {
                                   fit: BoxFit.cover,
                                 ),
                               )
-                            : const Icon(Icons.person, size: 20, color: CoreColors.white),
+                            : const Icon(Icons.person,
+                                size: 20, color: CoreColors.white),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
@@ -212,24 +238,30 @@ class OrderCard extends StatelessWidget {
                         children: [
                           Text(
                             profile.fullname,
-                            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                                fontSize: 13, fontWeight: FontWeight.bold),
                           ),
                           Row(children: [
                             if (profile.carName != null)
                               Text(
                                 "${profile.carName}",
-                                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.bold),
                               ),
                             if (profile.carNumber != null)
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 5, vertical: 1),
                                 margin: const EdgeInsets.only(left: 5),
                                 decoration: BoxDecoration(
-                                    border: Border.all(color: CoreColors.black, width: 1),
+                                    border: Border.all(
+                                        color: CoreColors.black, width: 1),
                                     borderRadius: BorderRadius.circular(5)),
                                 child: Text(
                                   "${profile.carNumber}",
-                                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                           ]),
@@ -246,8 +278,10 @@ class OrderCard extends StatelessWidget {
                                 await launchUrl(url);
                               } catch (e) {
                                 // copy to clipboard
-                                Clipboard.setData(ClipboardData(text: "+7${profile.phone!}"));
-                                CoreToast.showToast('Номер скопирован в буфер обмена'.tr);
+                                Clipboard.setData(
+                                    ClipboardData(text: "+7${profile.phone!}"));
+                                CoreToast.showToast(
+                                    'Номер скопирован в буфер обмена'.tr);
                               }
                             },
                             icon: const Icon(Icons.call, size: 15),
@@ -261,7 +295,8 @@ class OrderCard extends StatelessWidget {
             Row(
               children: [
                 TextButton.icon(
-                    style: TextButton.styleFrom(foregroundColor: CoreColors.error),
+                    style:
+                        TextButton.styleFrom(foregroundColor: CoreColors.error),
                     onPressed: () async {
                       bool? delete = await showDialog(
                         context: context,

@@ -96,7 +96,10 @@ class _TabsStartScreenState extends State<TabsStartScreen> {
     }
     if (currentIndex.value == index) {
       if (tabData[index].navigatorKey.currentState?.canPop() ?? false) {
-        tabData[index].navigatorKey.currentState?.popUntil((route) => route.isFirst);
+        tabData[index]
+            .navigatorKey
+            .currentState
+            ?.popUntil((route) => route.isFirst);
       }
     } else {
       currentIndex.value = index;
@@ -118,7 +121,8 @@ class _TabsStartScreenState extends State<TabsStartScreen> {
         if (appController.appMode.value == AppMode.driver) {
           tabData = tabDriverData;
         }
-        var currentState = tabData[currentIndex.value].navigatorKey.currentState;
+        var currentState =
+            tabData[currentIndex.value].navigatorKey.currentState;
         if (currentState?.canPop() ?? false) {
           currentState?.pop();
           pop = false;
@@ -140,7 +144,10 @@ class _TabsStartScreenState extends State<TabsStartScreen> {
                 child: PageView(
                   physics: const NeverScrollableScrollPhysics(),
                   controller: pageController,
-                  children: tabData.mapIndexed((i, e) => TabBridge(active: i == currentIndex.value, tab: e)).toList(),
+                  children: tabData
+                      .mapIndexed((i, e) =>
+                          TabBridge(active: i == currentIndex.value, tab: e))
+                      .toList(),
                 ),
               ),
             ],
@@ -173,7 +180,8 @@ class _AuthStartScreenState extends State<AuthStartScreen> {
   Widget build(BuildContext context) {
     return GetBuilder<UserController>(
       builder: (controller) {
-        if (controller.token.value != null && controller.userStage.value == UserLoginStage.done) {
+        if (controller.token.value != null &&
+            controller.userStage.value == UserLoginStage.done) {
           return const TabsStartScreen();
         } else {
           Widget screen = const AuthPhoneScreen();
@@ -214,7 +222,8 @@ class TabBridge extends StatefulWidget {
   State<TabBridge> createState() => TabBridgeState();
 }
 
-class TabBridgeState extends State<TabBridge> with AutomaticKeepAliveClientMixin {
+class TabBridgeState extends State<TabBridge>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -224,6 +233,10 @@ class TabBridgeState extends State<TabBridge> with AutomaticKeepAliveClientMixin
     return NaviStack(
         navigatorKey: widget.tab.navigatorKey,
         active: widget.active,
-        pages: (context) => [NaviPage.material(key: ValueKey(widget.tab.navigatorKey), child: widget.tab.screen)]);
+        pages: (context) => [
+              NaviPage.material(
+                  key: ValueKey(widget.tab.navigatorKey),
+                  child: widget.tab.screen)
+            ]);
   }
 }

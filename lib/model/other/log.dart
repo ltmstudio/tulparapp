@@ -7,7 +7,8 @@ class LogModel {
   String text;
   Color color;
 
-  String get message => "[${_.format(time.hour)}:${_.format(time.minute)}:${_.format(time.second)}] $text";
+  String get message =>
+      "[${_.format(time.hour)}:${_.format(time.minute)}:${_.format(time.second)}] $text";
 
   LogModel({required this.text, required this.color});
 }

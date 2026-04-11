@@ -6,10 +6,11 @@ import 'dart:convert';
 
 import 'package:latlong2/latlong.dart';
 
-List<AddressModel> addressModelFromJson(String str) =>
-    List<AddressModel>.from(json.decode(str).map((x) => AddressModel.fromJson(x)));
+List<AddressModel> addressModelFromJson(String str) => List<AddressModel>.from(
+    json.decode(str).map((x) => AddressModel.fromJson(x)));
 
-String addressModelToJson(List<AddressModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String addressModelToJson(List<AddressModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class AddressModel {
   int? id;

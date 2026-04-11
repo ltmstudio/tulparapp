@@ -31,20 +31,25 @@ class AddressController extends GetxController {
     update();
   }
 
-  Future<bool> addAddress({required String address, String? geo, Function(AddressModel)? onDone}) async {
+  Future<bool> addAddress(
+      {required String address,
+      String? geo,
+      Function(AddressModel)? onDone}) async {
     var inDio = InDio();
     var dio = inDio.instance;
     try {
       isAddressesLoading.value = true;
       update();
-      var resp = await dio.post('/user/address/add', data: {'address': address, 'geo': geo});
+      var resp = await dio
+          .post('/user/address/add', data: {'address': address, 'geo': geo});
       var data = addressModelFromJson(json.encode(resp.data));
       addresses.value = data;
       update();
       Log.success("Адрес добавлен");
       isAddressesLoading.value = false;
       if (onDone != null) {
-        var addedAddresss = addresses.value.firstWhereOrNull((a) => a.address == address && a.geo == geo);
+        var addedAddresss = addresses.value
+            .firstWhereOrNull((a) => a.address == address && a.geo == geo);
         if (addedAddresss != null) {
           onDone(addedAddresss);
         }

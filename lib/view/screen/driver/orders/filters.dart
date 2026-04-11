@@ -22,15 +22,21 @@ class OrdersFiltersDialog extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 16.0, left: CoreDecoration.primaryPadding),
-            child: Text("Фильтрация".tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+            padding: const EdgeInsets.only(
+                top: 16.0, left: CoreDecoration.primaryPadding),
+            child: Text("Фильтрация".tr,
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
           ),
           Expanded(
             child: ListView(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 16.0, left: CoreDecoration.primaryPadding),
-                  child: Text("Тип".tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                  padding: const EdgeInsets.only(
+                      top: 16.0, left: CoreDecoration.primaryPadding),
+                  child: Text("Тип".tr,
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.bold)),
                 ),
                 RadioListTile<int?>(
                   title: Text(
@@ -101,7 +107,8 @@ class OrdersFiltersDialog extends StatelessWidget {
                 //   ),
                 GetBuilder<DriverController>(builder: (driverController) {
                   var profile = driverController.profile.value;
-                  if (profile?.delivery != 1 && profile?.cargo != 1) return const SizedBox();
+                  if (profile?.delivery != 1 && profile?.cargo != 1)
+                    return const SizedBox();
                   return Column(
                     children: [
                       if (profile?.delivery == 1)

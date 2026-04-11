@@ -16,6 +16,7 @@ import 'package:tulpar/controller/route_launcher.dart';
 import 'package:tulpar/controller/user_order.dart';
 import 'package:tulpar/core/colors.dart';
 import 'package:tulpar/core/decoration.dart';
+import 'package:tulpar/core/env.dart';
 import 'package:tulpar/core/icons.dart';
 import 'package:tulpar/core/log.dart';
 import 'package:tulpar/extension/string.dart';
@@ -33,7 +34,8 @@ class DriverFeedTab extends StatefulWidget {
   State<DriverFeedTab> createState() => _DriverFeedTabState();
 }
 
-class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateMixin {
+class _DriverFeedTabState extends State<DriverFeedTab>
+    with TickerProviderStateMixin {
   // maps
   late LocationProvider locationProvider;
   final mapController = MapController();
@@ -41,12 +43,15 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
   final _dio = Dio();
 
   Worker? routeBuilderWorker;
-  late var routeLoadingController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
-  late var routeLoadingAnimation = CurvedAnimation(parent: routeLoadingController, curve: Curves.easeInOut);
+  late var routeLoadingController = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 1000));
+  late var routeLoadingAnimation =
+      CurvedAnimation(parent: routeLoadingController, curve: Curves.easeInOut);
 
   @override
   void initState() {
-    routeBuilderWorker = ever(Get.find<DriverOrderController>().isRouteLoading, (l) {
+    routeBuilderWorker =
+        ever(Get.find<DriverOrderController>().isRouteLoading, (l) {
       if (l) {
         routeLoadingController.repeat(reverse: true);
       } else {
@@ -82,7 +87,8 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
       var geoRoute = orderController.geoRoute.value;
       var selectedOrder = orderController.selectedOrderOnMap.value;
       if (selectedOrder != null) {
-        var expanded = expandedOrders.firstWhereOrNull((element) => element.id == selectedOrder!.id);
+        var expanded = expandedOrders
+            .firstWhereOrNull((element) => element.id == selectedOrder!.id);
         if (expanded != null) {
           selectedOrder = expanded;
         }
@@ -114,22 +120,27 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
                           ))
-                      : const Icon(TulparIcons.logo, color: CoreColors.primary)),
+                      : const Icon(TulparIcons.logo,
+                          color: CoreColors.primary)),
           title: Text('Лента заказов'.tr),
           actions: [
             GetBuilder<DriverShiftController>(builder: (driverShiftController) {
-              var isActive = driverShiftController.shiftStatus.value?.isActive == true;
+              var isActive =
+                  driverShiftController.shiftStatus.value?.isActive == true;
               return TextButton(
                   onPressed: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const DriverShiftScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const DriverShiftScreen()),
                     );
                   },
                   child: Text.rich(TextSpan(children: [
                     TextSpan(
                       text: isActive ? 'СМЕНА АКТИВНА'.tr : 'НАЧАТЬ СМЕНУ'.tr,
                       style: TextStyle(
-                          color: isActive ? CoreColors.moderationApprovedStatus : CoreColors.primary,
+                          color: isActive
+                              ? CoreColors.moderationApprovedStatus
+                              : CoreColors.primary,
                           fontSize: 14,
                           fontWeight: FontWeight.bold),
                     ),
@@ -142,7 +153,9 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: isActive ? CoreColors.moderationApprovedStatus : CoreColors.grey),
+                            color: isActive
+                                ? CoreColors.moderationApprovedStatus
+                                : CoreColors.grey),
                       ),
                     )),
                   ])));
@@ -168,18 +181,23 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                             valueListenable: locationProvider.currentPosition,
                             builder: (_, myPos, __) {
                               var o = orderController.selectedOrderOnMap.value;
-                              if (o?.geoA?.toLatLng != null && o?.geoB?.toLatLng != null) {
+                              if (o?.geoA?.toLatLng != null &&
+                                  o?.geoB?.toLatLng != null) {
                                 var pointALatLng = o!.geoA!.toLatLng!;
                                 var pointBLatLng = o.geoB!.toLatLng!;
 
-                                var bounds = LatLngBounds.fromPoints([pointALatLng, pointBLatLng]);
-                                Future.delayed(const Duration(milliseconds: 300), () {
+                                var bounds = LatLngBounds.fromPoints(
+                                    [pointALatLng, pointBLatLng]);
+                                Future.delayed(
+                                    const Duration(milliseconds: 300), () {
                                   mapController.fitCamera(CameraFit.bounds(
                                       bounds: bounds,
-                                      padding: const EdgeInsets.all(40).copyWith(top: 100, bottom: 80)));
+                                      padding: const EdgeInsets.all(40)
+                                          .copyWith(top: 100, bottom: 80)));
                                 });
                               } else if (myPos != null) {
-                                _animatedMapMove(myPos, mapController.camera.zoom);
+                                _animatedMapMove(
+                                    myPos, mapController.camera.zoom);
                                 // mapController.move(
                                 //     myPos, mapController.camera.zoom);
                               }
@@ -192,7 +210,9 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                     return FlutterMap(
                                       mapController: mapController,
                                       options: MapOptions(
-                                        initialCenter: const LatLng(43.29446, 76.94687),
+                                        initialCenter: const LatLng(
+                                            CoreEnvironment.defaultMapLat,
+                                            CoreEnvironment.defaultMapLng),
                                         initialZoom: 12,
                                         onMapReady: () {
                                           mapControllerInitialized.value = true;
@@ -207,7 +227,10 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                       ),
                                       children: [
                                         TileLayer(
-                                          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                          urlTemplate: CoreEnvironment
+                                                  .useMockApi
+                                              ? CoreEnvironment.tileServerUrl
+                                              : 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                                           // '${CoreEnvironment.appSocketUrl}/maps/{z}/{x}/{y}',
                                           // 'http://95.85.126.166/tile/{z}/{x}/{y}.png',
                                           // 'https://map.tp-projects.com/tile/{z}/{x}/{y}.png',
@@ -221,25 +244,41 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                         ),
                                         PolylineLayer(
                                           polylines: [
-                                            if (geoRoute?.route?.geometry?.latLngList != null)
+                                            if (geoRoute?.route?.geometry
+                                                    ?.latLngList !=
+                                                null)
                                               Polyline(
-                                                points: geoRoute!.route!.geometry!.latLngList!,
+                                                points: geoRoute!.route!
+                                                    .geometry!.latLngList!,
                                                 strokeWidth: 4.0,
                                                 borderStrokeWidth: 1,
                                                 borderColor: Colors.white,
                                                 color: CoreColors.primary,
                                               )
-                                            else if (selectedOrder?.geoA?.toLatLng != null &&
-                                                selectedOrder?.geoB?.toLatLng != null)
+                                            else if (selectedOrder
+                                                        ?.geoA?.toLatLng !=
+                                                    null &&
+                                                selectedOrder?.geoB?.toLatLng !=
+                                                    null)
                                               Polyline(
-                                                points: [selectedOrder!.geoA!.toLatLng!, selectedOrder.geoB!.toLatLng!],
+                                                points: [
+                                                  selectedOrder!
+                                                      .geoA!.toLatLng!,
+                                                  selectedOrder.geoB!.toLatLng!
+                                                ],
                                                 strokeWidth: 4.0,
                                                 borderStrokeWidth: 1,
-                                                colorsStop: [0.0, routeLoadingAnimation.value, 1.0],
+                                                colorsStop: [
+                                                  0.0,
+                                                  routeLoadingAnimation.value,
+                                                  1.0
+                                                ],
                                                 gradientColors: [
-                                                  CoreColors.primary.withOpacity(0.5),
+                                                  CoreColors.primary
+                                                      .withOpacity(0.5),
                                                   CoreColors.white,
-                                                  CoreColors.primary.withOpacity(0.5),
+                                                  CoreColors.primary
+                                                      .withOpacity(0.5),
                                                 ],
                                                 borderColor: Colors.white,
                                               )
@@ -261,31 +300,38 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                             //                 CoreStyles.normalSxtn))),
                                             Marker(
                                                 // rotate: true,
-                                                point: LatLng(myPos.latitude, myPos.longitude),
+                                                point: LatLng(myPos.latitude,
+                                                    myPos.longitude),
                                                 height: 40,
                                                 width: 40 * 0.7,
                                                 alignment: Alignment.center,
                                                 child: Container(
-                                                  decoration: const BoxDecoration(
+                                                  decoration:
+                                                      const BoxDecoration(
                                                     shape: BoxShape.circle,
                                                     color: CoreColors.white,
                                                   ),
                                                   child: myPos.heading != 0.0
                                                       ? Transform.rotate(
-                                                          angle: myPos.heading * (pi / 180),
+                                                          angle: myPos.heading *
+                                                              (pi / 180),
                                                           child: const Icon(
-                                                            Icons.navigation_rounded,
+                                                            Icons
+                                                                .navigation_rounded,
                                                             color: Colors.blue,
                                                           ),
                                                         )
                                                       : const Icon(
                                                           Icons.person,
-                                                          color: CoreColors.primary,
+                                                          color: CoreColors
+                                                              .primary,
                                                         ),
                                                 )),
-                                          if (selectedOrder?.geoA?.toLatLng != null)
+                                          if (selectedOrder?.geoA?.toLatLng !=
+                                              null)
                                             Marker(
-                                              point: selectedOrder!.geoA!.toLatLng!,
+                                              point: selectedOrder!
+                                                  .geoA!.toLatLng!,
                                               height: 30,
                                               width: 30,
                                               alignment: Alignment.center,
@@ -293,22 +339,30 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                                 decoration: const BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   color: CoreColors.white,
-                                                  border: Border.fromBorderSide(BorderSide(color: CoreColors.primary)),
+                                                  border: Border.fromBorderSide(
+                                                      BorderSide(
+                                                          color: CoreColors
+                                                              .primary)),
                                                 ),
                                                 child: const Center(
                                                   child: Text("A",
-                                                      textAlign: TextAlign.center,
+                                                      textAlign:
+                                                          TextAlign.center,
                                                       style: TextStyle(
                                                           height: 1,
-                                                          color: CoreColors.primary,
+                                                          color: CoreColors
+                                                              .primary,
                                                           fontSize: 18,
-                                                          fontWeight: FontWeight.w700)),
+                                                          fontWeight:
+                                                              FontWeight.w700)),
                                                 ),
                                               ),
                                             ),
-                                          if (selectedOrder?.geoB?.toLatLng != null)
+                                          if (selectedOrder?.geoB?.toLatLng !=
+                                              null)
                                             Marker(
-                                              point: selectedOrder!.geoB!.toLatLng!,
+                                              point: selectedOrder!
+                                                  .geoB!.toLatLng!,
                                               height: 30,
                                               width: 30,
                                               alignment: Alignment.center,
@@ -318,16 +372,22 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                                 decoration: const BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   color: CoreColors.white,
-                                                  border: Border.fromBorderSide(BorderSide(color: CoreColors.primary)),
+                                                  border: Border.fromBorderSide(
+                                                      BorderSide(
+                                                          color: CoreColors
+                                                              .primary)),
                                                 ),
                                                 child: const Center(
                                                   child: Text("Б",
-                                                      textAlign: TextAlign.center,
+                                                      textAlign:
+                                                          TextAlign.center,
                                                       style: TextStyle(
                                                           height: 1,
-                                                          color: CoreColors.primary,
+                                                          color: CoreColors
+                                                              .primary,
                                                           fontSize: 18,
-                                                          fontWeight: FontWeight.w700)),
+                                                          fontWeight:
+                                                              FontWeight.w700)),
                                                 ),
                                               ),
                                             ),
@@ -357,7 +417,8 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                         alignment: Alignment.topCenter,
                         child: AnimatedSwitcher(
                           duration: Durations.short4,
-                          transitionBuilder: (child, animation) => SizeTransition(
+                          transitionBuilder: (child, animation) =>
+                              SizeTransition(
                             sizeFactor: animation,
                             axis: Axis.vertical,
                             child: child,
@@ -371,7 +432,8 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                   children: [
                                     Container(
                                       margin: const EdgeInsets.only(top: 15),
-                                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15),
                                       height: 40,
                                       decoration: BoxDecoration(
                                         color: CoreColors.white,
@@ -387,7 +449,8 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                           ),
                                           Text(
                                             ' ${geoRoute?.route?.distanceInKilometers ?? ''} км',
-                                            style: const TextStyle(fontSize: 14),
+                                            style:
+                                                const TextStyle(fontSize: 14),
                                           ),
                                           const SizedBox(width: 10),
                                           const Icon(
@@ -397,7 +460,8 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                           ),
                                           Text(
                                             ' ${geoRoute?.route?.durationInMinutes ?? ''} мин',
-                                            style: const TextStyle(fontSize: 14),
+                                            style:
+                                                const TextStyle(fontSize: 14),
                                           ),
                                         ],
                                       ),
@@ -421,7 +485,8 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                             icon: Row(
                               children: [
                                 const SizedBox(width: 10),
-                                const Icon(Icons.sort, color: CoreColors.primary),
+                                const Icon(Icons.sort,
+                                    color: CoreColors.primary),
                                 const SizedBox(width: 6),
                                 Text(
                                   selectedSortingValue?.name ?? 'Сортировка'.tr,
@@ -435,7 +500,8 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                   context: context,
                                   shape: const RoundedRectangleBorder(
                                       borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(CoreDecoration.primaryBorderRadius))),
+                                          top: Radius.circular(CoreDecoration
+                                              .primaryBorderRadius))),
                                   backgroundColor: CoreColors.white,
                                   builder: (_) => const OrdersSortingDialog());
                               if (changed ?? false) {
@@ -447,7 +513,8 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                             icon: Row(
                               children: [
                                 const SizedBox(width: 10),
-                                const Icon(Icons.filter_alt_outlined, color: CoreColors.primary),
+                                const Icon(Icons.filter_alt_outlined,
+                                    color: CoreColors.primary),
                                 const SizedBox(width: 6),
                                 Text(
                                   selectedOrderType?.name ?? 'Фильтрация'.tr,
@@ -461,7 +528,8 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                   context: context,
                                   shape: const RoundedRectangleBorder(
                                       borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(CoreDecoration.primaryBorderRadius))),
+                                          top: Radius.circular(CoreDecoration
+                                              .primaryBorderRadius))),
                                   backgroundColor: CoreColors.white,
                                   builder: (_) => const OrdersFiltersDialog());
                               if (changed ?? false) {
@@ -478,10 +546,12 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                       axis: Axis.vertical,
                       child: child,
                     ),
-                    child: selectedOrderType == null || selectedOrderType.id == 1
+                    child: selectedOrderType == null ||
+                            selectedOrderType.id == 1
                         ? const SizedBox()
                         : Container(
-                            padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: CoreDecoration.primaryPadding),
                             margin: const EdgeInsets.only(bottom: 5),
                             child: Row(
                               children: [
@@ -494,15 +564,19 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                       ),
                                       Text(
                                         selectedCityA?.name ?? "Все".tr,
-                                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                        style: const TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
                                       )
                                     ],
                                   ),
                                 ),
                                 const Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 5),
-                                  child: Icon(Icons.keyboard_double_arrow_right_sharp,
-                                      size: 16, color: CoreColors.primary),
+                                  child: Icon(
+                                      Icons.keyboard_double_arrow_right_sharp,
+                                      size: 16,
+                                      color: CoreColors.primary),
                                 ),
                                 Expanded(
                                   child: Row(
@@ -513,7 +587,9 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                       ),
                                       Text(
                                         selectedCityB?.name ?? "Все".tr,
-                                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                        style: const TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
                                       )
                                     ],
                                   ),
@@ -522,14 +598,18 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
                                     height: 35,
                                     child: TextButton(
                                         onPressed: () async {
-                                          bool? changed = await showModalBottomSheet(
-                                              context: context,
-                                              builder: (context) => const OrdersCitiesFiltersDialog());
+                                          bool? changed =
+                                              await showModalBottomSheet(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      const OrdersCitiesFiltersDialog());
                                           if (changed ?? false) {
-                                            orderController.fetchOrdersFeed(resetAll: true);
+                                            orderController.fetchOrdersFeed(
+                                                resetAll: true);
                                           }
                                         },
-                                        style: TextButton.styleFrom(padding: const EdgeInsets.all(5)),
+                                        style: TextButton.styleFrom(
+                                            padding: const EdgeInsets.all(5)),
                                         child: Text("Выбрать".tr)))
                               ],
                             ),
@@ -583,8 +663,10 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
 
   void _animatedMapMove(Position destLocation, double destZoom) {
     final camera = mapController.camera;
-    final latTween = Tween<double>(begin: camera.center.latitude, end: destLocation.latitude);
-    final lngTween = Tween<double>(begin: camera.center.longitude, end: destLocation.longitude);
+    final latTween = Tween<double>(
+        begin: camera.center.latitude, end: destLocation.latitude);
+    final lngTween = Tween<double>(
+        begin: camera.center.longitude, end: destLocation.longitude);
     final zoomTween = Tween<double>(begin: camera.zoom, end: destZoom);
 
     double? targetRotation;
@@ -609,14 +691,18 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
       rotationDiff += 360;
     }
     targetRotation = camera.rotation + rotationDiff;
-    final rotateTween = Tween<double>(begin: camera.rotation, end: targetRotation);
+    final rotateTween =
+        Tween<double>(begin: camera.rotation, end: targetRotation);
 
-    final startIdWithTarget = '$_startedId#${destLocation.latitude},${destLocation.longitude},$destZoom';
-    final newController = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
+    final startIdWithTarget =
+        '$_startedId#${destLocation.latitude},${destLocation.longitude},$destZoom';
+    final newController = AnimationController(
+        duration: const Duration(milliseconds: 500), vsync: this);
     _animationControllers[startIdWithTarget] = newController;
     var controller = _animationControllers[startIdWithTarget]!;
 
-    final Animation<double> animation = CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+    final Animation<double> animation =
+        CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
     _animationControllers[startIdWithTarget] = controller;
     bool hasTriggeredMove = false;
 
@@ -643,7 +729,8 @@ class _DriverFeedTabState extends State<DriverFeedTab> with TickerProviderStateM
     });
 
     animation.addStatusListener((status) {
-      if (status == AnimationStatus.completed || status == AnimationStatus.dismissed) {
+      if (status == AnimationStatus.completed ||
+          status == AnimationStatus.dismissed) {
         controller.dispose();
         _animationControllers.remove(startIdWithTarget);
       }

@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-DriverModerationModel driverModerationModelFromJson(String str) => DriverModerationModel.fromJson(json.decode(str));
+DriverModerationModel driverModerationModelFromJson(String str) =>
+    DriverModerationModel.fromJson(json.decode(str));
 
-String driverModerationModelToJson(DriverModerationModel data) => json.encode(data.toJson());
+String driverModerationModelToJson(DriverModerationModel data) =>
+    json.encode(data.toJson());
 
 class DriverModerationStatus {
   //preparation, moderation, approved, rejected
@@ -69,11 +71,20 @@ class DriverModerationModel {
     this.updatedAt,
   });
 
-  Map<String, String?> get carImages =>
-      {'car_image_1': carImage1, 'car_image_2': carImage2, 'car_image_3': carImage3, 'car_image_4': carImage4};
-  Map<String, String?> get driverLicenseImages =>
-      {'driver_license_front': driverLicenseFront, 'driver_license_back': driverLicenseBack};
-  Map<String, String?> get stoImages => {'ts_passport_front': tsPassportFront, 'ts_passport_back': tsPassportBack};
+  Map<String, String?> get carImages => {
+        'car_image_1': carImage1,
+        'car_image_2': carImage2,
+        'car_image_3': carImage3,
+        'car_image_4': carImage4
+      };
+  Map<String, String?> get driverLicenseImages => {
+        'driver_license_front': driverLicenseFront,
+        'driver_license_back': driverLicenseBack
+      };
+  Map<String, String?> get stoImages => {
+        'ts_passport_front': tsPassportFront,
+        'ts_passport_back': tsPassportBack
+      };
 
   DriverModerationModel copyWith({
     int? id,
@@ -128,16 +139,21 @@ class DriverModerationModel {
         updatedAt: updatedAt ?? this.updatedAt,
       );
 
-  factory DriverModerationModel.fromJson(Map<String, dynamic> json) => DriverModerationModel(
+  factory DriverModerationModel.fromJson(Map<String, dynamic> json) =>
+      DriverModerationModel(
         id: json["id"],
         userId: json["user_id"],
         name: json["name"],
         lastname: json["lastname"],
-        birthdate: json["birthdate"] == null ? null : DateTime.parse(json["birthdate"]),
+        birthdate: json["birthdate"] == null
+            ? null
+            : DateTime.parse(json["birthdate"]),
         carId: json["car_id"],
         carModelId: json["car_model_id"],
         carVin: json["car_vin"],
-        carYear: json["car_year"] != null ? int.tryParse(json["car_year"].toString()) : null,
+        carYear: json["car_year"] != null
+            ? int.tryParse(json["car_year"].toString())
+            : null,
         carGosNumber: json["car_gos_number"],
         carImage1: json["car_image_1"],
         carImage2: json["car_image_2"],
@@ -146,13 +162,19 @@ class DriverModerationModel {
         driverLicenseNumber: json["driver_license_number"],
         driverLicenseFront: json["driver_license_front"],
         driverLicenseBack: json["driver_license_back"],
-        driverLicenseDate: json["driver_license_date"] == null ? null : DateTime.parse(json["driver_license_date"]),
+        driverLicenseDate: json["driver_license_date"] == null
+            ? null
+            : DateTime.parse(json["driver_license_date"]),
         tsPassportFront: json["ts_passport_front"],
         tsPassportBack: json["ts_passport_back"],
         status: json["status"],
         rejectMessage: json["reject_message"],
-        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {

@@ -5,9 +5,11 @@
 import 'dart:convert';
 
 List<OrderTypeModel> orderTypeModelFromJson(String str) =>
-    List<OrderTypeModel>.from(json.decode(str).map((x) => OrderTypeModel.fromJson(x)));
+    List<OrderTypeModel>.from(
+        json.decode(str).map((x) => OrderTypeModel.fromJson(x)));
 
-String orderTypeModelToJson(List<OrderTypeModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String orderTypeModelToJson(List<OrderTypeModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class OrderTypeModel {
   int? id;

@@ -39,7 +39,10 @@ class _LogScreenState extends State<LogScreen> {
                 // color: m.color.withOpacity(0.5),
                 child: Text(
                   m.message,
-                  style: TextStyle(fontSize: 14, color: m.color, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: m.color,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
           ],

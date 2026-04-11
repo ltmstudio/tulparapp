@@ -23,9 +23,11 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:tulpar/controller/driver_shift.dart';
 
-ShiftStatusModel shiftStatusModelFromJson(String str) => ShiftStatusModel.fromJson(json.decode(str));
+ShiftStatusModel shiftStatusModelFromJson(String str) =>
+    ShiftStatusModel.fromJson(json.decode(str));
 
-String shiftStatusModelToJson(ShiftStatusModel data) => json.encode(data.toJson());
+String shiftStatusModelToJson(ShiftStatusModel data) =>
+    json.encode(data.toJson());
 
 class ShiftStatusModel {
   int? now;
@@ -41,7 +43,12 @@ class ShiftStatusModel {
     // this.left,
   });
 
-  bool get isActive => max != null && now != null && diffSec != null && diffSec! > 0 && now! < max!;
+  bool get isActive =>
+      max != null &&
+      now != null &&
+      diffSec != null &&
+      diffSec! > 0 &&
+      now! < max!;
 
   String get left {
     if (diffSec != null && diffSec! > 0) {
@@ -82,7 +89,8 @@ class ShiftStatusModel {
         // left: left ?? this.left,
       );
 
-  factory ShiftStatusModel.fromJson(Map<String, dynamic> json) => ShiftStatusModel(
+  factory ShiftStatusModel.fromJson(Map<String, dynamic> json) =>
+      ShiftStatusModel(
         now: json["now"],
         max: json["max"],
         diffSec: json["diff_sec"],

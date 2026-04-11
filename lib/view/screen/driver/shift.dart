@@ -31,7 +31,8 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
       length: 2,
       child: GetBuilder<DriverShiftController>(builder: (shiftController) {
         var availableShifts = shiftController.availableShifts.value;
-        var availableShiftsLoading = shiftController.availableShiftsLoading.value;
+        var availableShiftsLoading =
+            shiftController.availableShiftsLoading.value;
         var selectedShift = shiftController.selectedShift.value;
 
         var orderShiftLoading = shiftController.orderShiftLoading.value;
@@ -58,10 +59,12 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                 children: [
                   shiftStatus?.isActive == true
                       ? Container(
-                          padding: const EdgeInsets.all(CoreDecoration.primaryPadding),
+                          padding: const EdgeInsets.all(
+                              CoreDecoration.primaryPadding),
                           decoration: BoxDecoration(
                             color: CoreColors.primary,
-                            borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
+                            borderRadius: BorderRadius.circular(
+                                CoreDecoration.primaryBorderRadius),
                           ),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +76,9 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                                     Text(
                                       "Смена активна".tr,
                                       style: const TextStyle(
-                                          fontSize: 18, color: CoreColors.white, fontWeight: FontWeight.w800),
+                                          fontSize: 18,
+                                          color: CoreColors.white,
+                                          fontWeight: FontWeight.w800),
                                     ),
                                     const SizedBox(height: 10),
                                     GetBuilder<DriverShiftController>(
@@ -82,14 +87,19 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                                           return Text(
                                             "${shiftStatus?.left}",
                                             style: const TextStyle(
-                                                fontSize: 18, color: CoreColors.white, fontWeight: FontWeight.w700),
+                                                fontSize: 18,
+                                                color: CoreColors.white,
+                                                fontWeight: FontWeight.w700),
                                           );
                                         }),
                                     const SizedBox(height: 10),
                                     Text(
-                                      "Вы можете продлить смену до завершения времени действия".tr,
+                                      "Вы можете продлить смену до завершения времени действия"
+                                          .tr,
                                       style: const TextStyle(
-                                          fontSize: 12, color: CoreColors.white, fontWeight: FontWeight.w500),
+                                          fontSize: 12,
+                                          color: CoreColors.white,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ],
                                 ),
@@ -103,10 +113,12 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                           ),
                         )
                       : Container(
-                          padding: const EdgeInsets.all(CoreDecoration.primaryPadding),
+                          padding: const EdgeInsets.all(
+                              CoreDecoration.primaryPadding),
                           decoration: BoxDecoration(
                             color: CoreColors.white,
-                            borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
+                            borderRadius: BorderRadius.circular(
+                                CoreDecoration.primaryBorderRadius),
                           ),
                           child: Row(
                             children: [
@@ -117,13 +129,17 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                                     Text(
                                       "Нет активной смены".tr,
                                       style: const TextStyle(
-                                          fontSize: 18, color: CoreColors.primary, fontWeight: FontWeight.w800),
+                                          fontSize: 18,
+                                          color: CoreColors.primary,
+                                          fontWeight: FontWeight.w800),
                                     ),
                                     const SizedBox(height: 10),
                                     Text(
                                       "Купите смену для работы с заказами".tr,
                                       style: const TextStyle(
-                                          fontSize: 15, color: CoreColors.black, fontWeight: FontWeight.w500),
+                                          fontSize: 15,
+                                          color: CoreColors.black,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ],
                                 ),
@@ -139,36 +155,45 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                   const SizedBox(height: 15),
                   Text(
                     "Приобрести смену".tr,
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   Container(
                     margin: const EdgeInsets.only(top: 10),
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       color: CoreColors.white,
-                      borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
+                      borderRadius: BorderRadius.circular(
+                          CoreDecoration.primaryBorderRadius),
                     ),
                     child: Ink(
                       child: Material(
                         color: Colors.transparent,
                         child: AnimatedSwitcher(
                           duration: Durations.short2,
-                          transitionBuilder: (child, animation) => SizeTransition(
-                              sizeFactor: animation,
-                              axis: Axis.vertical,
-                              child: FadeTransition(opacity: animation, child: child)),
+                          transitionBuilder: (child, animation) =>
+                              SizeTransition(
+                                  sizeFactor: animation,
+                                  axis: Axis.vertical,
+                                  child: FadeTransition(
+                                      opacity: animation, child: child)),
                           child: availableShiftsLoading
                               ? Column(
                                   children: [
                                     SizedBox(width: w, height: 15),
                                     const Center(
-                                        child: SizedBox(width: 25, height: 25, child: CircularProgressIndicator())),
+                                        child: SizedBox(
+                                            width: 25,
+                                            height: 25,
+                                            child:
+                                                CircularProgressIndicator())),
                                     SizedBox(width: w, height: 15),
                                   ],
                                 )
                               : (availableShifts?.shifts?.isEmpty ?? true)
                                   ? Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         SizedBox(width: w, height: 15),
                                         Text(
@@ -177,7 +202,8 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                                         ),
                                         TextButton(
                                             onPressed: () {
-                                              shiftController.fetchAvailableShifts();
+                                              shiftController
+                                                  .fetchAvailableShifts();
                                             },
                                             child: Text("Обновить".tr)),
                                         SizedBox(width: w, height: 15),
@@ -185,22 +211,28 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                                     )
                                   : Column(
                                       children: [
-                                        GetBuilder<DriverController>(builder: (driverController) {
-                                          var driver = driverController.profile.value;
+                                        GetBuilder<DriverController>(
+                                            builder: (driverController) {
+                                          var driver =
+                                              driverController.profile.value;
                                           return ListTile(
                                             contentPadding: EdgeInsets.zero,
                                             title: Text(
                                               "${"Текущий баланс".tr}: ${driver?.balance} ₸",
-                                              style: const TextStyle(fontWeight: FontWeight.bold),
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             subtitle: driver?.level == null
                                                 ? null
                                                 : Row(
                                                     children: [
                                                       Icon(Icons.star_rounded,
-                                                          color: driver?.level?.colorValue ?? CoreColors.grey,
+                                                          color: driver?.level
+                                                                  ?.colorValue ??
+                                                              CoreColors.grey,
                                                           size: 20),
-                                                      Text("${driver?.level?.name}"),
+                                                      Text(
+                                                          "${driver?.level?.name}"),
                                                     ],
                                                   ),
                                             trailing: TextButton(
@@ -208,34 +240,45 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                                                   showModalBottomSheet(
                                                       context: context,
                                                       isScrollControlled: true,
-                                                      builder: (context) => const PayDialog());
+                                                      builder: (context) =>
+                                                          const PayDialog());
                                                 },
                                                 child: Text("Пополнить".tr)),
                                           );
                                         }),
                                         const Divider(),
-                                        for (var shift in availableShifts!.shifts!)
+                                        for (var shift
+                                            in availableShifts!.shifts!)
                                           RadioListTile<int?>(
                                             title: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 Text(
                                                   shift.shiftName,
-                                                  style: const TextStyle(fontSize: 16),
+                                                  style: const TextStyle(
+                                                      fontSize: 16),
                                                 ),
                                                 Text(
                                                   "${shift.price} ₸",
-                                                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                                  style: const TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                               ],
                                             ),
                                             value: shift.id,
                                             groupValue: selectedShift?.id,
                                             onChanged: (v) {
-                                              shiftController.selectedShift.value = shift;
+                                              shiftController
+                                                  .selectedShift.value = shift;
                                               shiftController.update();
                                             },
-                                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                            materialTapTargetSize:
+                                                MaterialTapTargetSize
+                                                    .shrinkWrap,
                                             contentPadding: EdgeInsets.zero,
                                           ),
                                         const Divider(),
@@ -243,19 +286,25 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                                           children: [
                                             TextButton(
                                                 onPressed: () {
-                                                  Get.find<DriverController>().fetchProfile();
-                                                  shiftController.fetchAvailableShifts();
+                                                  Get.find<DriverController>()
+                                                      .fetchProfile();
+                                                  shiftController
+                                                      .fetchAvailableShifts();
                                                 },
                                                 child: Text("Обновить".tr)),
                                             const Spacer(),
                                             Expanded(
                                                 child: PrimaryElevatedButton(
-                                                    onPressed: selectedShift?.id == null
-                                                        ? null
-                                                        : () {
-                                                            if (orderShiftLoading) return;
-                                                            shiftController.orderShift();
-                                                          },
+                                                    onPressed:
+                                                        selectedShift?.id ==
+                                                                null
+                                                            ? null
+                                                            : () {
+                                                                if (orderShiftLoading)
+                                                                  return;
+                                                                shiftController
+                                                                    .orderShift();
+                                                              },
                                                     loading: orderShiftLoading,
                                                     text: "Приобрести".tr)),
                                           ],
@@ -280,7 +329,8 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                     return ListTile(
                       title: Text(
                         order.title,
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(
                         order.formattedCreated,
@@ -288,7 +338,8 @@ class _DriverShiftScreenState extends State<DriverShiftScreen> {
                       ),
                       trailing: Text(
                         order.subtitle,
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                     );
                   },

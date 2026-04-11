@@ -6,9 +6,11 @@ import 'dart:convert';
 
 import 'package:tulpar/model/auth/user.dart';
 
-SmsResponseModel smsResponseModelFromJson(String str) => SmsResponseModel.fromJson(json.decode(str));
+SmsResponseModel smsResponseModelFromJson(String str) =>
+    SmsResponseModel.fromJson(json.decode(str));
 
-String smsResponseModelToJson(SmsResponseModel data) => json.encode(data.toJson());
+String smsResponseModelToJson(SmsResponseModel data) =>
+    json.encode(data.toJson());
 
 class SmsResponseModel {
   bool? success;
@@ -32,10 +34,13 @@ class SmsResponseModel {
         data: data ?? this.data,
       );
 
-  factory SmsResponseModel.fromJson(Map<String, dynamic> json) => SmsResponseModel(
+  factory SmsResponseModel.fromJson(Map<String, dynamic> json) =>
+      SmsResponseModel(
         success: json["success"],
         message: json["message"],
-        data: json["data"] == null ? null : SmsResponseData.fromJson(json["data"]),
+        data: json["data"] == null
+            ? null
+            : SmsResponseData.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -63,9 +68,12 @@ class SmsResponseData {
         profile: profile ?? this.profile,
       );
 
-  factory SmsResponseData.fromJson(Map<String, dynamic> json) => SmsResponseData(
+  factory SmsResponseData.fromJson(Map<String, dynamic> json) =>
+      SmsResponseData(
         token: json["token"],
-        profile: json["profile"] == null ? null : UserModel.fromJson(json["profile"]),
+        profile: json["profile"] == null
+            ? null
+            : UserModel.fromJson(json["profile"]),
       );
 
   Map<String, dynamic> toJson() => {

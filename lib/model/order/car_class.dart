@@ -5,9 +5,11 @@
 import 'dart:convert';
 
 List<CarClassModel> carClassModelFromJson(String str) =>
-    List<CarClassModel>.from(json.decode(str).map((x) => CarClassModel.fromJson(x)));
+    List<CarClassModel>.from(
+        json.decode(str).map((x) => CarClassModel.fromJson(x)));
 
-String carClassModelToJson(List<CarClassModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String carClassModelToJson(List<CarClassModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class CarClassModel {
   int? id;
@@ -53,8 +55,12 @@ class CarClassModel {
         image: json["image"],
         cost: json["cost"],
         priority: json["priority"],
-        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {

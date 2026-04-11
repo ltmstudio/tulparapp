@@ -15,16 +15,20 @@ class AccountDeleteConfirmDialog extends StatelessWidget {
         children: [
           Padding(
               padding: const EdgeInsets.all(CoreDecoration.primaryPadding),
-              child: Text("Удаление акканута".tr, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600))),
+              child: Text("Удаление акканута".tr,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.w600))),
           Padding(
               padding: const EdgeInsets.all(CoreDecoration.primaryPadding),
               child: Text(
-                  "Вы действительно хотите удалить аккаунт? Все данные будут удалены без возможности восстановления".tr,
-                      
+                  "Вы действительно хотите удалить аккаунт? Все данные будут удалены без возможности восстановления"
+                      .tr,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600))),
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.w600))),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding, vertical: 5),
+            padding: const EdgeInsets.symmetric(
+                horizontal: CoreDecoration.primaryPadding, vertical: 5),
             child: PrimaryElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop(true);
@@ -35,7 +39,8 @@ class AccountDeleteConfirmDialog extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding, vertical: 5),
+            padding: const EdgeInsets.symmetric(
+                horizontal: CoreDecoration.primaryPadding, vertical: 5),
             child: PrimaryElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();

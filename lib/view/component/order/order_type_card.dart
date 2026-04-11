@@ -54,13 +54,17 @@ class RideTypeCard extends StatelessWidget {
           else if (carClass.image != null)
             Expanded(
               child: CachedNetworkImage(
-                imageUrl: "${CoreEnvironment.appUrl}/${carClass.image!.replaceFirst('public', 'storage')}",
+                imageUrl:
+                    "${CoreEnvironment.appUrl}/${carClass.image!.replaceFirst('public', 'storage')}",
                 fit: BoxFit.contain,
               ),
             ),
           const SizedBox(height: 5),
           Text(carClass.name ?? '-',
-              style: const TextStyle(color: CoreColors.primary, fontSize: 14, fontWeight: FontWeight.w700)),
+              style: const TextStyle(
+                  color: CoreColors.primary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700)),
           const SizedBox(height: 3),
           Text(
             "от ${carClass.cost ?? ''} ₸",

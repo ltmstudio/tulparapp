@@ -39,7 +39,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
   final _informationParser = NaviInformationParser();
-  final _routerDelegate = NaviRouterDelegate.material(child: const AppStartScreen());
+  final _routerDelegate =
+      NaviRouterDelegate.material(child: const AppStartScreen());
 
   // This widget is the root of your application.
   @override
@@ -56,7 +57,8 @@ class MyApp extends StatelessWidget {
         title: 'Tulpar',
         locale: const Locale('ru', 'RU'),
         debugShowCheckedModeBanner: false,
-        supportedLocales: AppController.supportedLocales.map((e) => e.locale).toList(),
+        supportedLocales:
+            AppController.supportedLocales.map((e) => e.locale).toList(),
         localizationsDelegates: GlobalMaterialLocalizations.delegates,
         translations: CoreTranslations(),
 
@@ -79,45 +81,64 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: CoreColors.primary),
           useMaterial3: true,
           fontFamily: 'Mulish',
-          progressIndicatorTheme: const ProgressIndicatorThemeData(color: CoreColors.primary),
-          textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: CoreColors.primary)),
+          progressIndicatorTheme:
+              const ProgressIndicatorThemeData(color: CoreColors.primary),
+          textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(foregroundColor: CoreColors.primary)),
           dropdownMenuTheme: DropdownMenuThemeData(
               inputDecorationTheme: InputDecorationTheme(
             errorStyle: CoreStyles.hint.copyWith(color: CoreColors.error),
             hintStyle: CoreStyles.hint,
             prefixStyle: CoreStyles.h4,
             labelStyle: CoreStyles.hint,
-            contentPadding: const EdgeInsets.symmetric(horizontal: CoreDecoration.secondaryPadding),
+            contentPadding: const EdgeInsets.symmetric(
+                horizontal: CoreDecoration.secondaryPadding),
             border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius), borderSide: BorderSide.none),
+                borderRadius:
+                    BorderRadius.circular(CoreDecoration.primaryBorderRadius),
+                borderSide: BorderSide.none),
             disabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius), borderSide: BorderSide.none),
+                borderRadius:
+                    BorderRadius.circular(CoreDecoration.primaryBorderRadius),
+                borderSide: BorderSide.none),
             enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius), borderSide: BorderSide.none),
+                borderRadius:
+                    BorderRadius.circular(CoreDecoration.primaryBorderRadius),
+                borderSide: BorderSide.none),
             focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
-                borderSide: const BorderSide(color: CoreColors.primary, width: 2)),
+                borderRadius:
+                    BorderRadius.circular(CoreDecoration.primaryBorderRadius),
+                borderSide:
+                    const BorderSide(color: CoreColors.primary, width: 2)),
             fillColor: CoreColors.white,
             filled: true,
             errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
-                borderSide: const BorderSide(color: CoreColors.error, width: 2)),
+                borderRadius:
+                    BorderRadius.circular(CoreDecoration.primaryBorderRadius),
+                borderSide:
+                    const BorderSide(color: CoreColors.error, width: 2)),
             focusedErrorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
-                borderSide: const BorderSide(color: CoreColors.errorFocused, width: 2)),
+                borderRadius:
+                    BorderRadius.circular(CoreDecoration.primaryBorderRadius),
+                borderSide:
+                    const BorderSide(color: CoreColors.errorFocused, width: 2)),
           )),
         ),
         initialBinding: BindingsBuilder(() {
           Get.put<LogController>(LogController(), permanent: true);
-          Get.put<WidgetStreamController>(WidgetStreamController(), permanent: true);
+          Get.put<WidgetStreamController>(WidgetStreamController(),
+              permanent: true);
           Get.put<AppController>(AppController(), permanent: true);
           Get.put<UserController>(UserController(), permanent: true);
           Get.put<UserOrderController>(UserOrderController(), permanent: true);
           Get.put<AddressController>(AddressController(), permanent: true);
           Get.put<DriverController>(DriverController(), permanent: true);
-          Get.put<DriverModerationController>(DriverModerationController(), permanent: true);
-          Get.put<DriverOrderController>(DriverOrderController(), permanent: true);
-          Get.put<DriverShiftController>(DriverShiftController(), permanent: true);
+          Get.put<DriverModerationController>(DriverModerationController(),
+              permanent: true);
+          Get.put<DriverOrderController>(DriverOrderController(),
+              permanent: true);
+          Get.put<DriverShiftController>(DriverShiftController(),
+              permanent: true);
           Get.put<RouteLauncher>(RouteLauncher(), permanent: true);
           Get.put<PayController>(PayController(), permanent: true);
         }),

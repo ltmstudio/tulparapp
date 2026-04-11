@@ -8,9 +8,11 @@ import 'package:tulpar/core/env.dart';
 import 'package:tulpar/model/driver/level.dart';
 import 'package:tulpar/model/order/car_class.dart';
 
-DriverProfileModel driverProfileModelFromJson(String str) => DriverProfileModel.fromJson(json.decode(str));
+DriverProfileModel driverProfileModelFromJson(String str) =>
+    DriverProfileModel.fromJson(json.decode(str));
 
-String driverProfileModelToJson(DriverProfileModel data) => json.encode(data.toJson());
+String driverProfileModelToJson(DriverProfileModel data) =>
+    json.encode(data.toJson());
 
 class DriverProfileModel {
   int? id;
@@ -33,7 +35,8 @@ class DriverProfileModel {
   CarClassModel? carClass;
   DriverLevelModel? level;
 
-  String get avatarUrl => avatar == null ? '' : "${CoreEnvironment.appUrl}/storage/$avatar";
+  String get avatarUrl =>
+      avatar == null ? '' : "${CoreEnvironment.appUrl}/storage/$avatar";
 
   DriverProfileModel({
     this.id,
@@ -102,7 +105,8 @@ class DriverProfileModel {
 
   String get fullname => "${name ?? ''} ${lastname ?? ''}";
 
-  factory DriverProfileModel.fromJson(Map<String, dynamic> json) => DriverProfileModel(
+  factory DriverProfileModel.fromJson(Map<String, dynamic> json) =>
+      DriverProfileModel(
         id: json["id"],
         phone: json["phone"],
         name: json["name"],
@@ -120,8 +124,12 @@ class DriverProfileModel {
         carImage2: json["car_image_2"],
         carImage3: json["car_image_3"],
         carImage4: json["car_image_4"],
-        carClass: json["class"] == null ? null : CarClassModel.fromJson(json["class"]),
-        level: json["level"] == null ? null : DriverLevelModel.fromJson(json["level"]),
+        carClass: json["class"] == null
+            ? null
+            : CarClassModel.fromJson(json["class"]),
+        level: json["level"] == null
+            ? null
+            : DriverLevelModel.fromJson(json["level"]),
       );
 
   Map<String, dynamic> toJson() => {

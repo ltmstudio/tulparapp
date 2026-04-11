@@ -20,11 +20,14 @@ class CoreDecoration {
     labelStyle: CoreStyles.hint,
     contentPadding: const EdgeInsets.symmetric(horizontal: secondaryPadding),
     border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius), borderSide: BorderSide.none),
+        borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
+        borderSide: BorderSide.none),
     disabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius), borderSide: BorderSide.none),
+        borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
+        borderSide: BorderSide.none),
     enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius), borderSide: BorderSide.none),
+        borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
+        borderSide: BorderSide.none),
     focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
         borderSide: const BorderSide(color: CoreColors.primary, width: 2)),

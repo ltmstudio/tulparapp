@@ -14,7 +14,8 @@ import 'package:tulpar/model/order/car_class.dart';
 List<OrderModel> orderModelFromJson(String str) =>
     List<OrderModel>.from(json.decode(str).map((x) => OrderModel.fromJson(x)));
 
-String orderModelToJson(List<OrderModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String orderModelToJson(List<OrderModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class OrderModel {
   int? id;
@@ -47,7 +48,8 @@ class OrderModel {
   String? get userTimeFormat {
     if (userTime == null) return null;
     try {
-      final parsedDate = DateTime.parse(userTime!.replaceAll('-', '.').replaceAll(' ', 'T'));
+      final parsedDate =
+          DateTime.parse(userTime!.replaceAll('-', '.').replaceAll(' ', 'T'));
       return DateFormat('dd.MM.yyyy HH:mm').format(parsedDate);
     } catch (e) {
       return userTime;
@@ -210,15 +212,31 @@ class OrderModel {
         geoB: json["geo_b"],
         cityAId: json["city_a_id"],
         cityBId: json["city_b_id"],
-        cityA: json["city_a"] == null ? null : CityModel.fromJson(json["city_a"]),
-        cityB: json["city_b"] == null ? null : CityModel.fromJson(json["city_b"]),
-        isDelivery: json["is_delivery"]?.toString() == '1' || json["is_delivery"]?.toString() == 'true' ? true : false,
-        isCargo: json["is_cargo"]?.toString() == '1' || json["is_cargo"]?.toString() == 'true' ? true : false,
-        carClass: json["class"] == null ? null : CarClassModel.fromJson(json["class"]),
-        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+        cityA:
+            json["city_a"] == null ? null : CityModel.fromJson(json["city_a"]),
+        cityB:
+            json["city_b"] == null ? null : CityModel.fromJson(json["city_b"]),
+        isDelivery: json["is_delivery"]?.toString() == '1' ||
+                json["is_delivery"]?.toString() == 'true'
+            ? true
+            : false,
+        isCargo: json["is_cargo"]?.toString() == '1' ||
+                json["is_cargo"]?.toString() == 'true'
+            ? true
+            : false,
+        carClass: json["class"] == null
+            ? null
+            : CarClassModel.fromJson(json["class"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
         status: json["status"],
-        driver: json["driver"] == null ? null : DriverProfileModel.fromJson(json["driver"]),
+        driver: json["driver"] == null
+            ? null
+            : DriverProfileModel.fromJson(json["driver"]),
       );
 
   Map<String, dynamic> toJson() => {

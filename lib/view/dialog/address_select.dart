@@ -28,7 +28,9 @@ class AddressSelectDialog extends StatelessWidget {
                     child: Container(
                       width: 40,
                       height: 4,
-                      decoration: BoxDecoration(color: CoreColors.grey, borderRadius: BorderRadius.circular(5)),
+                      decoration: BoxDecoration(
+                          color: CoreColors.grey,
+                          borderRadius: BorderRadius.circular(5)),
                     ),
                   )
                 ],
@@ -39,7 +41,9 @@ class AddressSelectDialog extends StatelessWidget {
                   padding: const EdgeInsets.only(
                     bottom: 15,
                   ),
-                  child: Text(title!, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700))),
+                  child: Text(title!,
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.w700))),
             if (addresses.isEmpty)
               Expanded(
                   child: Center(
@@ -53,16 +57,20 @@ class AddressSelectDialog extends StatelessWidget {
                   return ListTile(
                     contentPadding: const EdgeInsets.all(0),
                     leading: PopupMenuButton(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
                         itemBuilder: (context) {
                           return [
                             PopupMenuItem(
                                 value: 'edit',
                                 child: Row(
                                   children: [
-                                    const Icon(Icons.delete_outline_outlined, size: 14, color: CoreColors.error),
+                                    const Icon(Icons.delete_outline_outlined,
+                                        size: 14, color: CoreColors.error),
                                     const SizedBox(width: 5),
-                                    Text('Удалить'.tr, style: const TextStyle(color: CoreColors.error)),
+                                    Text('Удалить'.tr,
+                                        style: const TextStyle(
+                                            color: CoreColors.error)),
                                   ],
                                 )),
                           ];

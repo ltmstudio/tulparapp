@@ -24,12 +24,19 @@ class ModerationPreparationCard extends StatelessWidget {
         children: [
           Text(
             "Аккаунт TULPAR Водитель".tr,
-            style: const TextStyle(fontSize: 18, color: CoreColors.white, fontWeight: FontWeight.w800),
+            style: const TextStyle(
+                fontSize: 18,
+                color: CoreColors.white,
+                fontWeight: FontWeight.w800),
           ),
           const SizedBox(height: 10),
           Text(
-            "Аккаунт водителя не найден. Заполните форму для выполнения заказов.".tr,
-            style: const TextStyle(fontSize: 15, color: CoreColors.white, fontWeight: FontWeight.w500),
+            "Аккаунт водителя не найден. Заполните форму для выполнения заказов."
+                .tr,
+            style: const TextStyle(
+                fontSize: 15,
+                color: CoreColors.white,
+                fontWeight: FontWeight.w500),
           ),
           const SizedBox(height: 20),
           Row(
@@ -49,7 +56,9 @@ class ModerationPreparationCard extends StatelessWidget {
                     light: true,
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => const DriverModerationFormScreen()),
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const DriverModerationFormScreen()),
                       );
                     },
                     text: "Заполнить анкету".tr),

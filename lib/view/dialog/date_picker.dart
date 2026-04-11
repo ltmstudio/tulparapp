@@ -57,7 +57,9 @@ class _DateNumberPickerDialogState extends State<DateNumberPickerDialog> {
       insetPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 15),
       contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
       actionsPadding: const EdgeInsets.only(bottom: 15, right: 10, left: 10),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius)),
+      shape: RoundedRectangleBorder(
+          borderRadius:
+              BorderRadius.circular(CoreDecoration.primaryBorderRadius)),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -86,8 +88,10 @@ class _DateNumberPickerDialogState extends State<DateNumberPickerDialog> {
                                       : 30,
                               value: date,
                               onChanged: (value) => selectedDate.value = value,
-                              textStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
-                              selectedTextStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                              textStyle: const TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.w500),
+                              selectedTextStyle: const TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w500),
                             );
                           },
                         );
@@ -112,16 +116,20 @@ class _DateNumberPickerDialogState extends State<DateNumberPickerDialog> {
                                 : thirtyOnes.contains(v)
                                     ? 31
                                     : 30)) {
-                          selectedDate.value = (selectedYear.value % 4 == 0 && v == 1
-                              ? 29
-                              : thirtyOnes.contains(v)
-                                  ? 31
-                                  : 30);
+                          selectedDate.value =
+                              (selectedYear.value % 4 == 0 && v == 1
+                                  ? 29
+                                  : thirtyOnes.contains(v)
+                                      ? 31
+                                      : 30);
                         }
                       },
-                      textMapper: (numberText) => monthNames[int.parse(numberText)],
-                      textStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
-                      selectedTextStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                      textMapper: (numberText) =>
+                          monthNames[int.parse(numberText)],
+                      textStyle: const TextStyle(
+                          fontSize: 10, fontWeight: FontWeight.w500),
+                      selectedTextStyle: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w500),
                     );
                   },
                 ),
@@ -136,8 +144,10 @@ class _DateNumberPickerDialogState extends State<DateNumberPickerDialog> {
                       maxValue: nowYear + 100,
                       value: year,
                       onChanged: (value) => selectedYear.value = value,
-                      textStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
-                      selectedTextStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                      textStyle: const TextStyle(
+                          fontSize: 10, fontWeight: FontWeight.w500),
+                      selectedTextStyle: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w500),
                     );
                   },
                 ),
@@ -149,7 +159,8 @@ class _DateNumberPickerDialogState extends State<DateNumberPickerDialog> {
       actions: [
         PrimaryElevatedButton(
             onPressed: () {
-              Navigator.of(context).pop(DateTime(selectedYear.value, selectedMonth.value + 1, selectedDate.value));
+              Navigator.of(context).pop(DateTime(selectedYear.value,
+                  selectedMonth.value + 1, selectedDate.value));
             },
             text: 'Выбрать')
         // ElevatedButton(

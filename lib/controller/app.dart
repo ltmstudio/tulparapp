@@ -46,7 +46,9 @@ class AppController extends GetxController {
     if (prefs != null) {
       var savedMode = prefs!.getString(CoreCacheKeys.appMode);
       if (savedMode != null) {
-        appMode.value = AppMode.values.firstWhereOrNull((mode) => mode.name == savedMode) ?? AppMode.user;
+        appMode.value =
+            AppMode.values.firstWhereOrNull((mode) => mode.name == savedMode) ??
+                AppMode.user;
         update();
       }
     }
@@ -54,7 +56,9 @@ class AppController extends GetxController {
     var inDio = InDio();
     var dio = inDio.instance;
     try {
-      var resp = await dio.get('/app', queryParameters: {"platform": Platform.isAndroid ? 'android' : 'ios'});
+      var resp = await dio.get('/app', queryParameters: {
+        "platform": Platform.isAndroid ? 'android' : 'ios'
+      });
       var appStatusResponse = appStatusModelFromJson(json.encode(resp.data));
       if (appStatusResponse.success == true) {
         Log.success('Успешно подключено');
@@ -121,7 +125,8 @@ class AppController extends GetxController {
   int get getLangIdByCurrentLocale {
     var currentLocale = locale.value;
     var matchedLocale = supportedLocales.firstWhere(
-      (localeModel) => localeModel.locale.languageCode == currentLocale.languageCode,
+      (localeModel) =>
+          localeModel.locale.languageCode == currentLocale.languageCode,
       orElse: () => supportedLocales.first,
     );
     return matchedLocale.id;
@@ -138,7 +143,8 @@ class AppController extends GetxController {
     ValidationMessage.required: (error) => 'Заполните поле',
     ValidationMessage.email: (error) => 'Неправильный формат email',
     ValidationMessage.mustMatch: (error) => 'Поля не совпадают',
-    ValidationMessage.minLength: (error) => 'Минимум ${(error as Map)['requiredLength']} символов'
+    ValidationMessage.minLength: (error) =>
+        'Минимум ${(error as Map)['requiredLength']} символов'
   };
 
   void resetController() {

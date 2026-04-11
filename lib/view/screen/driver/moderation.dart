@@ -11,10 +11,12 @@ class DriverModerationFormScreen extends StatefulWidget {
   const DriverModerationFormScreen({super.key});
 
   @override
-  State<DriverModerationFormScreen> createState() => _DriverModerationFormScreenState();
+  State<DriverModerationFormScreen> createState() =>
+      _DriverModerationFormScreenState();
 }
 
-class _DriverModerationFormScreenState extends State<DriverModerationFormScreen> {
+class _DriverModerationFormScreenState
+    extends State<DriverModerationFormScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -25,7 +27,8 @@ class _DriverModerationFormScreenState extends State<DriverModerationFormScreen>
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<DriverModerationController>(builder: (moderationController) {
+    return GetBuilder<DriverModerationController>(
+        builder: (moderationController) {
       var allScreens = moderationController.allScreens;
       var currentPage = moderationController.currentPage.value;
       return Scaffold(
@@ -33,7 +36,11 @@ class _DriverModerationFormScreenState extends State<DriverModerationFormScreen>
         body: Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Container(
-            decoration: BoxDecoration(color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.0)),
+            decoration: BoxDecoration(
+                color: Theme.of(context)
+                    .colorScheme
+                    .inversePrimary
+                    .withOpacity(0.0)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -59,7 +66,8 @@ class _DriverModerationFormScreenState extends State<DriverModerationFormScreen>
                 ),
                 Expanded(child: allScreens[currentPage]),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: CoreDecoration.primaryPadding),
                   child: Row(
                     children: [
                       if (currentPage == 0)
@@ -73,16 +81,21 @@ class _DriverModerationFormScreenState extends State<DriverModerationFormScreen>
                       else
                         Expanded(
                             child: PrimaryElevatedButton(
-                                onPressed: moderationController.previousPage, light: true, text: "Назад".tr)),
+                                onPressed: moderationController.previousPage,
+                                light: true,
+                                text: "Назад".tr)),
                       const SizedBox(width: 10),
                       if (currentPage == allScreens.length - 1)
                         Expanded(
                             child: PrimaryElevatedButton(
-                                loading: moderationController.stageLoading.value,
+                                loading:
+                                    moderationController.stageLoading.value,
                                 onPressed: () async {
-                                  var setted = await moderationController.setToModeration();
+                                  var setted = await moderationController
+                                      .setToModeration();
                                   if (setted && mounted) {
-                                    CoreToast.showToast("Анкета отправлена на модерацию".tr);
+                                    CoreToast.showToast(
+                                        "Анкета отправлена на модерацию".tr);
                                     Navigator.of(context).pop();
                                   }
                                 },
@@ -90,9 +103,11 @@ class _DriverModerationFormScreenState extends State<DriverModerationFormScreen>
                       else
                         Expanded(
                             child: PrimaryElevatedButton(
-                                loading: moderationController.stageLoading.value,
+                                loading:
+                                    moderationController.stageLoading.value,
                                 onPressed: () async {
-                                  var validated = await moderationController.validateStage();
+                                  var validated = await moderationController
+                                      .validateStage();
                                   if (validated) {
                                     moderationController.nextPage();
                                   }

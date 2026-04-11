@@ -44,10 +44,14 @@ class _TimeNumberPickerDialogState extends State<TimeNumberPickerDialog> {
                       return NumberPicker(
                           minValue: 1,
                           infiniteLoop: true,
-                          textMapper: (numberText) => numberText.padLeft(2, '0'),
+                          textMapper: (numberText) =>
+                              numberText.padLeft(2, '0'),
                           textStyle: TextStyle(
-                              fontSize: 10, fontWeight: FontWeight.w500, color: CoreColors.black.withOpacity(0.5)),
-                          selectedTextStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                              fontSize: 10,
+                              fontWeight: FontWeight.w500,
+                              color: CoreColors.black.withOpacity(0.5)),
+                          selectedTextStyle: const TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500),
                           maxValue: 23,
                           value: hours,
                           onChanged: (v) {
@@ -66,10 +70,14 @@ class _TimeNumberPickerDialogState extends State<TimeNumberPickerDialog> {
                       return NumberPicker(
                           minValue: 0,
                           infiniteLoop: true,
-                          textMapper: (numberText) => numberText.padLeft(2, '0'),
+                          textMapper: (numberText) =>
+                              numberText.padLeft(2, '0'),
                           textStyle: TextStyle(
-                              fontSize: 10, fontWeight: FontWeight.w500, color: CoreColors.black.withOpacity(0.5)),
-                          selectedTextStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                              fontSize: 10,
+                              fontWeight: FontWeight.w500,
+                              color: CoreColors.black.withOpacity(0.5)),
+                          selectedTextStyle: const TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500),
                           step: 10,
                           maxValue: 50,
                           value: minutes,
@@ -84,14 +92,19 @@ class _TimeNumberPickerDialogState extends State<TimeNumberPickerDialog> {
       ),
       actions: [
         ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: CoreColors.primary),
+            style:
+                ElevatedButton.styleFrom(backgroundColor: CoreColors.primary),
             onPressed: () {
-              Navigator.of(context).pop(TimeOfDay(hour: selectedhour.value, minute: selectedminute.value));
+              Navigator.of(context).pop(TimeOfDay(
+                  hour: selectedhour.value, minute: selectedminute.value));
             },
             child: Center(
                 child: Text(
               'Выбрать'.tr,
-              style: const TextStyle(color: CoreColors.white, fontSize: 14, fontWeight: FontWeight.w500),
+              style: const TextStyle(
+                  color: CoreColors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500),
             ))),
       ],
     );

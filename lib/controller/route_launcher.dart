@@ -4,8 +4,10 @@ import 'package:tulpar/core/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RouteLauncher extends GetxController {
-  Future<void> openGoogleMaps(double lat1, double lon1, double lat2, double lon2) async {
-    final url = Uri.parse('https://www.google.com/maps/dir/?api=1&origin=$lat1,$lon1&destination=$lat2,$lon2');
+  Future<void> openGoogleMaps(
+      double lat1, double lon1, double lat2, double lon2) async {
+    final url = Uri.parse(
+        'https://www.google.com/maps/dir/?api=1&origin=$lat1,$lon1&destination=$lat2,$lon2');
     try {
       await launchUrl(url);
     } catch (e) {
@@ -14,8 +16,10 @@ class RouteLauncher extends GetxController {
     }
   }
 
-  Future<void> open2GIS(double lat1, double lon1, double lat2, double lon2) async {
-    final url = Uri.parse('dgis://2gis.ru/routeSearch/rsType/car/from/$lon1,$lat1/to/$lon2,$lat2');
+  Future<void> open2GIS(
+      double lat1, double lon1, double lat2, double lon2) async {
+    final url = Uri.parse(
+        'dgis://2gis.ru/routeSearch/rsType/car/from/$lon1,$lat1/to/$lon2,$lat2');
     try {
       await launchUrl(url);
     } catch (e) {

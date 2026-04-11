@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-PhoneResponseModel phoneResponseModelFromJson(String str) => PhoneResponseModel.fromJson(json.decode(str));
+PhoneResponseModel phoneResponseModelFromJson(String str) =>
+    PhoneResponseModel.fromJson(json.decode(str));
 
-String phoneResponseModelToJson(PhoneResponseModel data) => json.encode(data.toJson());
+String phoneResponseModelToJson(PhoneResponseModel data) =>
+    json.encode(data.toJson());
 
 class PhoneResponseModel {
   bool? success;
@@ -30,10 +32,13 @@ class PhoneResponseModel {
         data: data ?? this.data,
       );
 
-  factory PhoneResponseModel.fromJson(Map<String, dynamic> json) => PhoneResponseModel(
+  factory PhoneResponseModel.fromJson(Map<String, dynamic> json) =>
+      PhoneResponseModel(
         success: json["success"],
         message: json["message"],
-        data: json["data"] == null ? null : PhoneResponseData.fromJson(json["data"]),
+        data: json["data"] == null
+            ? null
+            : PhoneResponseData.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -61,7 +66,8 @@ class PhoneResponseData {
         sms: sms ?? this.sms,
       );
 
-  factory PhoneResponseData.fromJson(Map<String, dynamic> json) => PhoneResponseData(
+  factory PhoneResponseData.fromJson(Map<String, dynamic> json) =>
+      PhoneResponseData(
         salt: json["salt"],
         sms: json["sms"],
       );

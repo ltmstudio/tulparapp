@@ -5,7 +5,8 @@
 import 'dart:convert';
 
 List<CatalogCarModelModel> catalogCarModelModelFromJson(String str) =>
-    List<CatalogCarModelModel>.from(json.decode(str).map((x) => CatalogCarModelModel.fromJson(x)));
+    List<CatalogCarModelModel>.from(
+        json.decode(str).map((x) => CatalogCarModelModel.fromJson(x)));
 
 String catalogCarModelModelToJson(List<CatalogCarModelModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -48,7 +49,8 @@ class CatalogCarModelModel {
         mClass: mClass ?? this.mClass,
       );
 
-  factory CatalogCarModelModel.fromJson(Map<String, dynamic> json) => CatalogCarModelModel(
+  factory CatalogCarModelModel.fromJson(Map<String, dynamic> json) =>
+      CatalogCarModelModel(
         id: json["id"],
         carId: json["car_id"],
         name: json["name"],

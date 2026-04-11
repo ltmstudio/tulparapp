@@ -7,7 +7,8 @@ import 'dart:convert';
 List<CityModel> cityModelFromJson(String str) =>
     List<CityModel>.from(json.decode(str).map((x) => CityModel.fromJson(x)));
 
-String cityModelToJson(List<CityModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String cityModelToJson(List<CityModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class CityModel {
   int? id;

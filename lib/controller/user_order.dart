@@ -41,7 +41,8 @@ class UserOrderController extends GetxController {
   }
 
   ///Стримы на экраны
-  final StreamController<StreamWidgetEvent> _widgetsStreamController = StreamController<StreamWidgetEvent>.broadcast();
+  final StreamController<StreamWidgetEvent> _widgetsStreamController =
+      StreamController<StreamWidgetEvent>.broadcast();
   Stream<StreamWidgetEvent> get widgetStream => _widgetsStreamController.stream;
 
   var orderTypes = Rx<List<OrderTypeModel>>([]);
@@ -67,7 +68,8 @@ class UserOrderController extends GetxController {
   var locSelectorTitle = Rx<String?>(null);
   var isRouteLoading = Rx<bool>(false);
 
-  void showLocSelector({required Function(AddressModel) onDone, String? title}) {
+  void showLocSelector(
+      {required Function(AddressModel) onDone, String? title}) {
     followLocation.value = false;
     currentGeocode.value = null;
     newOrderExpanded.value = false;
@@ -238,7 +240,8 @@ class UserOrderController extends GetxController {
     poinA.value = null;
     pointB.value = null;
     selectedCarClassId.value = null;
-    _widgetsStreamController.sink.add(StreamWidgetEvent(id: 'flush', type: WidgetEvent.flushStartForm));
+    _widgetsStreamController.sink
+        .add(StreamWidgetEvent(id: 'flush', type: WidgetEvent.flushStartForm));
     update();
   }
 
@@ -250,7 +253,8 @@ class UserOrderController extends GetxController {
       if (refresh) isOrdersEnd.value = false;
       ordersLoading.value = true;
       update();
-      var resp = await dio.get('/orders', queryParameters: {"offset": refresh ? 0 : orders.value.length});
+      var resp = await dio.get('/orders',
+          queryParameters: {"offset": refresh ? 0 : orders.value.length});
       var data = orderModelFromJson(json.encode(resp.data));
       if (refresh) {
         orders.value = data;

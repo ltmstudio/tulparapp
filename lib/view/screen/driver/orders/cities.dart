@@ -23,23 +23,33 @@ class OrdersCitiesFiltersDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 16.0, left: CoreDecoration.primaryPadding),
-            child: Text("Фильтр по городам".tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+            padding: const EdgeInsets.only(
+                top: 16.0, left: CoreDecoration.primaryPadding),
+            child: Text("Фильтр по городам".tr,
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Откуда'.tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
+                Text('Откуда'.tr,
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.w700)),
                 const SizedBox(height: 10),
                 Container(
                   decoration: BoxDecoration(
-                      color: CoreColors.white, borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius)),
+                      color: CoreColors.white,
+                      borderRadius: BorderRadius.circular(
+                          CoreDecoration.primaryBorderRadius)),
                   child: Ink(
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius)),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                            CoreDecoration.primaryBorderRadius)),
                     child: Material(
-                      borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
+                      borderRadius: BorderRadius.circular(
+                          CoreDecoration.primaryBorderRadius),
                       color: Colors.transparent,
                       child: DropdownButton<CityModel?>(
                         isExpanded: true,
@@ -49,16 +59,20 @@ class OrdersCitiesFiltersDialog extends StatelessWidget {
                           DropdownMenuItem<CityModel?>(
                             value: null,
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
-                              child: Text("Выберите город".tr, style: CoreStyles.hint),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: CoreDecoration.primaryPadding),
+                              child: Text("Выберите город".tr,
+                                  style: CoreStyles.hint),
                             ),
                           ),
                           for (var city in cities)
                             DropdownMenuItem<CityModel?>(
                               value: city,
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
-                                child: Text("${city.name}", style: CoreStyles.h4),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: CoreDecoration.primaryPadding),
+                                child:
+                                    Text("${city.name}", style: CoreStyles.h4),
                               ),
                             )
                         ],
@@ -71,11 +85,15 @@ class OrdersCitiesFiltersDialog extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 15),
-                Text('Куда'.tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
+                Text('Куда'.tr,
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.w700)),
                 const SizedBox(height: 10),
                 Container(
                   decoration: BoxDecoration(
-                      color: CoreColors.white, borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius)),
+                      color: CoreColors.white,
+                      borderRadius: BorderRadius.circular(
+                          CoreDecoration.primaryBorderRadius)),
                   child: Ink(
                     child: Material(
                       color: Colors.transparent,
@@ -87,16 +105,20 @@ class OrdersCitiesFiltersDialog extends StatelessWidget {
                           DropdownMenuItem<CityModel?>(
                             value: null,
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
-                              child: Text("Выберите город".tr, style: CoreStyles.hint),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: CoreDecoration.primaryPadding),
+                              child: Text("Выберите город".tr,
+                                  style: CoreStyles.hint),
                             ),
                           ),
                           for (var city in cities)
                             DropdownMenuItem<CityModel?>(
                               value: city,
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
-                                child: Text("${city.name}", style: CoreStyles.h4),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: CoreDecoration.primaryPadding),
+                                child:
+                                    Text("${city.name}", style: CoreStyles.h4),
                               ),
                             )
                         ],
@@ -125,7 +147,8 @@ class OrdersCitiesFiltersDialog extends StatelessWidget {
                       child: PrimaryElevatedButton(
                           onPressed: () {
                             orderController.setSelectedCities(
-                                orderController.selectedCityA.value, orderController.selectedCityB.value);
+                                orderController.selectedCityA.value,
+                                orderController.selectedCityB.value);
                             Navigator.of(context).pop(true);
                           },
                           text: 'Применить'.tr),

@@ -40,7 +40,8 @@ class _HistoryTabState extends State<HistoryTab> {
                 child: ListView(
                   children: [
                     SizedBox(height: 10),
-                    for (var order in orders.where((order) => order.status != 'closed'))
+                    for (var order
+                        in orders.where((order) => order.status != 'closed'))
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                         child: OrderCard(order: order, onHistoryPage: true),
@@ -68,7 +69,8 @@ class _HistoryTabState extends State<HistoryTab> {
                 child: ListView(
                   children: [
                     SizedBox(height: 10),
-                    for (var order in orders.where((order) => order.status == 'closed'))
+                    for (var order
+                        in orders.where((order) => order.status == 'closed'))
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                         child: OrderCard(order: order, onHistoryPage: true),

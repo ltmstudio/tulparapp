@@ -333,7 +333,6 @@ class UserController extends GetxController {
         ],
       );
 
-
       if (credential.userIdentifier!.isEmpty) {
         Log.warning('Пользователь отменил авторизацию');
         return;
@@ -352,19 +351,18 @@ class UserController extends GetxController {
     } catch (e, stackTrace) {
       Log.error('Ошибка авторизации через Apple: $e');
       Log.error('Stack trace: $stackTrace');
-      
+
       if (e.toString().contains('userCancel')) {
         Log.warning('Пользователь отменил авторизацию');
         return;
       }
-      
+
       CoreToast.showToast('Ошибка авторизации через Apple: $e');
     } finally {
       appleSignInLoading.value = false;
       update();
     }
   }
-
 
   Future<void> _sendAppleAuthToServer(
     AuthorizationCredentialAppleID credential,
@@ -373,8 +371,10 @@ class UserController extends GetxController {
     try {
       Log.info('Отправка данных Apple на сервер...');
       Log.info('User ID: ${credential.userIdentifier}');
-      Log.info('Identity Token: ${credential.identityToken != null ? 'есть' : 'нет'}');
-      Log.info('Authorization Code: ${credential.authorizationCode != null ? 'есть' : 'нет'}');
+      Log.info(
+          'Identity Token: ${credential.identityToken != null ? 'есть' : 'нет'}');
+      Log.info(
+          'Authorization Code: ${credential.authorizationCode != null ? 'есть' : 'нет'}');
 
       if (credential.userIdentifier!.isEmpty) {
         throw Exception('User identifier не получен');
@@ -384,31 +384,36 @@ class UserController extends GetxController {
       var dio = inDio.instance;
 
       // Формируем имя из имени и фамилии
-     String? fullName = '';
-    if (credential.givenName != null || credential.familyName != null) {
-      final parts = <String>[];
-      if (credential.givenName != null) parts.add(credential.givenName!);
-      if (credential.familyName != null) parts.add(credential.familyName!);
-      fullName = parts.join(' ').trim();
-    }
+      String? fullName = '';
+      if (credential.givenName != null || credential.familyName != null) {
+        final parts = <String>[];
+        if (credential.givenName != null) parts.add(credential.givenName!);
+        if (credential.familyName != null) parts.add(credential.familyName!);
+        fullName = parts.join(' ').trim();
+      }
 
-    // Fallback if name is still empty
-    fullName = fullName.isEmpty ? 'Без имени' : fullName;
+      // Fallback if name is still empty
+      fullName = fullName.isEmpty ? 'Без имени' : fullName;
 
       // Формируем данные для отправки
       final Map<String, dynamic> requestData = {
         'apple_id': credential.userIdentifier,
         'email': credential.email ?? '',
-        'name': fullName ?? credential.givenName ?? credential.familyName ?? 'Без имени',
+        'name': fullName ??
+            credential.givenName ??
+            credential.familyName ??
+            'Без имени',
         'phone': phone,
       };
 
       // Добавляем токены только если они есть
-      if (credential.identityToken != null && credential.identityToken!.isNotEmpty) {
+      if (credential.identityToken != null &&
+          credential.identityToken!.isNotEmpty) {
         requestData['identity_token'] = credential.identityToken;
       }
-      
-      if (credential.authorizationCode != null && credential.authorizationCode!.isNotEmpty) {
+
+      if (credential.authorizationCode != null &&
+          credential.authorizationCode!.isNotEmpty) {
         requestData['authorization_code'] = credential.authorizationCode;
       }
 

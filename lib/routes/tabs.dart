@@ -49,5 +49,9 @@ class TabDataModel {
   String label;
   bool badge;
   var navigatorKey = GlobalKey<NavigatorState>();
-  TabDataModel({required this.screen, required this.icon, required this.label, this.badge = false});
+  TabDataModel(
+      {required this.screen,
+      required this.icon,
+      required this.label,
+      this.badge = false});
 }

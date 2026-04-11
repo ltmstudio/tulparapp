@@ -21,10 +21,12 @@ class _CatalogCarModelsScreenState extends State<CatalogCarModelsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<DriverModerationController>(builder: (moderationController) {
-      var models =
-          moderationController.catalogCars.value.firstWhereOrNull((element) => element.id == widget.carId)?.models ??
-              [];
+    return GetBuilder<DriverModerationController>(
+        builder: (moderationController) {
+      var models = moderationController.catalogCars.value
+              .firstWhereOrNull((element) => element.id == widget.carId)
+              ?.models ??
+          [];
       var loading = moderationController.catalogCarsLoading.value;
       return Scaffold(
         appBar: AppBar(
@@ -32,7 +34,8 @@ class _CatalogCarModelsScreenState extends State<CatalogCarModelsScreen> {
         ),
         body: Column(
           children: [
-            if (loading) const LinearProgressIndicator(color: CoreColors.primary),
+            if (loading)
+              const LinearProgressIndicator(color: CoreColors.primary),
             Expanded(
               child: RefreshIndicator(
                 onRefresh: () async {

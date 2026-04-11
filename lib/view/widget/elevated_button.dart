@@ -32,7 +32,9 @@ class PrimaryElevatedButton extends StatelessWidget {
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
               shape: shape ??
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius)),
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          CoreDecoration.primaryBorderRadius)),
               padding: const EdgeInsets.symmetric(vertical: 15),
               backgroundColor: light ? CoreColors.white : CoreColors.primary,
               elevation: 0),
@@ -42,12 +44,14 @@ class PrimaryElevatedButton extends StatelessWidget {
                 ? Icon(
                     icon,
                     size: 16,
-                    color: light ? textColor ?? CoreColors.primary : CoreColors.white,
+                    color: light
+                        ? textColor ?? CoreColors.primary
+                        : CoreColors.white,
                   )
                 : Text(
                     loading ? loadingText ?? '•••' : text,
-                    style:
-                        CoreStyles.buttonTextOnPrimary.copyWith(color: light ? textColor ?? CoreColors.primary : null),
+                    style: CoreStyles.buttonTextOnPrimary.copyWith(
+                        color: light ? textColor ?? CoreColors.primary : null),
                   ),
           )),
     );

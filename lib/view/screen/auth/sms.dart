@@ -44,82 +44,107 @@ class _AuthSmsScreenState extends State<AuthSmsScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryBorderRadius),
+          padding: const EdgeInsets.symmetric(
+              horizontal: CoreDecoration.primaryBorderRadius),
           child: Column(
             children: [
               Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Введите код'.tr,
-                      style: CoreStyles.h3,
-                    ),
-                    Text(
-                      'На указанный номер было отправлено сообщение с кодом подтверждения'.tr,
-                      style: CoreStyles.h4,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 15),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: TextField(
-                        controller: smsController,
-                        onTapOutside: (PointerDownEvent event) {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                        },
-                        maxLength: 6,
-                        style: CoreStyles.h4,
-                        textAlign: TextAlign.center,
-                        obscureText: true,
-                        obscuringCharacter: '*',
-                        decoration: CoreDecoration.textField,
-                        keyboardType: TextInputType.phone,
-                        textInputAction: TextInputAction.done,
-                      ),
-                    ),
-                    GetBuilder<UserController>(builder: (userController) {
-                      var loading = userController.smsToTokenLoading.value;
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: PrimaryElevatedButton(
-                          text: 'Подтвердить'.tr,
-                          loading: loading,
-                          onPressed: () {
-                            if (smsController.text.isEmpty) {
-                              CoreToast.showToast("Введите корректный код".tr);
-                              return;
-                            }
-                            userController.login(smsController.text);
-                          },
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return SingleChildScrollView(
+                      child: ConstrainedBox(
+                        constraints:
+                            BoxConstraints(minHeight: constraints.maxHeight),
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Введите код'.tr,
+                                style: CoreStyles.h3,
+                              ),
+                              Text(
+                                'На указанный номер было отправлено сообщение с кодом подтверждения'
+                                    .tr,
+                                style: CoreStyles.h4,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 15),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 4),
+                                child: TextField(
+                                  controller: smsController,
+                                  onTapOutside: (PointerDownEvent event) {
+                                    FocusManager.instance.primaryFocus
+                                        ?.unfocus();
+                                  },
+                                  maxLength: 6,
+                                  style: CoreStyles.h4,
+                                  textAlign: TextAlign.center,
+                                  obscureText: true,
+                                  obscuringCharacter: '*',
+                                  decoration: CoreDecoration.textField,
+                                  keyboardType: TextInputType.phone,
+                                  textInputAction: TextInputAction.done,
+                                ),
+                              ),
+                              GetBuilder<UserController>(
+                                  builder: (userController) {
+                                var loading =
+                                    userController.smsToTokenLoading.value;
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 5),
+                                  child: PrimaryElevatedButton(
+                                    text: 'Подтвердить'.tr,
+                                    loading: loading,
+                                    onPressed: () {
+                                      if (smsController.text.isEmpty) {
+                                        CoreToast.showToast(
+                                            "Введите корректный код".tr);
+                                        return;
+                                      }
+                                      userController.login(smsController.text);
+                                    },
+                                  ),
+                                );
+                              }),
+                              GetBuilder<UserController>(
+                                  builder: (userController) {
+                                var loading =
+                                    userController.phoneToSmsLoading.value;
+                                return ValueListenableBuilder(
+                                    valueListenable: sendAgainCounter,
+                                    builder: (_, c, __) {
+                                      return TextButton(
+                                          onPressed: c != 0
+                                              ? null
+                                              : () {
+                                                  Get.find<UserController>()
+                                                      .phoneToSms(userController
+                                                          .phone.value);
+                                                },
+                                          child: Text(loading
+                                              ? "..."
+                                              : "${"Отправить еще раз".tr} ${c > 0 ? '(${c.toString()} сек)' : ''}"));
+                                    });
+                              }),
+                              TextButton(
+                                  onPressed: () {
+                                    Get.find<UserController>()
+                                      ..clearForm()
+                                      ..userStage.value = UserLoginStage.phone
+                                      ..update();
+                                  },
+                                  child:
+                                      Text("Ввести другой номер телефона".tr)),
+                            ],
+                          ),
                         ),
-                      );
-                    }),
-                    GetBuilder<UserController>(builder: (userController) {
-                      var loading = userController.phoneToSmsLoading.value;
-                      return ValueListenableBuilder(
-                          valueListenable: sendAgainCounter,
-                          builder: (_, c, __) {
-                            return TextButton(
-                                onPressed: c != 0
-                                    ? null
-                                    : () {
-                                        Get.find<UserController>().phoneToSms(userController.phone.value);
-                                      },
-                                child: Text(loading
-                                    ? "..."
-                                    : "${"Отправить еще раз".tr} ${c > 0 ? '(${c.toString()} сек)' : ''}"));
-                          });
-                    }),
-                    TextButton(
-                        onPressed: () {
-                          Get.find<UserController>()
-                            ..clearForm()
-                            ..userStage.value = UserLoginStage.phone
-                            ..update();
-                        },
-                        child: Text("Ввести другой номер телефона".tr)),
-                  ],
+                      ),
+                    );
+                  },
                 ),
               ),
               Column(
@@ -133,12 +158,16 @@ class _AuthSmsScreenState extends State<AuthSmsScreen> {
                   ),
                   const Text(
                     'TULPAR',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: CoreColors.primary),
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: CoreColors.primary),
                   ),
                   Text(
                     'Сервис бронирования\nпопутного транспорта'.tr,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+                    style: const TextStyle(
+                        fontSize: 11, fontWeight: FontWeight.w600),
                   ),
                 ],
               ),

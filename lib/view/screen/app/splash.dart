@@ -34,12 +34,16 @@ class _AppSplashScreenState extends State<AppSplashScreen> {
               ),
               const Text(
                 'TULPAR',
-                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: CoreColors.primary),
+                style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: CoreColors.primary),
               ),
               Text(
                 'Сервис бронирования\nпопутного транспорта'.tr,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
             ],
           ),
@@ -52,24 +56,29 @@ class _AppSplashScreenState extends State<AppSplashScreen> {
               transitionBuilder: (child, animation) {
                 return FadeTransition(opacity: animation, child: child);
               },
-              child: status == AppConnectionStatus.loading || status == AppConnectionStatus.done
+              child: status == AppConnectionStatus.loading ||
+                      status == AppConnectionStatus.done
                   ? Container(
                       width: 200,
                       padding: const EdgeInsets.symmetric(vertical: 50),
                       child: const LinearProgressIndicator(),
                     )
                   : Container(
-                      padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: CoreDecoration.primaryPadding),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Ошибка подключения к системе. Проверьте подключение к интернету и попробуйте заново".tr,
+                            "Ошибка подключения к системе. Проверьте подключение к интернету и попробуйте заново"
+                                .tr,
                             textAlign: TextAlign.center,
                             style: const TextStyle(fontSize: 15),
                           ),
                           const SizedBox(height: 10),
-                          TextButton(onPressed: controller.initAppstatus, child: Text("Попробовать еще раз".tr))
+                          TextButton(
+                              onPressed: controller.initAppstatus,
+                              child: Text("Попробовать еще раз".tr))
                         ],
                       ),
                     ),

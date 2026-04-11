@@ -49,7 +49,10 @@ class DriverModerationController extends GetxController {
     DriverModerationImageFields.driver_license_back
   ];
 
-  final stoImagesFields = [DriverModerationImageFields.ts_passport_front, DriverModerationImageFields.ts_passport_back];
+  final stoImagesFields = [
+    DriverModerationImageFields.ts_passport_front,
+    DriverModerationImageFields.ts_passport_back
+  ];
 
   @override
   void onInit() {
@@ -79,18 +82,20 @@ class DriverModerationController extends GetxController {
   // set selected car by moderation fields
   void setSelectedCarByModerarionFileds() async {
     if (moderation.value?.carId != null) {
-      selectedCar.value = catalogCars.value.firstWhereOrNull((element) => element.id == moderation.value?.carId);
+      selectedCar.value = catalogCars.value
+          .firstWhereOrNull((element) => element.id == moderation.value?.carId);
       if (selectedCar.value == null) {
         await fetchCatalogCars(all: true);
-        selectedCar.value = catalogCars.value.firstWhereOrNull((element) => element.id == moderation.value?.carId);
+        selectedCar.value = catalogCars.value.firstWhereOrNull(
+            (element) => element.id == moderation.value?.carId);
       }
       if (moderation.value?.carModelId != null && selectedCar.value != null) {
-        selectedCarModel.value =
-            selectedCar.value?.models?.firstWhereOrNull((element) => element.id == moderation.value?.carModelId);
+        selectedCarModel.value = selectedCar.value?.models?.firstWhereOrNull(
+            (element) => element.id == moderation.value?.carModelId);
         if (selectedCarModel.value == null) {
           await fetchCarModels(moderation.value?.carId ?? '');
-          selectedCarModel.value =
-              selectedCar.value?.models?.firstWhereOrNull((element) => element.id == moderation.value?.carModelId);
+          selectedCarModel.value = selectedCar.value?.models?.firstWhereOrNull(
+              (element) => element.id == moderation.value?.carModelId);
         }
       }
       update();
@@ -109,7 +114,8 @@ class DriverModerationController extends GetxController {
         catalogCars.value = catalogCarModelFromJson(json.encode(resp.data));
         update();
       } else {
-        Log.error("Ошибка загрузки каталога авто ${resp.statusCode} ${resp.data}");
+        Log.error(
+            "Ошибка загрузки каталога авто ${resp.statusCode} ${resp.data}");
       }
     } catch (e) {
       Log.error("Ошибка загрузки каталога авто $e");
@@ -127,14 +133,16 @@ class DriverModerationController extends GetxController {
     try {
       var resp = await dio.get('/catalog/cars/$carId');
       if (resp.statusCode == 200 && resp.data != null) {
-        var carModels = CatalogCarModel.fromJson(json.decode(json.encode(resp.data)));
+        var carModels =
+            CatalogCarModel.fromJson(json.decode(json.encode(resp.data)));
         catalogCars.value = [
           for (var car in catalogCars.value)
             if (car.id == carId) car.copyWith(models: carModels.models) else car
         ];
         update();
       } else {
-        Log.error("Ошибка загрузки моделей авто ${resp.statusCode} ${resp.data}");
+        Log.error(
+            "Ошибка загрузки моделей авто ${resp.statusCode} ${resp.data}");
       }
     } catch (e) {
       Log.error("Ошибка загрузки моделей авто $e");
@@ -150,9 +158,11 @@ class DriverModerationController extends GetxController {
     searchCarsLoading.value = true;
     update();
     try {
-      var resp = await dio.get('/catalog/search', queryParameters: {'search': search});
+      var resp =
+          await dio.get('/catalog/search', queryParameters: {'search': search});
       if (resp.statusCode == 200 && resp.data != null) {
-        searchResultCars.value = catalogCarModelFromJson(json.encode(resp.data));
+        searchResultCars.value =
+            catalogCarModelFromJson(json.encode(resp.data));
         update();
       } else {
         Log.error("Ошибка поиска авто ${resp.statusCode} ${resp.data}");
@@ -181,7 +191,8 @@ class DriverModerationController extends GetxController {
     try {
       var resp = await dio.get('/driver/moderation');
       if (resp.statusCode == 200 && resp.data != null) {
-        moderation.value = driverModerationModelFromJson(json.encode(resp.data));
+        moderation.value =
+            driverModerationModelFromJson(json.encode(resp.data));
         update();
         // patch
         var m = moderation.value;
@@ -199,9 +210,12 @@ class DriverModerationController extends GetxController {
               'driver_license_number': m.driverLicenseNumber,
               'driver_license_date': m.driverLicenseDate
             },
-            for (var field in carImagesFields) field.name: m.carImages[field.name],
-            for (var field in driverLicenseImagesFields) field.name: m.driverLicenseImages[field.name],
-            for (var field in stoImagesFields) field.name: m.stoImages[field.name]
+            for (var field in carImagesFields)
+              field.name: m.carImages[field.name],
+            for (var field in driverLicenseImagesFields)
+              field.name: m.driverLicenseImages[field.name],
+            for (var field in stoImagesFields)
+              field.name: m.stoImages[field.name]
           });
           if (!patchImagesOnly) {
             setSelectedCarByModerarionFileds();
@@ -232,7 +246,11 @@ class DriverModerationController extends GetxController {
       validators: [Validators.required],
     ),
     'car_vin': FormControl<String>(
-      validators: [Validators.required, Validators.minLength(17), Validators.maxLength(17)],
+      validators: [
+        Validators.required,
+        Validators.minLength(17),
+        Validators.maxLength(17)
+      ],
     ),
     'car_year': FormControl<int>(
       validators: [Validators.required],
@@ -246,7 +264,8 @@ class DriverModerationController extends GetxController {
     'driver_license_date': FormControl<DateTime>(
       validators: [Validators.required],
     ),
-    for (var field in DriverModerationImageFields.values) field.name: FormControl<String?>()
+    for (var field in DriverModerationImageFields.values)
+      field.name: FormControl<String?>()
   });
 
   Future<bool> storeModeration(List<String> fields) async {
@@ -271,7 +290,8 @@ class DriverModerationController extends GetxController {
     try {
       var resp = await dio.post('/driver/moderation', data: postData);
       if (resp.statusCode == 200 && resp.data != null) {
-        moderation.value = driverModerationModelFromJson(json.encode(resp.data));
+        moderation.value =
+            driverModerationModelFromJson(json.encode(resp.data));
         update();
         // patch
         // patch
@@ -288,16 +308,20 @@ class DriverModerationController extends GetxController {
             'car_gos_number': m.carGosNumber,
             'driver_license_number': m.driverLicenseNumber,
             'driver_license_date': m.driverLicenseDate,
-            for (var field in carImagesFields) field.name: m.carImages[field.name],
-            for (var field in driverLicenseImagesFields) field.name: m.driverLicenseImages[field.name],
-            for (var field in stoImagesFields) field.name: m.stoImages[field.name]
+            for (var field in carImagesFields)
+              field.name: m.carImages[field.name],
+            for (var field in driverLicenseImagesFields)
+              field.name: m.driverLicenseImages[field.name],
+            for (var field in stoImagesFields)
+              field.name: m.stoImages[field.name]
           });
           setSelectedCarByModerarionFileds();
         }
         Log.success("Даные модерации по полям ${fields.toString()} сохранены");
         scs = true;
       } else {
-        Log.error("Ошибка сохранения данных модерации ${resp.statusCode} ${resp.data}");
+        Log.error(
+            "Ошибка сохранения данных модерации ${resp.statusCode} ${resp.data}");
         CoreToast.showToast("Ошибка сохранения данных анкеты".tr);
       }
     } catch (e) {
@@ -322,7 +346,8 @@ class DriverModerationController extends GetxController {
         Log.success("Даные модерации отправлены на модерацию");
         scs = true;
       } else {
-        Log.error("Ошибка отправки данных модерации на модерацию ${resp.statusCode} ${resp.data}");
+        Log.error(
+            "Ошибка отправки данных модерации на модерацию ${resp.statusCode} ${resp.data}");
         CoreToast.showToast("Ошибка отправки данных анкеты на модерацию".tr);
       }
     } catch (e) {
@@ -372,18 +397,31 @@ class DriverModerationController extends GetxController {
             moderationForm.control('car_gos_number').invalid ||
             selectedCarModel.value == null ||
             selectedCar.value == null ||
-            carImagesFields.where((field) => moderationForm.control(field.name).value != null).length < 2) {
+            carImagesFields
+                    .where((field) =>
+                        moderationForm.control(field.name).value != null)
+                    .length <
+                2) {
           CoreToast.showToast("Заполните все поля".tr);
           res = false;
         } else {
-          bool scs = await storeModeration(['car_vin', 'car_year', 'car_gos_number']);
+          bool scs =
+              await storeModeration(['car_vin', 'car_year', 'car_gos_number']);
           res = scs;
         }
       case 3:
         if (moderationForm.control('driver_license_date').invalid ||
             moderationForm.control('driver_license_number').invalid ||
-            driverLicenseImagesFields.where((field) => moderationForm.control(field.name).value != null).length < 2 ||
-            stoImagesFields.where((field) => moderationForm.control(field.name).value != null).length < 2) {
+            driverLicenseImagesFields
+                    .where((field) =>
+                        moderationForm.control(field.name).value != null)
+                    .length <
+                2 ||
+            stoImagesFields
+                    .where((field) =>
+                        moderationForm.control(field.name).value != null)
+                    .length <
+                2) {
           Log.warning("""
             ${moderationForm.control('driver_license_date').invalid} ${moderationForm.control('driver_license_number').invalid}
             ${driverLicenseImagesFields.where((field) => moderationForm.control(field.name).value != null).length < 2}
@@ -392,7 +430,8 @@ class DriverModerationController extends GetxController {
           CoreToast.showToast("Заполните все поля".tr);
           res = false;
         } else {
-          bool scs = await storeModeration(['driver_license_date', 'driver_license_number']);
+          bool scs = await storeModeration(
+              ['driver_license_date', 'driver_license_number']);
           res = scs;
         }
         break;
@@ -424,7 +463,9 @@ class DriverModerationController extends GetxController {
   var tempFileLoading = Rx<Map<String, bool>>({});
 
   Future<bool?> pickNUploadPhoto(
-      {required String key, required ImageSource source, CropAspectRatio? aspectRatio}) async {
+      {required String key,
+      required ImageSource source,
+      CropAspectRatio? aspectRatio}) async {
     final ImagePicker picker = ImagePicker();
     tempFile.value[key] = await picker.pickImage(source: source);
     update();
@@ -446,7 +487,11 @@ class DriverModerationController extends GetxController {
             cropFrameColor: CoreColors.primary,
             backgroundColor: CoreColors.white,
             activeControlsWidgetColor: CoreColors.primary),
-        IOSUiSettings(title: 'Редактирование фото'.tr, aspectRatioLockEnabled: true, rectWidth: 1000, rectHeight: 500),
+        IOSUiSettings(
+            title: 'Редактирование фото'.tr,
+            aspectRatioLockEnabled: true,
+            rectWidth: 1000,
+            rectHeight: 500),
       ],
     );
     if (croppedFile == null) {
@@ -460,13 +505,18 @@ class DriverModerationController extends GetxController {
     var inDio = InDio();
     var dio = inDio.instance;
     try {
-      FormData formData =
-          FormData.fromMap({'field_key': key, "image": await MultipartFile.fromFile(tempFile.value[key]!.path)});
-      var resp = await dio.post('/driver/moderation/upload_image', data: formData);
+      FormData formData = FormData.fromMap({
+        'field_key': key,
+        "image": await MultipartFile.fromFile(tempFile.value[key]!.path)
+      });
+      var resp =
+          await dio.post('/driver/moderation/upload_image', data: formData);
       if (resp.statusCode == 200 && resp.data['image_path'] != null) {
         Log.success('Фото успешно загружено'.tr);
         fetchModeration(patchImagesOnly: true);
-        moderationForm.control(key).updateValue(resp.data['image_path'].toString());
+        moderationForm
+            .control(key)
+            .updateValue(resp.data['image_path'].toString());
         tempFile.value.remove(key);
         tempFileLoading.value.remove(key);
         update();

@@ -41,7 +41,8 @@ class _PayDialogState extends State<PayDialog> {
             ),
             const SizedBox(height: 10),
             Text(
-              "Отправьте сумму который хотите пополнить и в комментарий напишите гос.номер авто".tr,
+              "Отправьте сумму который хотите пополнить и в комментарий напишите гос.номер авто"
+                  .tr,
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
@@ -56,10 +57,13 @@ class _PayDialogState extends State<PayDialog> {
                   if (info?.payQrImage != null)
                     Expanded(
                         child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: CoreDecoration.primaryPadding),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: CoreDecoration.primaryPadding),
                       child: ClipRRect(
-                          borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
-                          child: CachedNetworkImage(imageUrl: info!.image!, width: w)),
+                          borderRadius: BorderRadius.circular(
+                              CoreDecoration.primaryBorderRadius),
+                          child: CachedNetworkImage(
+                              imageUrl: info!.image!, width: w)),
                     )),
                 ],
               )),
@@ -73,14 +77,16 @@ class _PayDialogState extends State<PayDialog> {
                     Log.info("Открытие ссылки на оплату: ${info.payLink}");
                     launchUrlString(info.payLink!);
                   } catch (e) {
-                    Log.error("Ошибка открытия ссылки на оплату: ${info.payLink}");
+                    Log.error(
+                        "Ошибка открытия ссылки на оплату: ${info.payLink}");
                   }
                 },
                 trailing: IconButton(
                   icon: const Icon(Icons.copy),
                   onPressed: () {
                     Clipboard.setData(ClipboardData(text: info.payLink!));
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Скопировано".tr)));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Скопировано".tr)));
                   },
                 ),
               ),
@@ -93,7 +99,8 @@ class _PayDialogState extends State<PayDialog> {
                   icon: const Icon(Icons.copy),
                   onPressed: () {
                     Clipboard.setData(ClipboardData(text: info.payQrPhone!));
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Скопировано".tr)));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Скопировано".tr)));
                   },
                 ),
               ),

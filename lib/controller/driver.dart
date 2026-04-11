@@ -43,8 +43,11 @@ class DriverController extends GetxController {
     update();
     try {
       var response = await dio.get('/driver/profile');
-      if (response.statusCode == 200 && response.data['success'] == true && response.data['data'] != null) {
-        profile.value = driverProfileModelFromJson(json.encode(response.data['data']));
+      if (response.statusCode == 200 &&
+          response.data['success'] == true &&
+          response.data['data'] != null) {
+        profile.value =
+            driverProfileModelFromJson(json.encode(response.data['data']));
         Log.success('Получен профиль водителя');
       } else {
         Log.error('Ошибка получения профиля водителя ${response.data}');
@@ -60,7 +63,8 @@ class DriverController extends GetxController {
   var tempFile = Rx<XFile?>(null);
   var tempFileLoading = Rx<bool>(false);
 
-  Future<bool?> pickNUploadPhoto({required ImageSource source, CropAspectRatio? aspectRatio}) async {
+  Future<bool?> pickNUploadPhoto(
+      {required ImageSource source, CropAspectRatio? aspectRatio}) async {
     final ImagePicker picker = ImagePicker();
     tempFile.value = await picker.pickImage(source: source);
     update();
@@ -96,7 +100,8 @@ class DriverController extends GetxController {
     var inDio = InDio();
     var dio = inDio.instance;
     try {
-      FormData formData = FormData.fromMap({"image": await MultipartFile.fromFile(tempFile.value!.path)});
+      FormData formData = FormData.fromMap(
+          {"image": await MultipartFile.fromFile(tempFile.value!.path)});
       var resp = await dio.post('/driver/avatar', data: formData);
       if (resp.statusCode == 200 && resp.data['image_path'] != null) {
         Log.success('Фото успешно загружено');

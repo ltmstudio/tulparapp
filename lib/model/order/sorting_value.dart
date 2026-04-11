@@ -5,7 +5,8 @@
 import 'dart:convert';
 
 List<OrdersSortingValueModel> sortingValueModelFromJson(String str) =>
-    List<OrdersSortingValueModel>.from(json.decode(str).map((x) => OrdersSortingValueModel.fromJson(x)));
+    List<OrdersSortingValueModel>.from(
+        json.decode(str).map((x) => OrdersSortingValueModel.fromJson(x)));
 
 String sortingValueModelToJson(List<OrdersSortingValueModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -32,7 +33,8 @@ class OrdersSortingValueModel {
         direction: direction ?? this.direction,
       );
 
-  factory OrdersSortingValueModel.fromJson(Map<String, dynamic> json) => OrdersSortingValueModel(
+  factory OrdersSortingValueModel.fromJson(Map<String, dynamic> json) =>
+      OrdersSortingValueModel(
         name: json["name"],
         value: json["value"],
         direction: json["direction"],
@@ -46,7 +48,9 @@ class OrdersSortingValueModel {
 
   static List<OrdersSortingValueModel> initialValues = [
     // OrdersSortingValueModel(name: 'Сначала по близости', value: 'near', direction: 'asc'),
-    OrdersSortingValueModel(name: 'Сначала новые', value: 'created_at', direction: 'desc'),
-    OrdersSortingValueModel(name: 'Сначала дорогие', value: 'user_cost', direction: 'desc')
+    OrdersSortingValueModel(
+        name: 'Сначала новые', value: 'created_at', direction: 'desc'),
+    OrdersSortingValueModel(
+        name: 'Сначала дорогие', value: 'user_cost', direction: 'desc')
   ];
 }

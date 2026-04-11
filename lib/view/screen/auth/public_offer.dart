@@ -31,7 +31,8 @@ class _PublicOfferScreenState extends State<PublicOfferScreen> {
           },
         ),
       )
-      ..loadRequest(Uri.parse('${CoreEnvironment.appUrl}/public_offer/kz')); // Замени на нужный URL
+      ..loadRequest(Uri.parse(
+          '${CoreEnvironment.appUrl}/public_offer/kz')); // Замени на нужный URL
   }
 
   @override

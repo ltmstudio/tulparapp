@@ -19,7 +19,9 @@ class _DateTimePickerDialogState extends State<DateTimePickerDialog> {
   void initState() {
     if (widget.initialDateTime != null) {
       selectedDate = widget.initialDateTime;
-      selectedTime = TimeOfDay(hour: widget.initialDateTime!.hour, minute: widget.initialDateTime!.minute);
+      selectedTime = TimeOfDay(
+          hour: widget.initialDateTime!.hour,
+          minute: widget.initialDateTime!.minute);
     } else {
       selectedDate = DateTime.now();
       selectedTime = TimeOfDay.now();
@@ -45,7 +47,8 @@ class _DateTimePickerDialogState extends State<DateTimePickerDialog> {
             onPressed: () async {
               final date = await showDialog<DateTime>(
                 context: context,
-                builder: (context) => DateNumberPickerDialog(initialDate: selectedDate),
+                builder: (context) =>
+                    DateNumberPickerDialog(initialDate: selectedDate),
               );
               if (date != null) {
                 setState(() {
@@ -66,7 +69,8 @@ class _DateTimePickerDialogState extends State<DateTimePickerDialog> {
             onPressed: () async {
               final time = await showDialog<TimeOfDay>(
                 context: context,
-                builder: (context) => TimeNumberPickerDialog(initialTime: selectedTime),
+                builder: (context) =>
+                    TimeNumberPickerDialog(initialTime: selectedTime),
               );
               if (time != null) {
                 setState(() {

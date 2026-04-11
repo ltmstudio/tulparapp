@@ -36,7 +36,8 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
   Widget build(BuildContext context) {
     return GetBuilder<DriverController>(builder: (driverController) {
       var profile = driverController.profile.value;
-      return GetBuilder<DriverModerationController>(builder: (moderationController) {
+      return GetBuilder<DriverModerationController>(
+          builder: (moderationController) {
         var moderation = moderationController.moderation.value;
         return Scaffold(
           appBar: AppBar(title: Text("Аккаунт водителя".tr)),
@@ -61,7 +62,8 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                           openWithTap: true,
                           menuBoxDecoration: const BoxDecoration(
                               color: CoreColors.white,
-                              borderRadius: BorderRadius.all(Radius.circular(CoreDecoration.primaryBorderRadius))),
+                              borderRadius: BorderRadius.all(Radius.circular(
+                                  CoreDecoration.primaryBorderRadius))),
                           duration: const Duration(milliseconds: 30),
                           blurBackgroundColor: Colors.black54,
                           menuOffset: 5.0,
@@ -70,23 +72,33 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                             FocusedMenuItem(
                                 backgroundColor: Colors.transparent,
                                 title: Text("Открыть камеру".tr),
-                                trailingIcon: const Icon(Icons.camera_alt_outlined, size: 16),
+                                trailingIcon: const Icon(
+                                    Icons.camera_alt_outlined,
+                                    size: 16),
                                 onPressed: () {
-                                  driverController.pickNUploadPhoto(source: ImageSource.camera);
+                                  driverController.pickNUploadPhoto(
+                                      source: ImageSource.camera);
                                 }),
                             FocusedMenuItem(
                                 backgroundColor: Colors.transparent,
                                 title: Text("Открыть галерею".tr),
-                                trailingIcon: const Icon(Icons.photo_library_outlined, size: 16),
+                                trailingIcon: const Icon(
+                                    Icons.photo_library_outlined,
+                                    size: 16),
                                 onPressed: () {
-                                  driverController.pickNUploadPhoto(source: ImageSource.gallery);
+                                  driverController.pickNUploadPhoto(
+                                      source: ImageSource.gallery);
                                 }),
                             if (profile.avatar != null)
                               FocusedMenuItem(
                                   backgroundColor: Colors.transparent,
-                                  title: Text("Удалить".tr, style: const TextStyle(color: CoreColors.delete)),
-                                  trailingIcon:
-                                      const Icon(Icons.delete_outline_outlined, size: 16, color: CoreColors.delete),
+                                  title: Text("Удалить".tr,
+                                      style: const TextStyle(
+                                          color: CoreColors.delete)),
+                                  trailingIcon: const Icon(
+                                      Icons.delete_outline_outlined,
+                                      size: 16,
+                                      color: CoreColors.delete),
                                   onPressed: () {
                                     driverController.deleteAvatar();
                                   }),
@@ -95,7 +107,8 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                           child: Container(
                             width: 75,
                             height: 75,
-                            margin: const EdgeInsets.only(right: CoreDecoration.primaryPadding),
+                            margin: const EdgeInsets.only(
+                                right: CoreDecoration.primaryPadding),
                             child: Stack(
                               children: [
                                 Container(
@@ -104,12 +117,14 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                                   decoration: BoxDecoration(
                                     color: CoreColors.lightGrey,
                                     shape: BoxShape.circle,
-                                    border: Border.all(color: CoreColors.primary, width: 3),
+                                    border: Border.all(
+                                        color: CoreColors.primary, width: 3),
                                   ),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(75),
                                     child: Builder(builder: (_) {
-                                      var tempFile = driverController.tempFile.value;
+                                      var tempFile =
+                                          driverController.tempFile.value;
                                       // var tempFileLoading = driverController.tempFileLoading.value;
                                       if (tempFile != null) {
                                         return Image.file(
@@ -127,7 +142,8 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                                           fit: BoxFit.cover,
                                         );
                                       }
-                                      return const Icon(Icons.person, size: 50, color: CoreColors.white);
+                                      return const Icon(Icons.person,
+                                          size: 50, color: CoreColors.white);
                                     }),
                                   ),
                                 ),
@@ -142,31 +158,39 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                           children: [
                             Text(
                               profile.fullname,
-                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                             Row(children: [
                               if (profile.carName != null)
                                 Text(
                                   "${profile.carName}",
-                                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               if (profile.carNumber != null)
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 5, vertical: 1),
                                   margin: const EdgeInsets.only(left: 5),
                                   decoration: BoxDecoration(
-                                      border: Border.all(color: CoreColors.black, width: 1),
+                                      border: Border.all(
+                                          color: CoreColors.black, width: 1),
                                       borderRadius: BorderRadius.circular(5)),
                                   child: Text(
                                     "${profile.carNumber}",
-                                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                    style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
                             ]),
                             if (profile.carClass != null)
                               Text(
                                 "Класс: ${profile.carClass!.name}",
-                                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
                               ),
                           ],
                         ))
@@ -194,7 +218,9 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                               : Row(
                                   children: [
                                     Icon(Icons.star_rounded,
-                                        color: profile?.level?.colorValue ?? CoreColors.grey, size: 20),
+                                        color: profile?.level?.colorValue ??
+                                            CoreColors.grey,
+                                        size: 20),
                                     Text("${profile?.level?.name}"),
                                   ],
                                 ),
@@ -217,7 +243,8 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                 ListTile(
                   leading: const Icon(Icons.info_outline_rounded),
                   title: Text("Справочник и FAQ".tr),
-                  trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14),
+                  trailing:
+                      const Icon(Icons.arrow_forward_ios_rounded, size: 14),
                   onTap: () {
                     try {
                       launchUrlString('https://wa.me/77470415466');
@@ -226,10 +253,12 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                 ),
                 ListTile(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const DriverShiftScreen()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const DriverShiftScreen()));
                   },
                   leading: const Icon(Icons.timer_sharp),
-                  trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14),
+                  trailing:
+                      const Icon(Icons.arrow_forward_ios_rounded, size: 14),
                   title: Text("Смены".tr),
                 ),
                 GetBuilder<AppController>(builder: (appController) {
@@ -243,21 +272,24 @@ class _DriverAccountTabState extends State<DriverAccountTab> {
                       }
                     },
                     leading: const Icon(Icons.change_circle_outlined),
-                    trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14),
+                    trailing:
+                        const Icon(Icons.arrow_forward_ios_rounded, size: 14),
                     title: Text("Перейти в режим клиента".tr),
                   );
                 }),
                 ListTile(
                   onTap: () async {
-                    bool confirmed =
-                        await showDialog(context: context, builder: (context) => const LogoutConfirmDialog());
+                    bool confirmed = await showDialog(
+                        context: context,
+                        builder: (context) => const LogoutConfirmDialog());
                     if (confirmed == true) {
                       Get.find<UserController>().logout();
                     }
                   },
                   onLongPress: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const LogScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const LogScreen()),
                     );
                   },
                   leading: const Icon(

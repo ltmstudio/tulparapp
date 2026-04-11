@@ -9,7 +9,8 @@ import 'package:tulpar/model/driver/shift_order.dart';
 ShiftOrderResponseModel shiftOrderResponseModelFromJson(String str) =>
     ShiftOrderResponseModel.fromJson(json.decode(str));
 
-String shiftOrderResponseModelToJson(ShiftOrderResponseModel data) => json.encode(data.toJson());
+String shiftOrderResponseModelToJson(ShiftOrderResponseModel data) =>
+    json.encode(data.toJson());
 
 class ShiftOrderResponseModel {
   bool? success;
@@ -33,10 +34,13 @@ class ShiftOrderResponseModel {
         data: data ?? this.data,
       );
 
-  factory ShiftOrderResponseModel.fromJson(Map<String, dynamic> json) => ShiftOrderResponseModel(
+  factory ShiftOrderResponseModel.fromJson(Map<String, dynamic> json) =>
+      ShiftOrderResponseModel(
         success: json["success"],
         message: json["message"],
-        data: json["data"] == null ? null : ShiftOrderModel.fromJson(json["data"]),
+        data: json["data"] == null
+            ? null
+            : ShiftOrderModel.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {

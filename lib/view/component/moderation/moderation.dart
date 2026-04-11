@@ -24,12 +24,19 @@ class ModerationModerationCard extends StatelessWidget {
         children: [
           Text(
             "Аккаунт TULPAR Водитель".tr,
-            style: const TextStyle(fontSize: 18, color: CoreColors.white, fontWeight: FontWeight.w800),
+            style: const TextStyle(
+                fontSize: 18,
+                color: CoreColors.white,
+                fontWeight: FontWeight.w800),
           ),
           const SizedBox(height: 10),
           Text(
-            "Анкета на модерации. Вы получите уведомление после изменения статуса".tr,
-            style: const TextStyle(fontSize: 15, color: CoreColors.white, fontWeight: FontWeight.w500),
+            "Анкета на модерации. Вы получите уведомление после изменения статуса"
+                .tr,
+            style: const TextStyle(
+                fontSize: 15,
+                color: CoreColors.white,
+                fontWeight: FontWeight.w500),
           ),
           const SizedBox(height: 20),
           Row(
@@ -44,7 +51,8 @@ class ModerationModerationCard extends StatelessWidget {
                   ),
                 ),
               ),
-              GetBuilder<DriverModerationController>(builder: (moderationController) {
+              GetBuilder<DriverModerationController>(
+                  builder: (moderationController) {
                 var moderation = moderationController.moderation.value;
                 if (moderation?.updatedAt == null) return Container();
                 return Expanded(
@@ -53,10 +61,16 @@ class ModerationModerationCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text("Отправлено на модерацию:".tr,
-                          textAlign: TextAlign.end, style: const TextStyle(color: CoreColors.white)),
-                      Text(DateFormat('dd.MM.yyyy в HH:mm').format(moderation!.updatedAt!).tr,
                           textAlign: TextAlign.end,
-                          style: const TextStyle(color: CoreColors.white, fontWeight: FontWeight.w700)),
+                          style: const TextStyle(color: CoreColors.white)),
+                      Text(
+                          DateFormat('dd.MM.yyyy в HH:mm')
+                              .format(moderation!.updatedAt!)
+                              .tr,
+                          textAlign: TextAlign.end,
+                          style: const TextStyle(
+                              color: CoreColors.white,
+                              fontWeight: FontWeight.w700)),
                     ],
                   ),
                 );

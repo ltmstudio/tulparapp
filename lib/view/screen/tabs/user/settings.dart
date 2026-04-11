@@ -33,20 +33,26 @@ class _SettingsTabState extends State<SettingsTab> {
             ListTile(
               title: Text(user?.name ?? ''),
               subtitle: Text(user?.formattedTelephone ?? ""),
-              trailing: const Icon(Icons.edit_rounded, color: CoreColors.primary),
+              trailing:
+                  const Icon(Icons.edit_rounded, color: CoreColors.primary),
               onTap: () {},
               leading: Container(
                 width: 50,
                 height: 50,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(25), color: CoreColors.white),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    color: CoreColors.white),
                 child: user?.letter != null
                     ? Center(
                         child: Text(
                         user!.letter,
-                        style: CoreStyles.h3.copyWith(fontWeight: FontWeight.w700, color: CoreColors.primary),
+                        style: CoreStyles.h3.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: CoreColors.primary),
                       ))
                     : Center(
-                        child: Image.asset(CoreAssets.logoBlueTransparent, width: 30),
+                        child: Image.asset(CoreAssets.logoBlueTransparent,
+                            width: 30),
                       ),
               ),
             ),
@@ -90,7 +96,9 @@ class _SettingsTabState extends State<SettingsTab> {
             }),
             ListTile(
               onTap: () async {
-                bool? confirmed = await showDialog(context: context, builder: (context) => const LogoutConfirmDialog());
+                bool? confirmed = await showDialog(
+                    context: context,
+                    builder: (context) => const LogoutConfirmDialog());
                 if (confirmed == true) {
                   Get.find<UserController>().logout();
                 }
@@ -111,7 +119,9 @@ class _SettingsTabState extends State<SettingsTab> {
             ),
             ListTile(
               onTap: () async {
-                bool? confirmed = await showDialog(context: context, builder: (context) => const AccountDeleteConfirmDialog());
+                bool? confirmed = await showDialog(
+                    context: context,
+                    builder: (context) => const AccountDeleteConfirmDialog());
                 if (confirmed == true) {
                   Get.find<UserController>().logout();
                 }

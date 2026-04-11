@@ -40,7 +40,8 @@ class _DriverOrdersTabState extends State<DriverOrdersTab> {
                     await orderController.fetchMyOrders();
                   },
                   child: ListView(
-                    padding: const EdgeInsets.symmetric(vertical: CoreDecoration.primaryPadding),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: CoreDecoration.primaryPadding),
                     children: [
                       if (myOrders.isEmpty && myOrdersLoading)
                         Column(
@@ -57,14 +58,16 @@ class _DriverOrdersTabState extends State<DriverOrdersTab> {
                             SizedBox(height: h * 0.3),
                             Text(
                               'У вас нет заказов'.tr,
-                              style: const TextStyle(fontWeight: FontWeight.bold),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 10),
                             Text('Потяните вниз чтобы обновить'.tr),
                           ],
                         )
                       else if (myOrders.isNotEmpty)
-                        for (var order in myOrders) DriverOrderCard(order: order, onHistoryPage: true),
+                        for (var order in myOrders)
+                          DriverOrderCard(order: order, onHistoryPage: true),
                     ],
                   ),
                 ),
@@ -73,7 +76,8 @@ class _DriverOrdersTabState extends State<DriverOrdersTab> {
                     await orderController.fetchHistoryOrders();
                   },
                   child: ListView(
-                    padding: const EdgeInsets.symmetric(vertical: CoreDecoration.primaryPadding),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: CoreDecoration.primaryPadding),
                     children: [
                       if (historyOrders.isEmpty && historyOrdersLoading)
                         Column(
@@ -90,14 +94,16 @@ class _DriverOrdersTabState extends State<DriverOrdersTab> {
                             SizedBox(height: h * 0.3),
                             Text(
                               'У вас нет заказов'.tr,
-                              style: const TextStyle(fontWeight: FontWeight.bold),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 10),
                             Text('Потяните вниз чтобы обновить'.tr),
                           ],
                         )
                       else if (historyOrders.isNotEmpty)
-                        for (var order in historyOrders) DriverOrderCard(order: order, blockOpen: true),
+                        for (var order in historyOrders)
+                          DriverOrderCard(order: order, blockOpen: true),
                     ],
                   ),
                 )

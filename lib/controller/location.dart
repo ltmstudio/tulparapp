@@ -31,7 +31,8 @@ class LocationProvider {
     }
 
     if (permission == LocationPermission.deniedForever) {
-      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
     }
     subscrition = Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
@@ -49,7 +50,8 @@ class LocationProvider {
     currentPosition.value = null;
   }
 
-  static double calculateDistance({required Position lastPosition, required Position currentPosition}) {
+  static double calculateDistance(
+      {required Position lastPosition, required Position currentPosition}) {
     double distanceInMeters = Geolocator.distanceBetween(
       lastPosition.latitude,
       lastPosition.longitude,

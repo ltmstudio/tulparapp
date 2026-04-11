@@ -7,7 +7,8 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 
 List<ShiftOrderModel> shiftOrderModelFromJson(String str) =>
-    List<ShiftOrderModel>.from(json.decode(str).map((x) => ShiftOrderModel.fromJson(x)));
+    List<ShiftOrderModel>.from(
+        json.decode(str).map((x) => ShiftOrderModel.fromJson(x)));
 
 String shiftOrderModelToJson(List<ShiftOrderModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -26,7 +27,9 @@ class ShiftOrderModel {
 
   String get title => '$hours $hoursState';
   String get subtitle => '$price ₸';
-  String get formattedCreated => createdAt != null ? DateFormat('dd MMM HH:mm', 'ru').format(createdAt!) : '';
+  String get formattedCreated => createdAt != null
+      ? DateFormat('dd MMM HH:mm', 'ru').format(createdAt!)
+      : '';
 
   ShiftOrderModel({
     this.id,
@@ -66,7 +69,8 @@ class ShiftOrderModel {
         updatedAt: updatedAt ?? this.updatedAt,
       );
 
-  factory ShiftOrderModel.fromJson(Map<String, dynamic> json) => ShiftOrderModel(
+  factory ShiftOrderModel.fromJson(Map<String, dynamic> json) =>
+      ShiftOrderModel(
         id: json["id"],
         driverId: json["driver_id"],
         classId: json["class_id"],
@@ -75,8 +79,12 @@ class ShiftOrderModel {
         levelName: json["level_name"],
         price: json["price"],
         endtime: json["endtime"],
-        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {

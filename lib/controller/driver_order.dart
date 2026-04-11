@@ -41,13 +41,16 @@ class DriverOrderController extends GetxController {
   var sortingValues = OrdersSortingValueModel.initialValues;
   var selectedSortingValue = Rx<OrdersSortingValueModel?>(null);
 
-  List<OrderTypeModel> get orderTypes => Get.find<UserOrderController>().orderTypes.value;
+  List<OrderTypeModel> get orderTypes =>
+      Get.find<UserOrderController>().orderTypes.value;
   var selectedOrderType = Rx<OrderTypeModel?>(null);
 
   List<CarClassModel> get orderClasses => Get.find<UserOrderController>()
       .carClasses
       .value
-      .where((element) => (element.id ?? 99) <= (Get.find<DriverController>().profile.value?.classId ?? 0))
+      .where((element) =>
+          (element.id ?? 99) <=
+          (Get.find<DriverController>().profile.value?.classId ?? 0))
       .toList();
   var selectedOrderClass = Rx<CarClassModel?>(null);
 
@@ -133,7 +136,8 @@ class DriverOrderController extends GetxController {
     update();
     try {
       var resp = await dio.get("/driver/orders/$orderId");
-      var expandedOrder = OrderModel.fromJson(json.decode(json.encode(resp.data)));
+      var expandedOrder =
+          OrderModel.fromJson(json.decode(json.encode(resp.data)));
       expandedOrders.value.add(expandedOrder);
       expandedOrderLoading.value = false;
       update();
@@ -163,7 +167,9 @@ class DriverOrderController extends GetxController {
     update();
     try {
       var resp = await dio.post("/driver/orders/$orderId");
-      if (resp.statusCode == 200 && resp.data != null && resp.data['success'] == true) {
+      if (resp.statusCode == 200 &&
+          resp.data != null &&
+          resp.data['success'] == true) {
         Log.success("Заказ успешно взят");
         expandedOrderLoading.value = false;
         update();
@@ -203,7 +209,9 @@ class DriverOrderController extends GetxController {
     update();
     try {
       var resp = await dio.post("/driver/order/$orderId/close");
-      if (resp.statusCode == 200 && resp.data != null && resp.data['success'] == true) {
+      if (resp.statusCode == 200 &&
+          resp.data != null &&
+          resp.data['success'] == true) {
         Log.success("Заказ успешно закрыт");
         expandedOrderLoading.value = false;
         update();
@@ -243,7 +251,9 @@ class DriverOrderController extends GetxController {
     update();
     try {
       var resp = await dio.post("/driver/order/$orderId/cancel");
-      if (resp.statusCode == 200 && resp.data != null && resp.data['success'] == true) {
+      if (resp.statusCode == 200 &&
+          resp.data != null &&
+          resp.data['success'] == true) {
         Log.success("Заказ успешно отменен");
         expandedOrderLoading.value = false;
         update();
@@ -372,7 +382,8 @@ class DriverOrderController extends GetxController {
       Log.warning("Не выбраны точки для построения маршрута");
       return;
     }
-    if (selectedOrderOnMap.value!.geoA?.toLatLng == null || selectedOrderOnMap.value!.geoB?.toLatLng == null) {
+    if (selectedOrderOnMap.value!.geoA?.toLatLng == null ||
+        selectedOrderOnMap.value!.geoB?.toLatLng == null) {
       Log.warning("Не выбраны точки для построения маршрута");
       return;
     }

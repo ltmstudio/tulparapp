@@ -28,11 +28,14 @@ class _CatalogCarsScreenState extends State<CatalogCarsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<DriverModerationController>(builder: (moderationController) {
+    return GetBuilder<DriverModerationController>(
+        builder: (moderationController) {
       var carsLoading = moderationController.catalogCarsLoading.value;
       var searchLoading = moderationController.searchCarsLoading.value;
 
-      var cars = moderationController.catalogCars.value.where((element) => element.popular == 1).toList();
+      var cars = moderationController.catalogCars.value
+          .where((element) => element.popular == 1)
+          .toList();
       var allCars = moderationController.catalogCars.value;
       var searchCars = moderationController.searchResultCars.value;
 
@@ -56,7 +59,9 @@ class _CatalogCarsScreenState extends State<CatalogCarsScreen> {
                   axis: Axis.vertical,
                   child: child,
                 ),
-                child: carsLoading ? const LinearProgressIndicator(color: CoreColors.primary) : const SizedBox.shrink(),
+                child: carsLoading
+                    ? const LinearProgressIndicator(color: CoreColors.primary)
+                    : const SizedBox.shrink(),
               ),
               Expanded(
                   child: TabBarView(children: [
@@ -71,8 +76,10 @@ class _CatalogCarsScreenState extends State<CatalogCarsScreen> {
                           return ListTile(
                             title: Text("${car.name}"),
                             onTap: () {
-                              if (moderationController.selectedCar.value?.id != car.id) {
-                                moderationController.selectedCarModel.value = null;
+                              if (moderationController.selectedCar.value?.id !=
+                                  car.id) {
+                                moderationController.selectedCarModel.value =
+                                    null;
                               }
                               moderationController.selectedCar.value = car;
                               moderationController.update();
@@ -91,8 +98,10 @@ class _CatalogCarsScreenState extends State<CatalogCarsScreen> {
                           return ListTile(
                             title: Text("${car.name}"),
                             onTap: () {
-                              if (moderationController.selectedCar.value?.id != car.id) {
-                                moderationController.selectedCarModel.value = null;
+                              if (moderationController.selectedCar.value?.id !=
+                                  car.id) {
+                                moderationController.selectedCarModel.value =
+                                    null;
                               }
                               moderationController.selectedCar.value = car;
                               moderationController.update();
@@ -103,13 +112,16 @@ class _CatalogCarsScreenState extends State<CatalogCarsScreen> {
                 Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(CoreDecoration.primaryPadding).copyWith(bottom: 0),
+                      padding:
+                          const EdgeInsets.all(CoreDecoration.primaryPadding)
+                              .copyWith(bottom: 0),
                       child: TextField(
                         controller: searchTextController,
                         onChanged: (value) {
                           searchString.value = value;
                           searchDebouncer.call(() {
-                            moderationController.searchCatalogCars(searchString.value);
+                            moderationController
+                                .searchCatalogCars(searchString.value);
                           });
                         },
                         onTapOutside: (event) {
@@ -138,11 +150,15 @@ class _CatalogCarsScreenState extends State<CatalogCarsScreen> {
                           builder: (_, s, __) {
                             if (searchCars.isEmpty) {
                               if (searchLoading) {
-                                return const Center(child: CircularProgressIndicator(color: CoreColors.primary));
+                                return const Center(
+                                    child: CircularProgressIndicator(
+                                        color: CoreColors.primary));
                               } else if (s.isEmpty) {
-                                return Center(child: Text('Введите марку или модель'.tr));
+                                return Center(
+                                    child: Text('Введите марку или модель'.tr));
                               } else {
-                                return Center(child: Text('Ничего не найдено'.tr));
+                                return Center(
+                                    child: Text('Ничего не найдено'.tr));
                               }
                             } else {
                               return ListView.builder(
@@ -153,13 +169,19 @@ class _CatalogCarsScreenState extends State<CatalogCarsScreen> {
                                       return ListTile(
                                         title: Text(
                                           "${car.name}",
-                                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                                          style: const TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600),
                                         ),
                                         onTap: () {
-                                          if (moderationController.selectedCar.value?.id != car.id) {
-                                            moderationController.selectedCarModel.value = null;
+                                          if (moderationController
+                                                  .selectedCar.value?.id !=
+                                              car.id) {
+                                            moderationController
+                                                .selectedCarModel.value = null;
                                           }
-                                          moderationController.selectedCar.value = car;
+                                          moderationController
+                                              .selectedCar.value = car;
                                           moderationController.update();
                                           Navigator.of(context).pop();
                                         },
@@ -168,7 +190,9 @@ class _CatalogCarsScreenState extends State<CatalogCarsScreen> {
                                     return ExpansionTile(
                                       title: Text(
                                         "${car.name}",
-                                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600),
                                       ),
                                       children: [
                                         ListView.builder(
@@ -177,14 +201,22 @@ class _CatalogCarsScreenState extends State<CatalogCarsScreen> {
                                             itemBuilder: (context, index) {
                                               var model = car.models![index];
                                               return ListTile(
-                                                leading: const Icon(Icons.remove, size: 12, color: CoreColors.primary),
+                                                leading: const Icon(
+                                                    Icons.remove,
+                                                    size: 12,
+                                                    color: CoreColors.primary),
                                                 title: Text(
                                                   "${model.name}",
-                                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                                 onTap: () {
-                                                  moderationController.selectedCar.value = car;
-                                                  moderationController.selectedCarModel.value = model;
+                                                  moderationController
+                                                      .selectedCar.value = car;
+                                                  moderationController
+                                                      .selectedCarModel
+                                                      .value = model;
                                                   moderationController.update();
                                                   Navigator.of(context).pop();
                                                 },

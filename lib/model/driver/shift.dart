@@ -42,15 +42,21 @@ class ShiftPriceModel {
         shift: shift ?? this.shift,
       );
 
-  factory ShiftPriceModel.fromJson(Map<String, dynamic> json) => ShiftPriceModel(
+  factory ShiftPriceModel.fromJson(Map<String, dynamic> json) =>
+      ShiftPriceModel(
         id: json["id"],
         txShiftId: json["tx_shift_id"],
         txLevelId: json["tx_level_id"],
         txCarClassId: json["tx_car_class_id"],
         price: json["price"],
-        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-        shift: json["shift"] == null ? null : ShiftModel.fromJson(json["shift"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        shift:
+            json["shift"] == null ? null : ShiftModel.fromJson(json["shift"]),
       );
 
   Map<String, dynamic> toJson() => {

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:tulpar/controller/user.dart';
 import 'package:tulpar/core/env.dart';
 import 'package:tulpar/core/log.dart';
+import 'package:tulpar/mock_api/mock_api_interceptor.dart';
 
 class InDio {
   late Dio _dio;
@@ -23,6 +24,9 @@ class InDio {
     );
 
     _dio = Dio(options);
+    if (CoreEnvironment.useMockApi) {
+      _dio.interceptors.add(MockApiInterceptor());
+    }
     _dio.interceptors.add(LogInterceptor(responseBody: true));
     _dio.interceptors.add(ConnectionInterceptor());
   }

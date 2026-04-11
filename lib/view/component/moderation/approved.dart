@@ -28,12 +28,18 @@ class ModerationApprovedCard extends StatelessWidget {
                   children: [
                     Text(
                       "Аккаунт TULPAR Водитель".tr,
-                      style: const TextStyle(fontSize: 18, color: CoreColors.primary, fontWeight: FontWeight.w800),
+                      style: const TextStyle(
+                          fontSize: 18,
+                          color: CoreColors.primary,
+                          fontWeight: FontWeight.w800),
                     ),
                     const SizedBox(height: 10),
                     Text(
                       "Статус: Подтвержден".tr,
-                      style: const TextStyle(fontSize: 15, color: CoreColors.black, fontWeight: FontWeight.w500),
+                      style: const TextStyle(
+                          fontSize: 15,
+                          color: CoreColors.black,
+                          fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),

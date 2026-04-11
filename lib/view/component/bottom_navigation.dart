@@ -8,7 +8,8 @@ class BottomNavigationBarWidget extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
 
-  const BottomNavigationBarWidget({super.key, required this.currentIndex, required this.onTap});
+  const BottomNavigationBarWidget(
+      {super.key, required this.currentIndex, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +42,10 @@ class BottomNavigationBarWidget extends StatelessWidget {
               selectedItemColor: CoreColors.primary,
               unselectedItemColor: CoreColors.black,
               selectedFontSize: 12,
-              unselectedLabelStyle: const TextStyle(fontFamily: 'Mulish', fontWeight: FontWeight.w700),
-              selectedLabelStyle: const TextStyle(fontFamily: 'Mulish', fontWeight: FontWeight.w700),
+              unselectedLabelStyle: const TextStyle(
+                  fontFamily: 'Mulish', fontWeight: FontWeight.w700),
+              selectedLabelStyle: const TextStyle(
+                  fontFamily: 'Mulish', fontWeight: FontWeight.w700),
               selectedIconTheme: const IconThemeData(
                 color: CoreColors.primary,
               ),
@@ -58,7 +61,9 @@ class BottomNavigationBarWidget extends StatelessWidget {
                         Icon(
                           tabData[i].icon!,
                           size: 24,
-                          color: currentIndex == i ? CoreColors.primary : CoreColors.grey,
+                          color: currentIndex == i
+                              ? CoreColors.primary
+                              : CoreColors.grey,
                         ),
                         // Text(
                         //   tabData[i].label.tr,

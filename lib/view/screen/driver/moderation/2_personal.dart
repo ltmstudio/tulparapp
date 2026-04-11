@@ -9,13 +9,15 @@ class ModerationPersonalScreen extends StatefulWidget {
   const ModerationPersonalScreen({super.key});
 
   @override
-  State<ModerationPersonalScreen> createState() => _ModerationPersonalScreenState();
+  State<ModerationPersonalScreen> createState() =>
+      _ModerationPersonalScreenState();
 }
 
 class _ModerationPersonalScreenState extends State<ModerationPersonalScreen> {
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<DriverModerationController>(builder: (moderationController) {
+    return GetBuilder<DriverModerationController>(
+        builder: (moderationController) {
       return Scaffold(
         body: ReactiveForm(
           formGroup: moderationController.moderationForm,
@@ -24,12 +26,15 @@ class _ModerationPersonalScreenState extends State<ModerationPersonalScreen> {
             children: [
               Text(
                 "Личная информация".tr,
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 7),
               Padding(
                   padding: const EdgeInsets.only(bottom: 10, top: 15),
-                  child: Text('Имя'.tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))),
+                  child: Text('Имя'.tr,
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w700))),
               ReactiveTextField(
                 formControlName: 'name',
                 decoration: CoreDecoration.textField.copyWith(
@@ -41,7 +46,9 @@ class _ModerationPersonalScreenState extends State<ModerationPersonalScreen> {
               ),
               Padding(
                   padding: const EdgeInsets.only(bottom: 10, top: 15),
-                  child: Text('Фамилия'.tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))),
+                  child: Text('Фамилия'.tr,
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w700))),
               ReactiveTextField(
                 formControlName: 'lastname',
                 decoration: CoreDecoration.textField.copyWith(
@@ -53,13 +60,17 @@ class _ModerationPersonalScreenState extends State<ModerationPersonalScreen> {
               ),
               Padding(
                   padding: const EdgeInsets.only(bottom: 10, top: 15),
-                  child: Text('Дата рождения'.tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))),
+                  child: Text('Дата рождения'.tr,
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w700))),
               ReactiveTextField<DateTime>(
                 formControlName: 'birthdate',
                 readOnly: true,
                 onTap: (control) async {
                   DateTime? newDate = await showDialog(
-                      context: context, builder: (context) => DateNumberPickerDialog(initialDate: control.value));
+                      context: context,
+                      builder: (context) =>
+                          DateNumberPickerDialog(initialDate: control.value));
                   if (newDate != null) {
                     control.value = newDate;
                   }

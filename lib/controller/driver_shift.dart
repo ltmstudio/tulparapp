@@ -52,7 +52,8 @@ class DriverShiftController extends GetxController {
 
   // Запуск таймера для получения статуса смены
   void _startShiftStatusTimer() {
-    _shiftStatusTimer = Timer.periodic(const Duration(seconds: 15), (timer) async {
+    _shiftStatusTimer =
+        Timer.periodic(const Duration(seconds: 15), (timer) async {
       var userController = Get.find<UserController>();
       var appController = Get.find<AppController>();
       if (userController.user.value?.driverId != null &&
@@ -67,7 +68,8 @@ class DriverShiftController extends GetxController {
   }
 
   void _startShiftStatusCountdownTimer() {
-    _shiftStatusCountdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) async {
+    _shiftStatusCountdownTimer =
+        Timer.periodic(const Duration(seconds: 1), (timer) async {
       if (shiftStatus.value?.isActive == true) {
         shiftStatus.value?.decreaseLeftByOneSecond();
         update(['shift_timer']);
@@ -86,7 +88,8 @@ class DriverShiftController extends GetxController {
       var resp = await dio.get("/driver/shift_status");
       var status = shiftStatusModelFromJson(json.encode(resp.data));
       shiftStatus.value = status;
-      Log.success("Получен статус смены - ${shiftStatus.value?.isActive == true ? "активна" : "не активна"}");
+      Log.success(
+          "Получен статус смены - ${shiftStatus.value?.isActive == true ? "активна" : "не активна"}");
     } catch (e) {
       shiftStatus.value = null;
       Log.error("Ошибка получения статуса смены - $e");
@@ -110,7 +113,8 @@ class DriverShiftController extends GetxController {
       var resp = await dio.get("/driver/shifts");
       var shifts = availableShiftsResponseModelFromJson(json.encode(resp.data));
       availableShifts.value = shifts;
-      Log.success("Получен список из ${availableShifts.value?.shifts?.length} доступных смен");
+      Log.success(
+          "Получен список из ${availableShifts.value?.shifts?.length} доступных смен");
     } catch (e) {
       Log.error("Ошибка получения списка доступных смен - $e");
     } finally {
@@ -135,7 +139,8 @@ class DriverShiftController extends GetxController {
     try {
       var resp = await dio.post("/driver/shifts/${selectedShift.value?.id}");
       if (resp.data != null && resp.data['success'] == true) {
-        var shiftOrderResponse = shiftOrderResponseModelFromJson(json.encode(resp.data));
+        var shiftOrderResponse =
+            shiftOrderResponseModelFromJson(json.encode(resp.data));
         if (shiftOrderResponse.message != null) {
           CoreToast.showToast(shiftOrderResponse.message!);
         }

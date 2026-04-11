@@ -37,7 +37,8 @@ class _ModerationAutoScreenState extends State<ModerationAutoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GetBuilder<DriverModerationController>(builder: (moderationController) {
+      body: GetBuilder<DriverModerationController>(
+          builder: (moderationController) {
         return ReactiveForm(
           formGroup: moderationController.moderationForm,
           child: ListView(
@@ -45,7 +46,8 @@ class _ModerationAutoScreenState extends State<ModerationAutoScreen> {
             children: [
               Text(
                 "Автомобиль".tr,
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 7),
               Row(
@@ -60,15 +62,21 @@ class _ModerationAutoScreenState extends State<ModerationAutoScreen> {
                         Padding(
                             padding: const EdgeInsets.only(bottom: 10, top: 15),
                             child: Text('Марка авто'.tr,
-                                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))),
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700))),
                         TextField(
                           readOnly: true,
                           onTap: () {
                             Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => const CatalogCarsScreen()),
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const CatalogCarsScreen()),
                             );
                           },
-                          controller: TextEditingController(text: moderationController.selectedCar.value?.name),
+                          controller: TextEditingController(
+                              text:
+                                  moderationController.selectedCar.value?.name),
                           decoration: CoreDecoration.textField.copyWith(
                             hintText: 'Выберите марку авто'.tr,
                             suffixIcon: const Icon(
@@ -93,21 +101,28 @@ class _ModerationAutoScreenState extends State<ModerationAutoScreen> {
                         Padding(
                             padding: const EdgeInsets.only(bottom: 10, top: 15),
                             child: Text('Модель авто'.tr,
-                                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))),
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700))),
                         TextField(
                           readOnly: true,
                           onTap: () {
-                            if (moderationController.selectedCar.value?.id == null) {
-                              CoreToast.showToast('Сначала выберите марку авто'.tr);
+                            if (moderationController.selectedCar.value?.id ==
+                                null) {
+                              CoreToast.showToast(
+                                  'Сначала выберите марку авто'.tr);
                               return;
                             }
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      CatalogCarModelsScreen(carId: moderationController.selectedCar.value!.id!)),
+                                  builder: (context) => CatalogCarModelsScreen(
+                                      carId: moderationController
+                                          .selectedCar.value!.id!)),
                             );
                           },
-                          controller: TextEditingController(text: moderationController.selectedCarModel.value?.name),
+                          controller: TextEditingController(
+                              text: moderationController
+                                  .selectedCarModel.value?.name),
                           decoration: CoreDecoration.textField.copyWith(
                             hintText: 'Выберите модель авто'.tr,
                             suffixIcon: const Icon(
@@ -140,7 +155,9 @@ class _ModerationAutoScreenState extends State<ModerationAutoScreen> {
               // ),
               Padding(
                   padding: const EdgeInsets.only(bottom: 10, top: 15),
-                  child: Text('VIN автомобиля'.tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))),
+                  child: Text('VIN автомобиля'.tr,
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w700))),
               ReactiveTextField(
                 formControlName: 'car_vin',
                 maxLength: 17,
@@ -164,10 +181,14 @@ class _ModerationAutoScreenState extends State<ModerationAutoScreen> {
                         Padding(
                             padding: const EdgeInsets.only(bottom: 10, top: 15),
                             child: Text('Год автомобиля'.tr,
-                                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))),
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700))),
                         ReactiveTextField<int>(
                           formControlName: 'car_year',
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                           keyboardType: TextInputType.number,
                           decoration: CoreDecoration.textField.copyWith(
                             hintText: 'Введите год автомобиля'.tr,
@@ -189,7 +210,9 @@ class _ModerationAutoScreenState extends State<ModerationAutoScreen> {
                         Padding(
                             padding: const EdgeInsets.only(bottom: 10, top: 15),
                             child: Text('Гос. номер автомобиля'.tr,
-                                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))),
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700))),
                         ReactiveTextField(
                           formControlName: 'car_gos_number',
                           inputFormatters: [
@@ -216,7 +239,8 @@ class _ModerationAutoScreenState extends State<ModerationAutoScreen> {
               Padding(
                   padding: const EdgeInsets.only(top: 15),
                   child: Text('Фото автомобиля (минимум 2)'.tr,
-                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))),
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w700))),
               SizedBox(
                 height: 120,
                 child: ListView(
@@ -233,7 +257,8 @@ class _ModerationAutoScreenState extends State<ModerationAutoScreen> {
                           openWithTap: true,
                           menuBoxDecoration: const BoxDecoration(
                               color: CoreColors.white,
-                              borderRadius: BorderRadius.all(Radius.circular(CoreDecoration.primaryBorderRadius))),
+                              borderRadius: BorderRadius.all(Radius.circular(
+                                  CoreDecoration.primaryBorderRadius))),
                           duration: const Duration(milliseconds: 30),
                           blurBackgroundColor: Colors.black54,
                           menuOffset: 5.0,
@@ -242,26 +267,43 @@ class _ModerationAutoScreenState extends State<ModerationAutoScreen> {
                             FocusedMenuItem(
                                 backgroundColor: Colors.transparent,
                                 title: Text("Открыть камеру".tr),
-                                trailingIcon: const Icon(Icons.camera_alt_outlined, size: 16),
+                                trailingIcon: const Icon(
+                                    Icons.camera_alt_outlined,
+                                    size: 16),
                                 onPressed: () {
-                                  moderationController.pickNUploadPhoto(key: field.name, source: ImageSource.camera);
+                                  moderationController.pickNUploadPhoto(
+                                      key: field.name,
+                                      source: ImageSource.camera);
                                 }),
                             FocusedMenuItem(
                                 backgroundColor: Colors.transparent,
                                 title: Text("Открыть галерею".tr),
-                                trailingIcon: const Icon(Icons.photo_library_outlined, size: 16),
+                                trailingIcon: const Icon(
+                                    Icons.photo_library_outlined,
+                                    size: 16),
                                 onPressed: () {
-                                  moderationController.pickNUploadPhoto(key: field.name, source: ImageSource.gallery);
+                                  moderationController.pickNUploadPhoto(
+                                      key: field.name,
+                                      source: ImageSource.gallery);
                                 }),
-                            if (moderationController.moderationForm.control(field.name).value?.toString().isNotEmpty ??
+                            if (moderationController.moderationForm
+                                    .control(field.name)
+                                    .value
+                                    ?.toString()
+                                    .isNotEmpty ??
                                 false)
                               FocusedMenuItem(
                                   backgroundColor: Colors.transparent,
-                                  title: Text("Удалить".tr, style: const TextStyle(color: CoreColors.delete)),
-                                  trailingIcon:
-                                      const Icon(Icons.delete_outline_outlined, size: 16, color: CoreColors.delete),
+                                  title: Text("Удалить".tr,
+                                      style: const TextStyle(
+                                          color: CoreColors.delete)),
+                                  trailingIcon: const Icon(
+                                      Icons.delete_outline_outlined,
+                                      size: 16,
+                                      color: CoreColors.delete),
                                   onPressed: () {
-                                    moderationController.deleteUploadedPhoto(key: field.name);
+                                    moderationController.deleteUploadedPhoto(
+                                        key: field.name);
                                   }),
                           ],
                           onPressed: () {},
@@ -271,10 +313,15 @@ class _ModerationAutoScreenState extends State<ModerationAutoScreen> {
                             child: Stack(
                               children: [
                                 ClipRRect(
-                                  borderRadius: BorderRadius.circular(CoreDecoration.primaryBorderRadius),
+                                  borderRadius: BorderRadius.circular(
+                                      CoreDecoration.primaryBorderRadius),
                                   child: Builder(builder: (_) {
-                                    var formImageUrl = moderationController.moderationForm.control(field.name).value;
-                                    var tempFile = moderationController.tempFile.value[field.name];
+                                    var formImageUrl = moderationController
+                                        .moderationForm
+                                        .control(field.name)
+                                        .value;
+                                    var tempFile = moderationController
+                                        .tempFile.value[field.name];
                                     if (tempFile != null) {
                                       return Image.file(
                                         File(tempFile.path),
@@ -282,12 +329,14 @@ class _ModerationAutoScreenState extends State<ModerationAutoScreen> {
                                         height: 100,
                                         fit: BoxFit.cover,
                                       );
-                                    } else if (formImageUrl != null && formImageUrl.toString().isNotEmpty) {
+                                    } else if (formImageUrl != null &&
+                                        formImageUrl.toString().isNotEmpty) {
                                       return CachedNetworkImage(
                                         imageUrl:
                                             '${CoreEnvironment.appUrl}/file?path=$formImageUrl&user_folder=user${Get.find<UserController>().user.value?.id}',
                                         httpHeaders: {
-                                          "Authorization": "Bearer ${Get.find<UserController>().token.value}",
+                                          "Authorization":
+                                              "Bearer ${Get.find<UserController>().token.value}",
                                         },
                                         errorListener: (value) {
                                           Log.error(
@@ -312,13 +361,17 @@ class _ModerationAutoScreenState extends State<ModerationAutoScreen> {
                                     }
                                   }),
                                 ),
-                                if (moderationController.tempFileLoading.value[field.name] == true)
+                                if (moderationController
+                                        .tempFileLoading.value[field.name] ==
+                                    true)
                                   Center(
                                     child: Container(
                                       width: 25,
                                       height: 25,
                                       padding: const EdgeInsets.all(5),
-                                      decoration: const BoxDecoration(color: CoreColors.white, shape: BoxShape.circle),
+                                      decoration: const BoxDecoration(
+                                          color: CoreColors.white,
+                                          shape: BoxShape.circle),
                                       child: const CircularProgressIndicator(
                                         color: CoreColors.primary,
                                         strokeWidth: 2,

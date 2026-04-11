@@ -64,11 +64,14 @@ class _HomeIntercityTabState extends State<HomeIntercityTab> {
           Expanded(
             child: ListView(children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Откуда'.tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
+                    Text('Откуда'.tr,
+                        style: const TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w700)),
                     const SizedBox(height: 10),
                     Container(
                       decoration: BoxDecoration(
@@ -90,7 +93,8 @@ class _HomeIntercityTabState extends State<HomeIntercityTab> {
                         ),
 
                         compareFn: (item1, item2) => item1?.id == item2?.id,
-                        items: (_, __) => orderController.cities.value, // Список городов
+                        items: (_, __) =>
+                            orderController.cities.value, // Список городов
                         selectedItem: orderController.cityA.value,
                         decoratorProps: DropDownDecoratorProps(
                             baseStyle: CoreStyles.h4,
@@ -144,7 +148,9 @@ class _HomeIntercityTabState extends State<HomeIntercityTab> {
                     //   ),
                     // ),
                     const SizedBox(height: 15),
-                    Text('Куда'.tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
+                    Text('Куда'.tr,
+                        style: const TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w700)),
                     const SizedBox(height: 10),
                     Container(
                       decoration: BoxDecoration(
@@ -166,7 +172,8 @@ class _HomeIntercityTabState extends State<HomeIntercityTab> {
                         ),
 
                         compareFn: (item1, item2) => item1?.id == item2?.id,
-                        items: (_, __) => orderController.cities.value, // Список городов
+                        items: (_, __) =>
+                            orderController.cities.value, // Список городов
                         selectedItem: orderController.cityB.value,
                         decoratorProps: DropDownDecoratorProps(
                             baseStyle: CoreStyles.h4,
@@ -220,7 +227,8 @@ class _HomeIntercityTabState extends State<HomeIntercityTab> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: CoreDecoration.primaryPadding),
                 child: Row(
                   children: [
                     Expanded(
@@ -228,21 +236,28 @@ class _HomeIntercityTabState extends State<HomeIntercityTab> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                              padding: const EdgeInsets.only(bottom: 10, top: 15),
+                              padding:
+                                  const EdgeInsets.only(bottom: 10, top: 15),
                               child: Text('Стоимость'.tr,
-                                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))),
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700))),
                           TextField(
                             controller: priceController,
                             textAlign: TextAlign.end,
                             keyboardType: TextInputType.number,
-                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
                             decoration: CoreDecoration.textField.copyWith(
-                                hintText: 'Укажите за сколько хотите доехать'.tr,
+                                hintText:
+                                    'Укажите за сколько хотите доехать'.tr,
                                 suffixIcon: const IconButton(
                                     onPressed: null,
                                     icon: Text(
                                       "₸",
-                                      style: TextStyle(color: CoreColors.primary),
+                                      style:
+                                          TextStyle(color: CoreColors.primary),
                                     ))),
                             onTapOutside: (event) {
                               FocusManager.instance.primaryFocus?.unfocus();
@@ -257,28 +272,37 @@ class _HomeIntercityTabState extends State<HomeIntercityTab> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                              padding: const EdgeInsets.only(bottom: 10, top: 15),
+                              padding:
+                                  const EdgeInsets.only(bottom: 10, top: 15),
                               child: Text('Кол-во пассажиров'.tr,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))),
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700))),
                           ValueListenableBuilder(
                               valueListenable: peopleValue,
                               builder: (_, p, __) {
                                 return TextField(
-                                    controller: TextEditingController(text: p.toString()),
+                                    controller: TextEditingController(
+                                        text: p.toString()),
                                     textAlign: TextAlign.center,
                                     keyboardType: TextInputType.number,
                                     readOnly: true,
                                     onTapOutside: (event) {
-                                      FocusManager.instance.primaryFocus?.unfocus();
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
                                     },
-                                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                    decoration: CoreDecoration.textField.copyWith(
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    decoration:
+                                        CoreDecoration.textField.copyWith(
                                       prefixIcon: IconButton(
                                           onPressed: () {
                                             if (peopleValue.value > 1) {
-                                              peopleValue.value = peopleValue.value - 1;
+                                              peopleValue.value =
+                                                  peopleValue.value - 1;
                                             }
                                           },
                                           icon: const Icon(
@@ -288,7 +312,8 @@ class _HomeIntercityTabState extends State<HomeIntercityTab> {
                                           )),
                                       suffixIcon: IconButton(
                                           onPressed: () {
-                                            peopleValue.value = peopleValue.value + 1;
+                                            peopleValue.value =
+                                                peopleValue.value + 1;
                                           },
                                           icon: const Icon(
                                             Icons.add,
@@ -315,10 +340,14 @@ class _HomeIntercityTabState extends State<HomeIntercityTab> {
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.only(bottom: 10, top: 15, left: CoreDecoration.primaryPadding),
-                  child: Text('Время'.tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))),
+                  padding: const EdgeInsets.only(
+                      bottom: 10, top: 15, left: CoreDecoration.primaryPadding),
+                  child: Text('Время'.tr,
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w700))),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: CoreDecoration.primaryPadding),
                 child: TextField(
                   controller: timeController,
                   readOnly: true,
@@ -326,21 +355,25 @@ class _HomeIntercityTabState extends State<HomeIntercityTab> {
                     DateTime? time = await showDialog(
                         context: context,
                         builder: (context) {
-                          var now = DateTime.now().add(const Duration(minutes: 20));
+                          var now =
+                              DateTime.now().add(const Duration(minutes: 20));
                           var hour = now.hour;
                           var roundedMinute = (now.minute / 10).ceil() * 10;
-                          var currentSelectedTime = timeController.text.toDateTime;
+                          var currentSelectedTime =
+                              timeController.text.toDateTime;
                           if (currentSelectedTime != null) {
                             return DateTimePickerDialog(
                               initialDateTime: currentSelectedTime,
                             );
                           }
                           return DateTimePickerDialog(
-                            initialDateTime: DateTime(now.year, now.month, now.day, hour, roundedMinute),
+                            initialDateTime: DateTime(now.year, now.month,
+                                now.day, hour, roundedMinute),
                           );
                         });
                     if (time != null && mounted) {
-                      timeController.text = DateFormat('dd-MM-yyyy HH:mm').format(time);
+                      timeController.text =
+                          DateFormat('dd-MM-yyyy HH:mm').format(time);
                       setState(() {});
                     }
                   },
@@ -374,12 +407,16 @@ class _HomeIntercityTabState extends State<HomeIntercityTab> {
                 onTap: () {
                   commentFieldExpanded.value = !commentFieldExpanded.value;
                 },
-                title: Text("Комментарий".tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
+                title: Text("Комментарий".tr,
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.w700)),
                 trailing: TextButton(
                     onPressed: () {
                       commentFieldExpanded.value = !commentFieldExpanded.value;
                     },
-                    child: Text("Добавить".tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))),
+                    child: Text("Добавить".tr,
+                        style: const TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w700))),
               ),
               ValueListenableBuilder(
                   valueListenable: commentFieldExpanded,
@@ -394,11 +431,13 @@ class _HomeIntercityTabState extends State<HomeIntercityTab> {
                         child: !expanded
                             ? const SizedBox()
                             : Container(
-                                padding: const EdgeInsets.symmetric(horizontal: CoreDecoration.primaryPadding),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: CoreDecoration.primaryPadding),
                                 child: TextField(
                                   controller: commentsController,
                                   onTapOutside: (event) {
-                                    FocusManager.instance.primaryFocus?.unfocus();
+                                    FocusManager.instance.primaryFocus
+                                        ?.unfocus();
                                   },
                                   maxLines: 3,
                                   decoration: CoreDecoration.textField.copyWith(
@@ -419,7 +458,8 @@ class _HomeIntercityTabState extends State<HomeIntercityTab> {
                       if (orderCreateLoading) return;
                       if (orderController.cityA.value == null ||
                           orderController.cityB.value == null ||
-                          orderController.cityB.value == orderController.cityA.value ||
+                          orderController.cityB.value ==
+                              orderController.cityA.value ||
                           priceController.text.isEmpty) {
                         CoreToast.showToast('Заполните все поля'.tr);
                         return;
@@ -428,9 +468,13 @@ class _HomeIntercityTabState extends State<HomeIntercityTab> {
                       var newOrder = OrderModel(
                           cityAId: orderController.cityA.value!.id,
                           cityBId: orderController.cityB.value!.id,
-                          userComment: commentsController.text.isEmpty ? null : commentsController.text,
+                          userComment: commentsController.text.isEmpty
+                              ? null
+                              : commentsController.text,
                           userCost: int.tryParse(priceController.text),
-                          userTime: timeController.text.isEmpty ? null : timeController.text,
+                          userTime: timeController.text.isEmpty
+                              ? null
+                              : timeController.text,
                           people: peopleValue.value,
                           typeId: 2);
 
@@ -445,8 +489,10 @@ class _HomeIntercityTabState extends State<HomeIntercityTab> {
                               )
                             : Text(
                                 'Заказать TULPAR'.tr,
-                                style:
-                                    const TextStyle(color: CoreColors.white, fontSize: 14, fontWeight: FontWeight.w500),
+                                style: const TextStyle(
+                                    color: CoreColors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
                               ))),
               ),
             ]),

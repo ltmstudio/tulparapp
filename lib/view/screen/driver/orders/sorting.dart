@@ -18,8 +18,11 @@ class OrdersSortingDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 16.0, left: CoreDecoration.primaryPadding),
-            child: Text("Сортировка".tr, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+            padding: const EdgeInsets.only(
+                top: 16.0, left: CoreDecoration.primaryPadding),
+            child: Text("Сортировка".tr,
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
           ),
           for (var value in sortingValues)
             RadioListTile<String?>(

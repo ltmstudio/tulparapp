@@ -7,7 +7,8 @@ import 'dart:convert';
 import 'package:tulpar/model/cars/model.dart';
 
 List<CatalogCarModel> catalogCarModelFromJson(String str) =>
-    List<CatalogCarModel>.from(json.decode(str).map((x) => CatalogCarModel.fromJson(x)));
+    List<CatalogCarModel>.from(
+        json.decode(str).map((x) => CatalogCarModel.fromJson(x)));
 
 String catalogCarModelToJson(List<CatalogCarModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -50,7 +51,8 @@ class CatalogCarModel {
         models: models ?? this.models,
       );
 
-  factory CatalogCarModel.fromJson(Map<String, dynamic> json) => CatalogCarModel(
+  factory CatalogCarModel.fromJson(Map<String, dynamic> json) =>
+      CatalogCarModel(
         id: json["id"],
         name: json["name"],
         cyrillicName: json["cyrillic-name"],
@@ -59,7 +61,8 @@ class CatalogCarModel {
         image: json["image"],
         models: json["models"] == null
             ? []
-            : List<CatalogCarModelModel>.from(json["models"].map((x) => CatalogCarModelModel.fromJson(x))),
+            : List<CatalogCarModelModel>.from(
+                json["models"].map((x) => CatalogCarModelModel.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

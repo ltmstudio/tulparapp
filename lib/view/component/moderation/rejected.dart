@@ -24,12 +24,18 @@ class ModerationRejectedCard extends StatelessWidget {
         children: [
           Text(
             "Аккаунт TULPAR Водитель".tr,
-            style: const TextStyle(fontSize: 18, color: CoreColors.white, fontWeight: FontWeight.w800),
+            style: const TextStyle(
+                fontSize: 18,
+                color: CoreColors.white,
+                fontWeight: FontWeight.w800),
           ),
           const SizedBox(height: 10),
           Text(
             "Анкета не прошла модерацию. Откройте чтобы изучить проблемы".tr,
-            style: const TextStyle(fontSize: 15, color: CoreColors.white, fontWeight: FontWeight.w500),
+            style: const TextStyle(
+                fontSize: 15,
+                color: CoreColors.white,
+                fontWeight: FontWeight.w500),
           ),
           const SizedBox(height: 20),
           Row(
@@ -50,7 +56,9 @@ class ModerationRejectedCard extends StatelessWidget {
                     textColor: CoreColors.error,
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => const DriverModerationFormScreen()),
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const DriverModerationFormScreen()),
                       );
                     },
                     text: "Открыть анкету".tr),
